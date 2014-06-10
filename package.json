@@ -1,0 +1,20 @@
+{
+  "name": "jobquery-server",
+  "version": "1.0.0",
+  "description": "Job query back end",
+    "scripts": {
+    "predeploy": "npm install",
+    "start"    : "node server/server.js"
+  },
+  "dependencies": {
+    "body-parser"  : "*",
+    "cookie-parser": "^1.1.0",
+    "express"      : "*",
+    "gulp"         : "^3.5.6",
+    "gulp-util"    : "^2.2.14",
+    "mongoose"     : "*",
+    "morgan"       : "*",
+    "q"            : "*",
+    "shelljs"      : "^0.3.0"
+  }
+}

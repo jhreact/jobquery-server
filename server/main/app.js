@@ -2,7 +2,6 @@
 
 var cookieParser = require('cookie-parser');
 var express      = require('express');
-var request      = require('request');
 
 var app          = express();
 var NoteRouter   = express.Router();

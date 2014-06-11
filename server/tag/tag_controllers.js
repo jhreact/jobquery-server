@@ -8,7 +8,7 @@ module.exports = exports = {
       name: req.body.name,
       label: req.body.label,
       scaleDescription: req.body.scaleDescription || []
-    }), function (err, tag) {
+    }, function (err, tag) {
       if (err) { res.send(500, "Server unable to save tag."); }
       res.send(201, tag._id);
     });

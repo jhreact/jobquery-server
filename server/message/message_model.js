@@ -2,11 +2,11 @@
 
 var mongoose = require('mongoose');
 
-var MessageSchema = mongoose.Schema({
+var messageSchema = mongoose.Schema({
   from: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
   to: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-  body: String,
+  text: String,
   createdAt: {type: Date, default: Date.now}
 });
 
-module.exports = exports = mongoose.model('Message', MessageSchema);
+module.exports = exports = mongoose.model('Message', messageSchema);

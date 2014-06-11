@@ -22,7 +22,7 @@ require('./config.js')(app, express, routers);
 
 require('../note/note_routes.js')(NoteRouter);
 require('../message/message_routes.js')(MessageRouter);
-require('../tag/tag_routes.js')(TagRouter);
-require('../opportunity/opportunity_routes.js')(OpportunityRouter);
+// require('../tag/tag_routes.js')(TagRouter);
+// require('../opportunity/opportunity_routes.js')(OpportunityRouter);
 
 module.exports = exports = app;

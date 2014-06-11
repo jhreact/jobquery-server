@@ -1,29 +1,26 @@
 "use strict";
 
-var Note = require('./message_model.js'),
-    Q    = require('q');
+var Message = require('./message_model.js');
 
 module.exports = exports = {
-  get: function (req, res, next) {
-    var $promise = Q.nbind(Note.find, Note);
-    $promise()
-      .then(function (notes) {
-        res.json(notes);
-      })
-       .fail(function (reason) {
-        next(reason);
-      });
-  },
-
   post: function (req, res, next) {
-    var note = req.body.note;
-    var $promise = Q.nbind(Note.create, Note);
-    $promise(note)
-      .then(function (id) {
-        res.send(id);
-      })
-      .fail(function (reason) {
-        next(reason);
+    var message = req.body.text;
+    var senderId = req.body.from;
+
+    User.findOne({name: req.body.to})
+      .exec(function (err, receiver) {
+        new Message({
+          from: senderId, 
+          to: receiver._id,
+          text: req.body.text
+        })
+        .save(function (err, message) {
+          if (err) { 
+            res.send(501, err); 
+          } else {
+            res.send(200, message._id);
+          }
+        });
       });
   }
 };

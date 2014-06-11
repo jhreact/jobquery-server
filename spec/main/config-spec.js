@@ -16,6 +16,7 @@ describe("config", function () {
     routers.MessageRouter     = express.Router();
     routers.OpportunityRouter = express.Router();
     routers.TagRouter         = express.Router();
+    routers.UserRouter        = express.Router();
   });
 
   it("check config is a function", function () {

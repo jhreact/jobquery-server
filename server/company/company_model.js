@@ -12,8 +12,14 @@ var companySchema = new mongoose.Schema({
   country:        {type: String, default: 'US'},
   // coordinate-axis is [longitude, latitude], else store as GeoJSON object
   geo:            {type: [Number, Number], index: '2dsphere'},
-  media:          {type: [{title: String, url: String}]},
-  links:          {type: [{title: String, url: String}]},
+  media:          {type: [{
+    title:  {type: String, required: true},
+    url:    {type: String, required: true}
+  }]},
+  links:          {type: [{
+    title:  {type: String, required: true},
+    url:    {type: String, required: true}
+  }]},
   createdAt:      {type: Date, default: Date.now},
   updatedAt:      {type: Date, default: Date.now}
 });

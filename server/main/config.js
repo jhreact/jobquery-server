@@ -19,6 +19,9 @@ module.exports = exports = function (app, express, routers) {
   app.use(bodyParser());
   app.use(middle.cors);
   app.use('/note' , routers.NoteRouter);
+  app.use('/api/messages', routers.MessageRouter);
+  app.use('/api/tags', routers.TagRouter);
+  app.use('/api/opportunities', routers.OpportunityRouter);
   app.use(middle.logError);
   app.use(middle.handleError);
 };

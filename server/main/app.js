@@ -24,5 +24,6 @@ require('./config.js')(app, express, routers);
 require('../login/login_routes.js')(LoginRouter);
 require('../note/note_routes.js')(NoteRouter);
 require('../message/message_routes.js')(MessageRouter);
+require('../tag/tag_routes.js')(TagRouter);
 
 module.exports = exports = app;

@@ -1,6 +1,8 @@
 "use strict";
 
 var Tag = require('./tag_model.js');
+var UNABLE_TO_SAVE = "Server unable to save tag.";
+var UNABLE_TO_READ = "Server unable to read tag.";
 
 module.exports = exports = {
   post: function (req, res) {
@@ -9,15 +11,14 @@ module.exports = exports = {
       label: req.body.label,
       scaleDescription: req.body.scaleDescription || []
     }, function (err, tag) {
-      if (err) { res.send(500, "Server unable to save tag."); }
+      if (err) { res.send(500, UNABLE_TO_SAVE); }
       res.send(201, tag._id);
     });
   },
   get: function (req, res) {
-    Tag.find({})
-      .exec(function(err, tags) {
-        if (err) { res.send(500, "Server unable to read tags from database."); }
-        res.send(200, tags);
-      });
+    Tag.find().exec(function(err, tags) {
+      if (err) { res.send(500, UNABLE_TO_READ); }
+      res.send(200, tags);
+    });
   }
 };

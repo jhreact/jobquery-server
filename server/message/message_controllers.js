@@ -18,7 +18,7 @@ module.exports = exports = {
           })
           .save(function (err, message) {
             if (err) { 
-              res.send(501, "Error in saving message to database."); 
+              res.send(500, "Error in saving message to database."); 
             } else {
               res.send(201, message._id);
             }

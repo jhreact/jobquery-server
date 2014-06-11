@@ -3,7 +3,7 @@
 var Tag = require('./tag_model.js');
 
 module.exports = exports = {
-  post: function (req, res, next) {
+  post: function (req, res) {
     var message = req.body.text;
     var senderId = req.body.from;
     var receiverName = req.body.to;

@@ -21,8 +21,3 @@ module.exports = exports = {
       });
   }
 };
-
-
-name
-label
-scaleDescription

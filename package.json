@@ -2,19 +2,22 @@
   "name": "jobquery-server",
   "version": "1.0.0",
   "description": "Job query back end",
-    "scripts": {
+  "scripts": {
     "predeploy": "npm install",
-    "start"    : "node server/server.js"
+    "start": "node server/server.js"
   },
   "dependencies": {
-    "body-parser"  : "*",
+    "body-parser": "*",
     "cookie-parser": "^1.1.0",
-    "express"      : "*",
-    "gulp"         : "^3.5.6",
-    "gulp-util"    : "^2.2.14",
-    "mongoose"     : "*",
-    "morgan"       : "*",
-    "q"            : "*",
-    "shelljs"      : "^0.3.0"
+    "express": "*",
+    "gulp": "^3.5.6",
+    "gulp-util": "^2.2.14",
+    "mongoose": "*",
+    "morgan": "*",
+    "q": "*",
+    "shelljs": "^0.3.0",
+    "express-jwt": "^0.2.1",
+    "jsonwebtoken": "^0.4.0",
+    "bcrypt-nodejs": "0.0.3"
   }
 }

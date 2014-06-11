@@ -23,7 +23,7 @@ module.exports = exports = function (app, express, routers) {
   app.use('/api/messages', routers.MessageRouter);
   app.use('/api/opportunities', routers.OpportunityRouter);
   app.use('/api/tags', routers.TagRouter);
-  app.use('/users' , routers.UserRouter);
+  app.use('/api/users' , routers.UserRouter);
   app.use(middle.logError);
   app.use(middle.handleError);
 };

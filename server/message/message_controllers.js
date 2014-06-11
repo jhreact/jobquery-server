@@ -10,18 +10,22 @@ module.exports = exports = {
 
     User.findOne({name: receiverName})
       .exec(function (err, receiver) {
-        new Message({
-          from: senderId, 
-          to: receiver._id,
-          text: message
-        })
-        .save(function (err, message) {
-          if (err) { 
-            res.send(501, err); 
-          } else {
-            res.send(201, message._id);
-          }
-        });
+        if (!err) {
+          new Message({
+            from: senderId, 
+            to: receiver._id,
+            text: message
+          })
+          .save(function (err, message) {
+            if (err) { 
+              res.send(501, "Error in saving message to database."); 
+            } else {
+              res.send(201, message._id);
+            }
+          });
+        } else {
+          res.send(404, "Receiver not found");
+        }
       });
   }
 };

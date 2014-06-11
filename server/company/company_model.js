@@ -15,12 +15,12 @@ var companySchema = new mongoose.Schema({
   media:
     [{
       title:  {type: String, required: true},
-      url:    {type: String, required: true}
+      url:    {type: String, required: true, unique: true}
     }],
   links:
     [{
       title:  {type: String, required: true},
-      url:    {type: String, required: true}
+      url:    {type: String, required: true, unique: true}
     }],
   opportunities:  [{type: mongoose.Schema.Types.ObjectId, ref: 'Opportunity'}],
   createdAt:      {type: Date, default: Date.now},

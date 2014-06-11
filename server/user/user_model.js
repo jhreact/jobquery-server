@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 var userSchema = new mongoose.Schema({
   email:          {type: String, required: true, unique: true},
   // TODO: provide users with auto-generated passwords upon invitation
-  password:       {type: String, required: true},
+  password:       {type: String, required: true, select: false},
   name:           {type: String, required: true, index: true},
   admin:          {type: Boolean, required: true},
   registered:     {type: Boolean, required: true},
@@ -17,8 +17,9 @@ var userSchema = new mongoose.Schema({
     required: true},
   opportunities:  {type:
     [{
-      oppId: {type: mongoose.Schema.Types.ObjectId, ref: 'Opportunity'},
-      score: {type: Number, min: 1, max: 4}
+      oppId:      {type: mongoose.Schema.Types.ObjectId, ref: 'Opportunity'},
+      score:      {type: Number, min: 1, max: 4},
+      questions:  {type: [String]}
     }],
     required: true},
   city:           {type: String},

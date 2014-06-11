@@ -15,7 +15,7 @@ var opportunitySchema = mongoose.Schema({
   links:
     [{
       date: {type: Date, default: Date.now},
-      uri: String
+      url: String
     }],
   notes:
     [{

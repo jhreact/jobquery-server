@@ -17,8 +17,9 @@ var userSchema = new mongoose.Schema({
     required: true},
   opportunities:  {type:
     [{
-      oppId: {type: mongoose.Schema.Types.ObjectId, ref: 'Opportunity'},
-      score: {type: Number, min: 1, max: 4}
+      oppId:      {type: mongoose.Schema.Types.ObjectId, ref: 'Opportunity'},
+      score:      {type: Number, min: 1, max: 4},
+      questions:  {type: [String]}
     }],
     required: true},
   city:           {type: String},

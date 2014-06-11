@@ -1,3 +1,5 @@
+'use strict';
+
 var userCtrl = require('../../server/user/user_controllers.js');
 
 describe('user controller', function () {

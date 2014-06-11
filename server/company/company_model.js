@@ -27,4 +27,9 @@ var companySchema = new mongoose.Schema({
   updatedAt:      {type: Date, default: Date.now}
 });
 
+companySchema.pre('save', function (next) {
+  this.updatedAt = new Date();
+  next();
+});
+
 module.exports = exports = mongoose.model('Company', companySchema);

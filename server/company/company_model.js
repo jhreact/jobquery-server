@@ -12,10 +12,24 @@ var companySchema = new mongoose.Schema({
   country:        {type: String, default: 'US'},
   // coordinate-axis is [longitude, latitude], else store as GeoJSON object
   geo:            {type: [Number, Number], index: '2dsphere'},
-  media:          {type: [{title: String, url: String}]},
-  links:          {type: [{title: String, url: String}]},
+  media:
+    [{
+      title:  {type: String, required: true},
+      url:    {type: String, required: true, unique: true}
+    }],
+  links:
+    [{
+      title:  {type: String, required: true},
+      url:    {type: String, required: true, unique: true}
+    }],
+  opportunities:  [{type: mongoose.Schema.Types.ObjectId, ref: 'Opportunity'}],
   createdAt:      {type: Date, default: Date.now},
   updatedAt:      {type: Date, default: Date.now}
+});
+
+companySchema.pre('save', function (next) {
+  this.updatedAt = new Date();
+  next();
 });
 
 module.exports = exports = mongoose.model('Company', companySchema);

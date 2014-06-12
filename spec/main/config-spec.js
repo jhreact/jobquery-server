@@ -11,12 +11,13 @@ describe("config", function () {
     app     = express();
 
     routers      = {};
-    routers.NoteRouter        = express.Router();
     routers.LoginRouter       = express.Router();
+    routers.NoteRouter        = express.Router();
     routers.MessageRouter     = express.Router();
     routers.OpportunityRouter = express.Router();
     routers.TagRouter         = express.Router();
     routers.UserRouter        = express.Router();
+    routers.CompanyRouter     = express.Router();
   });
 
   it("check config is a function", function () {

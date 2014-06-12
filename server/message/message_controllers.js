@@ -1,6 +1,7 @@
 "use strict";
 
 var Message = require('./message_model.js');
+var User = require('./user_model.js');
 
 module.exports = exports = {
   post: function (req, res, next) {

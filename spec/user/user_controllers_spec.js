@@ -12,4 +12,12 @@ describe('user controller', function () {
     expect(userCtrl.post).toEqual(jasmine.any(Function));
   });
 
+  it('should have a getById method', function () {
+    expect(userCtrl.getById).toEqual(jasmine.any(Function));
+  });
+
+  it('should have a putById method', function () {
+    expect(userCtrl.putById).toEqual(jasmine.any(Function));
+  });
+
 });

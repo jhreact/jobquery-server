@@ -12,4 +12,12 @@ describe('company controller', function () {
     expect(companyCtrl.post).toEqual(jasmine.any(Function));
   });
 
+  it('should have a getById method', function () {
+    expect(companyCtrl.getById).toEqual(jasmine.any(Function));
+  });
+
+  it('should have a postById method', function () {
+    expect(companyCtrl.putById).toEqual(jasmine.any(Function));
+  });
+
 });

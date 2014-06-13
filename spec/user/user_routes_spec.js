@@ -2,52 +2,84 @@ var userRoutes = require('../../server/user/user_routes.js');
 var express = require('express');
 
 var router = express.Router();
-userRoutes(router); // extend 'router' with userRoutes
+userRoutes(router); // extends 'router' with userRoutes module
 
-var mockRequest;
+// declare expected paths and RESTful verbs here
+var expectedPaths = {
+  '/':      ['GET', 'POST'],
+  '/:id':   ['GET', 'PUT']
+};
 
-for (var i = 0; i < router.stack.length; i += 1) {
-  console.log('router.stack[', i, ']');
-  console.dir(router.stack[i]);
-  // TODO: create a lookup object so do not have to hardcode index numbers
+// setup: translates router properties into an object tht we can work with
+var routes = {};
+var i, j;
+var verb;
+for (i = 0; i < router.stack.length; i += 1) {
+  routes[router.stack[i].route.path] = {};
+  for (j = 0; j < router.stack[i].route.stack.length; j += 1) {
+    verb = router.stack[i].route.stack[j]['method'];
+    routes[router.stack[i].route.path][verb] = router.stack[i].route.stack[j];
+  }
 }
 
-describe('User routes', function () {
+describe("User routes", function () {
 
-  beforeEach(function () {
-    mockRequest = {
-      method: 'GET',
-      url: '/',
-      params: {}
-    };
+  describe("All expected paths are declared", function () {
+    for (var path in expectedPaths) {
+      for (var k = 0; k < expectedPaths[path].length; k += 1) {
+        var action = expectedPaths[path][k].toLowerCase();
+        (function (path, action) {
+          it('should be declared for ' + action.toUpperCase() + ' at ' + path,
+            function () {
+              expect(routes[path][action].method).toEqual(action);
+            }
+          );
+        })(path, action);
+      }
+    }
   });
 
-  it('should have a method for GET /', function () {
-    expect(router.stack[1].route.path).toBeDefined();
-    expect(router.stack[1].route.path).toEqual('/');
-    expect(router.stack[1].route.methods.get).toEqual(true);
+  describe('All declared routes are expected', function () {
+    for (var path in routes) {
+      for (var action in routes[path]) {
+        (function (path, action) {
+          it('should expect ' + action.toUpperCase() + ' at ' + path,
+            function () {
+              expect(expectedPaths[path].indexOf(action.toUpperCase()))
+                .not.toEqual(-1);
+            }
+          );
+        })(path, action);
+      }
+    }
   });
 
-  it('should invoke correct method for GET /', function () {
-    spyOn(router.stack[1].route.stack[0], 'handle');
-    router(mockRequest);
-    expect(router.stack[1].route.stack[0].handle).toHaveBeenCalled();
-    // TODO: add test for GET/:id
-  });
+  // save this information --- useful for integration testing
+  xdescribe("Passing in a mock http object", function () {
+    it('should invoke a route handler for GET /', function () {
+      spyOn(routes['/'].get, 'handle');
+      router({method: 'GET', url: '/'});
+      expect(routes['/'].get.handle).toHaveBeenCalled();
+    });
 
-  it('should have a method for POST /', function () {
-    expect(router.stack[1].route.path).toBeDefined();
-    expect(router.stack[1].route.path).toEqual('/');
-    expect(router.stack[1].route.methods.post).toEqual(true);
-  });
+    it('should invoke a route handler for POST /', function () {
+      spyOn(routes['/'].post, 'handle');
+      router({method: 'POST', url: '/'});
+      expect(routes['/'].post.handle).toHaveBeenCalled();
+    });
 
+    it('should invoke a route handler for GET /:id', function () {
+      spyOn(routes['/:id'].get, 'handle');
+      router({method: 'GET', url: '/12'});
+      expect(routes['/:id'].get.handle).toHaveBeenCalled();
+    });
 
-  it('should invoke correct method for POST /', function () {
-    mockRequest.method = 'POST';
-
-    spyOn(router.stack[1].route.stack[1], 'handle');
-    router(mockRequest);
-    expect(router.stack[1].route.stack[1].handle).toHaveBeenCalled();
+    it('should invoke a route handler for PUT /:id', function () {
+      spyOn(routes['/:id'].put, 'handle');
+      router({method: 'PUT', url: '/:id'});
+      expect(routes['/:id'].put.handle).toHaveBeenCalled();
+    });
   });
 
 });
+

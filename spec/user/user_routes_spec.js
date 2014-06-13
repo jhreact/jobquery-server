@@ -4,6 +4,7 @@ var express = require('express');
 var router = express.Router();
 userRoutes(router); // extends 'router' with userRoutes module
 
+// fill int desired paths and verbs (use lower case for verbs)
 var expectedAPI = {
   '/':      ['get', 'post'],
   '/:id':   ['get', 'put']
@@ -17,10 +18,7 @@ describe('User routes', function () {
         it('should have specified path of ' + path, function () {
           var exists = false;
           for (var i = 0; i < router.stack.length; i += 1) {
-            // console.log('router.stack['+i+'].route.path: ', router.stack[i].route.path);
-            // console.log('path: ', path);
             if (router.stack[i].route.path === path) {
-              // console.log('FOUND');
               exists = true;
               break;
             }

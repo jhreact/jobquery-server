@@ -2,52 +2,64 @@ var userRoutes = require('../../server/user/user_routes.js');
 var express = require('express');
 
 var router = express.Router();
-userRoutes(router); // extend 'router' with userRoutes
+userRoutes(router); // extends 'router' with userRoutes module
 
-var mockRequest;
-
-for (var i = 0; i < router.stack.length; i += 1) {
-  console.log('router.stack[', i, ']');
-  console.dir(router.stack[i]);
-  // TODO: create a lookup object so do not have to hardcode index numbers
-}
+// fill int desired paths and verbs (use lower case for verbs)
+var expectedAPI = {
+  '/':      ['get', 'post'],
+  '/:id':   ['get', 'put']
+};
 
 describe('User routes', function () {
 
-  beforeEach(function () {
-    mockRequest = {
-      method: 'GET',
-      url: '/',
-      params: {}
-    };
-  });
+  for (var path in expectedAPI) {
+    (function (path) {
+      describe('Path: ' + path, function () {
+        it('should have specified path of ' + path, function () {
+          var exists = false;
+          for (var i = 0; i < router.stack.length; i += 1) {
+            if (router.stack[i].route.path === path) {
+              exists = true;
+              break;
+            }
+          }
+          expect(exists).toEqual(true);
+        });
 
-  it('should have a method for GET /', function () {
-    expect(router.stack[1].route.path).toBeDefined();
-    expect(router.stack[1].route.path).toEqual('/');
-    expect(router.stack[1].route.methods.get).toEqual(true);
-  });
+        for (var i = 0; i < expectedAPI[path].length; i += 1) {
+          var verb = expectedAPI[path][i];
+          var index;
+          (function (verb) {
+            describe(verb.toUpperCase() + ' at ' + path, function () {
 
-  it('should invoke correct method for GET /', function () {
-    spyOn(router.stack[1].route.stack[0], 'handle');
-    router(mockRequest);
-    expect(router.stack[1].route.stack[0].handle).toHaveBeenCalled();
-    // TODO: add test for GET/:id
-  });
+              it('should handle a ' + verb.toUpperCase() + ' request at ' + path,
+                function () {
+                  for (var i = 0; i < router.stack.length; i += 1) {
+                    if (router.stack[i].route.path === path) {
+                      expect(router.stack[i].route.methods[verb]).toEqual(true);
+                      index = i;
+                      break;
+                    }
+                  }
+                });
 
-  it('should have a method for POST /', function () {
-    expect(router.stack[1].route.path).toBeDefined();
-    expect(router.stack[1].route.path).toEqual('/');
-    expect(router.stack[1].route.methods.post).toEqual(true);
-  });
-
-
-  it('should invoke correct method for POST /', function () {
-    mockRequest.method = 'POST';
-
-    spyOn(router.stack[1].route.stack[1], 'handle');
-    router(mockRequest);
-    expect(router.stack[1].route.stack[1].handle).toHaveBeenCalled();
-  });
+              it('should invoke handler when route reached', function () {
+                var subIndex;
+                for (var i = 0; i < router.stack[index].route.stack.length; i += 1) {
+                  if (router.stack[index].route.stack[i].method === verb) {
+                    subIndex = i;
+                    break;
+                  }
+                }
+                spyOn(router.stack[index].route.stack[subIndex], 'handle');
+                router({method: verb, url: path});
+                expect(router.stack[index].route.stack[subIndex].handle).toHaveBeenCalled();
+              });
+            });
+          })(verb);
+        }
+      });
+    })(path);
+  }
 
 });

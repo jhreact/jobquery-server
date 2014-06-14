@@ -4,15 +4,17 @@ var controller = require('./match_controllers.js');
 
 module.exports = exports = function (router) {
 
+  router.route('/users/:userId/opportunities/:oppId')
+    .put(controller.putByIds);
+
   router.route('/users/:id')
-    .get(controller.getByUserId)
-    .put(controller.putByUserId);
+    .get(controller.getByUserId);
 
   router.route('/opportunities/:id')
-    .get(controller.getByOppId)
-    .put(controller.putByOppId);
+    .get(controller.getByOppId);
 
   router.route('/')
-    .get(controller.get);
+    .get(controller.get)
+    .post(controller.post);
 
 };

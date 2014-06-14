@@ -1,8 +1,8 @@
-var userRoutes = require('../../server/user/user_routes.js');
+var opportunityRoutes = require('../../server/opportunity/opportunity_routes.js');
 var express = require('express');
 
 var router = express.Router();
-userRoutes(router); // extends 'router' with userRoutes module
+opportunityRoutes(router); // extends 'router' with opportunityRoutes module
 
 // fill int desired paths and verbs (use lower case for verbs)
 var expectedAPI = {
@@ -10,7 +10,7 @@ var expectedAPI = {
   '/:id':   ['get', 'put']
 };
 
-describe('User Routes', function () {
+describe('Opportunity Routes', function () {
 
   for (var path in expectedAPI) {
     (function (path) {

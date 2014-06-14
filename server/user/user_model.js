@@ -27,7 +27,7 @@ var userSchema = new mongoose.Schema({
   answers:        {type: mongoose.Schema.Types.Mixed},
   city:           {type: String},
   state:          {type: String},
-  country:        {type: String, default: 'US'},
+  country:        {type: String},
   // coordinate-axis is [longitude, latitude], else store as GeoJSON object
   geo:            {type: [Number, Number], index: '2dsphere'},
   createdAt:      {type: Date, required: true, default: Date.now},

@@ -10,15 +10,13 @@ describe("config", function () {
     express = require('express');
     app     = express();
 
-    routers      = {};
+    routers = {};
     routers.LoginRouter       = express.Router();
-    // routers.NoteRouter        = express.Router();
-    // routers.MessageRouter     = express.Router();
     routers.OpportunityRouter = express.Router();
     routers.TagRouter         = express.Router();
     routers.UserRouter        = express.Router();
     routers.CompanyRouter     = express.Router();
-    routers.MatchRouter     = express.Router();
+    routers.MatchRouter       = express.Router();
   });
 
   it("check config is a function", function () {
@@ -34,7 +32,5 @@ describe("config", function () {
     config(app, express, routers);
     expect(app.get('base url')).toEqual('http://localhost');
   });
-
-  // Not sure how to test app.use
 
 });

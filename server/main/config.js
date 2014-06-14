@@ -17,10 +17,8 @@ module.exports = exports = function (app, express, routers) {
   app.use(morgan('dev'));
   app.use(bodyParser());
   app.use(middle.cors);
-  // app.use('/note' , routers.NoteRouter);
   app.use('/login', routers.LoginRouter);
   app.use('/api', expressJwt({secret: process.env.SECRET || 'secret'}));
-  // app.use('/api/messages', routers.MessageRouter);
   app.use('/api/opportunities', routers.OpportunityRouter);
   app.use('/api/tags', routers.TagRouter);
   app.use('/api/users' , routers.UserRouter);

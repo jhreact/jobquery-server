@@ -40,13 +40,25 @@ module.exports = exports = {
   },
 
   getByOppId: function (req, res, next) {
-    // TODO
-    res.send(200);
+    // TODO: update
+    Match.findById(req.body.id, function (err, match) {
+      if (err) {
+        res.send(500, err);
+        return;
+      }
+      res.json(200, match);
+    });
   },
 
-  postByOppId: function (req, res, next) {
-    // TODO
-    res.send(200);
+  putByOppId: function (req, res, next) {
+    // TODO: update
+    Match.findById(req.body.id, function (err, match) {
+      if (err) {
+        res.send(500, err);
+        return;
+      }
+      res.json(200, match);
+    });
   },
 
   get: function (req, res, next) {

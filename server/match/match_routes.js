@@ -13,7 +13,6 @@ module.exports = exports = function (router) {
     .put(controller.putByOppId);
 
   router.route('/')
-    .get(controller.get)
-    .post(controller.post);
+    .get(controller.get);
 
 };

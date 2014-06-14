@@ -24,7 +24,7 @@ var userSchema = new mongoose.Schema({
       tagId: {type: mongoOID, ref: 'Tag', required: true},
       score: {type: Number, min: 0, max: 4, required: true}
     }],
-  answers:        {type: Object},
+  answers:        {type: mongoose.Schema.Types.Mixed},
   city:           {type: String},
   state:          {type: String},
   country:        {type: String, default: 'US'},

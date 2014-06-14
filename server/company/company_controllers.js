@@ -61,7 +61,9 @@ module.exports = exports = {
       address:            req.body.address,
       city:               req.body.city,
       state:              req.body.state,
-      country:            req.body.country
+      country:            req.body.country,
+      media:              req.body.media,
+      links:              req.body.links
     }, function (err, company) {
       if (err) {
         res.send(500, err);

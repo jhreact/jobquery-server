@@ -4,51 +4,75 @@ var Opportunity = require('./opportunity_model.js');
 
 module.exports = exports = {
 
-  getById: function (req, res, next) {
-    Opportunity.findById(req.body.id, function (err, opp) {
+  getById: function (req, res) {
+    Opportunity.findById(req.params.id)
+    .populate([
+      {path: 'company'},
+      {path: 'tags.tagId'},
+      {path: 'survey.userId', select: 'name'}
+    ])
+    .exec(function (err, opp) {
       if (err) {
         res.send(500, err);
         return;
       }
-      res.json(200, opp);
+      res.send(200, opp);
     });
   },
 
-  putById: function (req, res, next) {
-    Opportunity.findById(req.body.id, function (err, opp) {
+  putById: function (req, res) {
+    Opportunity.findById(req.params.id, function (err, opp) {
       if (err) {
         res.send(500, err);
         return;
       }
-      for (var field in Opportunity.schema.paths) {
+
+      Opportunity.schema.eachPath(function (field) {
         if ( (field !== '_id') && (field !== '__v') ) {
           if (req.body[field] !== undefined) {
             opp[field] = req.body[field];
           }
         }
-      }
+      });
+
       opp.save(function (err, item) {
         if (err) {
           res.send(500, err);
           return;
         }
-        res.json(200, item.id);
+        res.send(200, item.id);
       });
     });
   },
 
-  get: function (req, res, next) {
-    Opportunity.find(function (err, opps) {
+  get: function (req, res) {
+    Opportunity.find()
+    .populate([
+      {path: 'company'},
+      {path: 'tags.tagId'},
+      {path: 'survey.userId', select: 'name'}
+    ])
+    .exec(function (err, opps) {
       if (err) {
         res.send(500, err);
         return;
       }
-      res.json(200, opps);
+      res.send(200, opps);
     });
   },
 
-  post: function (req, res, next) {
-    Opportunity.create(req.body.opportunity, function (err, opp) {
+  post: function (req, res) {
+    Opportunity.create({
+      active:         req.body.active,
+      company:        req.body.company,
+      jobTitle:       req.body.jobTitle,
+      description:    req.body.description,
+      tags:           req.body.tags,
+      links:          req.body.links,
+      notes:          req.body.notes,
+      internalNotes:  req.body.internalNotes,
+      questions:      req.body.questions
+    }, function (err, opp) {
       if (err) {
         res.send(500, err);
         return;

@@ -6,12 +6,12 @@ var mongoOID = mongoose.Schema.Types.ObjectId;
 
 var companySchema = new mongoose.Schema({
   name:             {type: String, required: true, unique: true, index: true},
-  briefDescription: {type: String, required: true},
-  longDescription:  {type: String, required: true},
+  briefDescription: {type: String},
+  longDescription:  {type: String},
   address:          {type: String},
-  city:             {type: String, required: true},
-  state:            {type: String, required: true},
-  country:          {type: String, required: true, default: 'US'},
+  city:             {type: String},
+  state:            {type: String},
+  country:          {type: String, default: 'US'},
   // coordinate-axis is [longitude, latitude], else store as GeoJSON object
   geo:              {type: [Number, Number], index: '2dsphere'},
   media:

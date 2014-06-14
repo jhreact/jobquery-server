@@ -9,7 +9,7 @@ module.exports = exports = {
     .populate([
       {path: 'company'},
       {path: 'tags.tagId'},
-      {path: 'survey.userId', select: 'name'}
+      {path: 'survey.userId', select: '_id name'}
     ])
     .exec(function (err, opp) {
       if (err) {
@@ -50,7 +50,7 @@ module.exports = exports = {
     .populate([
       {path: 'company'},
       {path: 'tags.tagId'},
-      {path: 'survey.userId', select: 'name'}
+      {path: 'survey.userId', select: '_id name'}
     ])
     .exec(function (err, opps) {
       if (err) {

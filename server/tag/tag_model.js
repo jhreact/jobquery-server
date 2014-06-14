@@ -7,6 +7,7 @@ var tagSchema = new mongoose.Schema({
   label:            {type: String, required: true},
   scaleDescription: {type: [String, String, String, String]},
   isPublic:         {type: Boolean, required: true, default: true},
+  category:         {type: String, required: true, index: true},
   createdAt:        {type: Date, required: true, default: Date.now},
   updatedAt:        {type: Date, required: true, default: Date.now}
 });

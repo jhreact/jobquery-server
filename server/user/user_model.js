@@ -8,6 +8,8 @@ var userSchema = new mongoose.Schema({
   email:          {type: String, required: true, unique: true, index: true},
   password:       {type: String, required: true, select: false},
   name:           {type: String, required: true, index: true},
+  github:         {type: String},
+  linkedin:       {type: String},
   isAdmin:        {type: Boolean, required: true},
   isRegistered:   {type: Boolean, required: true},
   searchStage:
@@ -20,8 +22,9 @@ var userSchema = new mongoose.Schema({
   tags:
     [{
       tagId: {type: mongoOID, ref: 'Tag', required: true},
-      score: {type: Number, min: 1, max: 4, required: true}
+      score: {type: Number, min: 0, max: 4, required: true}
     }],
+  answers:        {type: mongoose.Schema.Types.Mixed},
   city:           {type: String},
   state:          {type: String},
   country:        {type: String, default: 'US'},

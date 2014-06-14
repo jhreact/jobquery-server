@@ -11,7 +11,7 @@ var companySchema = new mongoose.Schema({
   address:          {type: String},
   city:             {type: String},
   state:            {type: String},
-  country:          {type: String, default: 'US'},
+  country:          {type: String},
   // coordinate-axis is [longitude, latitude], else store as GeoJSON object
   geo:              {type: [Number, Number], index: '2dsphere'},
   media:

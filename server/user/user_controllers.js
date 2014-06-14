@@ -4,7 +4,7 @@ var User = require('./user_model.js');
 
 module.exports = exports = {
 
-  getById: function (req, res, next) {
+  getById: function (req, res) {
     User.findById(req.params.id)
     .populate('tags.tagId')
     .exec(function (err, user) {
@@ -16,7 +16,7 @@ module.exports = exports = {
     });
   },
 
-  putById: function (req, res, next) {
+  putById: function (req, res) {
     User.findById(req.params.id, function (err, user) {
       if (err) {
         res.send(500, err);
@@ -61,6 +61,7 @@ module.exports = exports = {
       name:         req.body.name,
       github:       req.body.github,
       linkedin:     req.body.linkedin,
+      // TODO: need to protect this property from being changed by users
       isAdmin:      req.body.isAdmin,
       searchStage:  req.body.searchStage,
       city:         req.body.city,

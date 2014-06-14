@@ -5,8 +5,7 @@ var controller = require('./match_controllers.js');
 module.exports = exports = function (router) {
 
   router.route('/users/:userId/opportunities/:oppId')
-    .put(controller.putByIds)
-    .post(controller.postByIds);
+    .put(controller.putByIds);
 
   router.route('/users/:id')
     .get(controller.getByUserId);
@@ -15,6 +14,7 @@ module.exports = exports = function (router) {
     .get(controller.getByOppId);
 
   router.route('/')
-    .get(controller.get);
+    .get(controller.get)
+    .post(controller.post);
 
 };

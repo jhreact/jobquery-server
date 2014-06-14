@@ -5,7 +5,6 @@ var Match = require('./match_model.js');
 module.exports = exports = {
 
   getByUserId: function (req, res) {
-    // TODO: update
     Match.find({userId: req.params.id}, function (err, matches) {
       if (err) {
         res.send(500, err);
@@ -53,7 +52,7 @@ module.exports = exports = {
     });
   },
 
-  postByIds: function (req, res) {
+  post: function (req, res) {
     Match.create({
       oppId:          req.body.oppId,
       userId:         req.body.userId,

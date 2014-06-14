@@ -8,6 +8,10 @@ describe('match controller', function () {
     expect(matchCtrl.get).toEqual(jasmine.any(Function));
   });
 
+  it('should have a post method', function () {
+    expect(matchCtrl.post).toEqual(jasmine.any(Function));
+  });
+
   it('should have a getByUserId method', function () {
     expect(matchCtrl.getByUserId).toEqual(jasmine.any(Function));
   });
@@ -18,10 +22,6 @@ describe('match controller', function () {
 
   it('should have a putByIds method', function () {
     expect(matchCtrl.putByIds).toEqual(jasmine.any(Function));
-  });
-
-  it('should have a postByIds method', function () {
-    expect(matchCtrl.postByIds).toEqual(jasmine.any(Function));
   });
 
 });

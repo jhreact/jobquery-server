@@ -23,12 +23,12 @@ module.exports = exports = {
   },
 
   getById: function (req, res) {
-    TODO: update
+    // TODO: update
     res.send(200);
   },
 
   putById: function (req, res) {
-    TODO: update
+    // TODO: update
     res.send(200);
   }
 

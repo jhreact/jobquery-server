@@ -20,5 +20,16 @@ module.exports = exports = {
       if (err) { res.send(500, UNABLE_TO_READ); }
       res.send(200, tags);
     });
+  },
+
+  getById: function (req, res) {
+    // TODO: update
+    res.send(200);
+  },
+
+  putById: function (req, res) {
+    // TODO: update
+    res.send(200);
   }
+
 };

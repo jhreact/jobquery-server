@@ -1,16 +1,17 @@
-var userRoutes = require('../../server/user/user_routes.js');
+var matchRoutes = require('../../server/match/match_routes.js');
 var express = require('express');
 
 var router = express.Router();
-userRoutes(router); // extends 'router' with userRoutes module
+matchRoutes(router); // extends 'router' with matchRoutes module
 
 // fill int desired paths and verbs (use lower case for verbs)
 var expectedAPI = {
-  '/':      ['get', 'post'],
-  '/:id':   ['get', 'put']
+  '/':                    ['get'],
+  '/users/:id':           ['get', 'put'],
+  '/opportunities/:id':   ['get', 'put']
 };
 
-describe('User Routes', function () {
+describe('Match Routes', function () {
 
   for (var path in expectedAPI) {
     (function (path) {

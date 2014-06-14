@@ -1,8 +1,8 @@
-var userRoutes = require('../../server/user/user_routes.js');
+var tagRoutes = require('../../server/tag/tag_routes.js');
 var express = require('express');
 
 var router = express.Router();
-userRoutes(router); // extends 'router' with userRoutes module
+tagRoutes(router); // extends 'router' with tagRoutes module
 
 // fill int desired paths and verbs (use lower case for verbs)
 var expectedAPI = {
@@ -10,7 +10,7 @@ var expectedAPI = {
   '/:id':   ['get', 'put']
 };
 
-describe('User Routes', function () {
+describe('Tag Routes', function () {
 
   for (var path in expectedAPI) {
     (function (path) {

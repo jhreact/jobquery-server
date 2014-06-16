@@ -6,8 +6,8 @@ var mongoOID = mongoose.Schema.Types.ObjectId;
 
 var companySchema = new mongoose.Schema({
   name:             {type: String, required: true, unique: true, index: true},
-  briefDescription: {type: String},
-  longDescription:  {type: String},
+  tagline:          {type: String},
+  description:      {type: String},
   address:          {type: String},
   city:             {type: String},
   state:            {type: String},

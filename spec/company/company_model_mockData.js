@@ -2,8 +2,8 @@ module.exports = exports = data = {};
 
 data.valid = {
   name:             'Upstart',
-  briefDescription: 'Crowdfunded loans',
-  longDescription:  'You are more than your credit score. Upstart ' +
+  tagline: 'Crowdfunded loans',
+  description:  'You are more than your credit score. Upstart ' +
     'considers your education and experience to give you the rate ' +
     'you deserve.',
   address:          'P.O. Box 61203',
@@ -41,8 +41,8 @@ data.minimum = {
 data.missing = {};
 
 data.missing.name = {
-  briefDescription: 'Crowdfunded loans',
-  longDescription:  'You are more than your credit score. Upstart ' +
+  tagline: 'Crowdfunded loans',
+  description:  'You are more than your credit score. Upstart ' +
     'considers your education and experience to give you the rate ' +
     'you deserve.',
   address:          'P.O. Box 61203',

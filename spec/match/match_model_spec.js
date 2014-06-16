@@ -117,6 +117,7 @@ describe('Opp Model', function () {
       expect(newMatch.oppId).toEqual(matchMockData.valid.oppId);
       expect(newMatch.isProcessed).toEqual(matchMockData.valid.isProcessed);
       expect(newMatch.userInterest).toEqual(matchMockData.valid.userInterest);
+      expect(newMatch.adminOverride).toEqual(matchMockData.valid.adminOverride);
       done();
     });
   });
@@ -148,6 +149,32 @@ describe('Opp Model', function () {
     });
   });
 
+  it('should fail when adding adminOverride with score above max', function (done) {
+    matchMockData.invalid.adminOverrideMax.userId = mockUser._id;
+    matchMockData.invalid.adminOverrideMax.oppId = mockOpp._id;
+    Match.create(matchMockData.invalid.adminOverrideMax, function (err, newMatch) {
+      expect(err).toBeDefined();
+      expect(err.errors.adminOverride.type).toEqual('max');
+      expect(newMatch).toBeUndefined();
+      delete matchMockData.invalid.adminOverrideMax.oppId;
+      delete matchMockData.invalid.adminOverrideMax.userId;
+      done();
+    });
+  });
+
+
+  it('should fail when adding adminOverride with score below min', function (done) {
+    matchMockData.invalid.adminOverrideMin.userId = mockUser._id;
+    matchMockData.invalid.adminOverrideMin.oppId = mockOpp._id;
+    Match.create(matchMockData.invalid.adminOverrideMin, function (err, newMatch) {
+      expect(err).toBeDefined();
+      expect(err.errors.adminOverride.type).toEqual('min');
+      expect(newMatch).toBeUndefined();
+      delete matchMockData.invalid.adminOverrideMin.oppId;
+      delete matchMockData.invalid.adminOverrideMin.userId;
+      done();
+    });
+  });
   it('should fail to create when userId and oppId is not unique', function (done) {
     matchMockData.valid.userId = mockUser._id;
     matchMockData.valid.oppId = mockOpp._id;

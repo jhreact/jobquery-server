@@ -11,7 +11,7 @@ var userSchema = new mongoose.Schema({
   github:         {type: String},
   linkedin:       {type: String},
   isAdmin:        {type: Boolean, required: true},
-  isRegistered:   {type: Boolean, required: true},
+  isRegistered:   {type: Boolean, required: true, default: false},
   searchStage:
     {
       type: String,

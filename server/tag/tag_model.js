@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 var tagSchema = new mongoose.Schema({
   name:             {type: String, required: true, unique: true, index: true},
   label:            {type: String, required: true},
-  scaleDescription: {type: [String, String, String, String]},
+  scaleDescription: [String],
   isPublic:         {type: Boolean, required: true, default: true},
   category:         {type: String, required: true, index: true},
   createdAt:        {type: Date, required: true, default: Date.now},

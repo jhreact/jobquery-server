@@ -1,0 +1,88 @@
+module.exports = exports = data = {};
+
+data.valid = {
+  email:          'ksmith@gmail.com',
+  password:       'verysecure password',
+  name:           'Kevin Smith',
+  github:         'github.com/ksmith',
+  linkedin:       'linkedin.com/in/ksmith',
+  isAdmin:        true,
+  isRegistered:   false,
+  searchStage:    'Early',
+  city:           'San Francisco',
+  state:          'CA',
+  country:        'USA'
+};
+
+data.minimum = {
+  email:          'ksmith@gmail.com',
+  password:       'verysecure password',
+  name:           'Kevin Smith',
+  isAdmin:        true,
+  isRegistered:   false,
+  searchStage:    'Early'
+};
+
+data.missing = {};
+
+data.missing.email = {
+  name:          'Kevin Smith',
+  password:       'verysecure password',
+  isAdmin:        true,
+  isRegistered:   false,
+  searchStage:    'Early'
+};
+
+data.missing.password = {
+  email:          'ksmith@gmail.com',
+  name:           'Kevin Smith',
+  isAdmin:        true,
+  isRegistered:   false,
+  searchStage:    'Early'
+};
+
+data.missing.name = {
+  email:          'ksmith@gmail.com',
+  password:       'verysecure password',
+  isAdmin:        true,
+  isRegistered:   false,
+  searchStage:    'Early'
+};
+
+data.missing.isAdmin = {
+  email:          'ksmith@gmail.com',
+  password:       'verysecure password',
+  name:           'Kevin Smith',
+  isRegistered:   false,
+  searchStage:    'Early'
+};
+
+data.missing.isRegistered = {
+  email:          'ksmith@gmail.com',
+  password:       'verysecure password',
+  name:           'Kevin Smith',
+  isAdmin:        true,
+  searchStage:    'Early'
+};
+
+data.missing.searchStage = {
+  email:          'ksmith@gmail.com',
+  password:       'verysecure password',
+  name:           'Kevin Smith',
+  isAdmin:        true,
+  isRegistered:   false
+};
+
+data.invalid = {};
+
+data.invalid.searchStage = {
+  email:          'ksmith@gmail.com',
+  password:       'verysecure password',
+  name:           'Kevin Smith',
+  isAdmin:        true,
+  isRegistered:   false,
+  searchStage:    'notInEnumeratedList'
+};
+
+data.tags = {};
+

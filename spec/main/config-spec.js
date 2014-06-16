@@ -17,6 +17,7 @@ describe("config", function () {
     routers.UserRouter        = express.Router();
     routers.CompanyRouter     = express.Router();
     routers.MatchRouter       = express.Router();
+    routers.InviteRouter      = express.Router();
   });
 
   it("check config is a function", function () {

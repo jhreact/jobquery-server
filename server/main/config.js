@@ -24,6 +24,7 @@ module.exports = exports = function (app, express, routers) {
   app.use('/api/users' , routers.UserRouter);
   app.use('/api/companies', routers.CompanyRouter);
   app.use('/api/matches', routers.MatchRouter);
+  app.use('/api/invite', routers.InviteRouter);
   app.use(middle.logError);
   app.use(middle.handleError);
 };

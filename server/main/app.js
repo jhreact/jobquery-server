@@ -10,6 +10,7 @@ var TagRouter         = express.Router();
 var UserRouter        = express.Router();
 var CompanyRouter     = express.Router();
 var MatchRouter       = express.Router();
+var InviteRouter      = express.Router();
 
 var routers      = {};
 
@@ -19,6 +20,7 @@ routers.TagRouter         = TagRouter;
 routers.UserRouter        = UserRouter;
 routers.CompanyRouter     = CompanyRouter;
 routers.MatchRouter       = MatchRouter;
+routers.InviteRouter      = InviteRouter;
 
 require('./config.js')(app, express, routers);
 
@@ -27,5 +29,6 @@ require('../opportunity/opportunity_routes.js')(OpportunityRouter);
 require('../tag/tag_routes.js')(TagRouter);
 require('../user/user_routes.js')(UserRouter);
 require('../company/company_routes.js')(CompanyRouter);
+require('../invite/invite_routes.js')(InviteRouter);
 
 module.exports = exports = app;

@@ -23,6 +23,15 @@ data.minimum = {
   searchStage:    'Early'
 };
 
+data.minimum2 = {
+  email:          'janedoe@gmail.com',
+  password:       'verysecure password',
+  name:           'Jane Doe',
+  isAdmin:        false,
+  isRegistered:   false,
+  searchStage:    'Early'
+};
+
 data.missing = {};
 
 data.missing.email = {

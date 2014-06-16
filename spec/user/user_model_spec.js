@@ -229,6 +229,7 @@ describe('User Model', function () {
         expect(err).toBeDefined();
         expect(err.errors['tags.0.score'].type).toEqual('max');
         expect(newUser).toBeUndefined();
+        delete userMockData.minimum.tags;
         done();
       });
     });
@@ -242,6 +243,7 @@ describe('User Model', function () {
         expect(err).toBeDefined();
         expect(err.errors['tags.0.score'].type).toEqual('min');
         expect(newUser).toBeUndefined();
+        delete userMockData.minimum.tags;
         done();
       });
     });
@@ -249,8 +251,7 @@ describe('User Model', function () {
 
   it('should fail when tagId is not valid tagId reference', function (done) {
     Tag.create(tagMockData.valid, function (err, newTag) {
-      var withTag = userMockData.minimum;
-      withTag.tags = [{tagId: mongoose.Schema.Types.ObjectId(123), score: 1}];
+      userMockData.minimum.tags = [{tagId: mongoose.Schema.Types.ObjectId(123), score: 1}];
       User.create(userMockData.minimum, function (err, newUser) {
         expect(err).toBeDefined();
         expect(err.name).toEqual('ValidationError');

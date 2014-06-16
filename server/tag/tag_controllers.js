@@ -7,45 +7,39 @@ var UNABLE_TO_RETRIEVE  = "Server unable to retrieve tag.";
 module.exports = exports = {
 
   post: function (req, res) {
-    Tag.create({
-      name:             req.body.name,
-      label:            req.body.label,
-      scaleDescription: req.body.scaleDescription || [],
-      isPublic:         req.body.isPublic,
-      category:         req.body.category
-    }, function (err, tag) {
+    Tag.create(req.body, function (err, tag) {
       if (err) {
-        res.send(500, UNABLE_TO_SAVE);
+        res.json(500, UNABLE_TO_SAVE);
         return;
       }
-      res.send(201, tag.id);
+      res.json(201, tag.id);
     });
   },
 
   get: function (req, res) {
     Tag.find(function(err, tags) {
       if (err) {
-        res.send(500, UNABLE_TO_RETRIEVE);
+        res.json(500, UNABLE_TO_RETRIEVE);
         return;
       }
-      res.send(200, tags);
+      res.json(200, tags);
     });
   },
 
   getById: function (req, res) {
     Tag.findById(req.params.id, function (err, tag) {
       if (err) {
-        res.send(500, UNABLE_TO_RETRIEVE);
+        res.json(500, UNABLE_TO_RETRIEVE);
         return;
       }
-      res.send(200, tag);
+      res.json(200, tag);
     });
   },
 
   putById: function (req, res) {
     Tag.findById(req.params.id, function (err, tag) {
       if (err) {
-        res.send(500, UNABLE_TO_RETRIEVE);
+        res.json(500, UNABLE_TO_RETRIEVE);
         return;
       }
 
@@ -59,10 +53,10 @@ module.exports = exports = {
 
       tag.save(function (err, item) {
         if (err) {
-          res.send(500, err);
+          res.json(500, err);
           return;
         }
-        res.send(200, item.id);
+        res.json(200, item.id);
       });
     });
   }

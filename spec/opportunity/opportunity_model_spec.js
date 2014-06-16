@@ -24,7 +24,6 @@ var removeCollections = function (done) {
       conn.collections[i].remove(function (err, results){
         collectionsRemoved += 1;
         if (numCollections === collectionsRemoved) {
-          // done();
           createCompany(done);
         }
       });

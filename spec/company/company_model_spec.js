@@ -6,7 +6,9 @@ conn.on('error', function (err) {
 });
 
 var Company = require('../../server/company/company_model.js');
+var Opp = require('../../server/opportunity/opportunity_model.js');
 var companyMockData = require('./company_model_mockData.js');
+var oppMockData = require('../opportunity/opportunity_model_mockData.js');
 
 var removeCollections = function (done) {
   var numCollections = Object.keys(conn.collections).length;
@@ -123,18 +125,25 @@ describe('Company Model', function () {
     });
   });
 
-  // TODO: check that a valid oppId does work
-  // TODO: check that opportunities only accepts valid opp objectIds
-  xit('should fail when opportunities is not valid oppId reference', function (done) {
-    Opportunity.create(oppMockData.valid, function (err, newOpp) {
-      var withTag = companyMockData.minimum;
-      withTag.tags = [{tagId: mongoose.Schema.Types.ObjectId(123), score: 1}];
-      Company.create(companyMockData.minimum, function (err, newCompany) {
-        expect(err).toBeDefined();
-        expect(err.name).toEqual('ValidationError');
-        expect(newCompany).toBeUndefined();
-        delete companyMockData.minimum.tags;
-        done();
+  it('should allow valid oppIds to be pushed onto opportunities property', function (done) {
+    Company.create(companyMockData.valid, function (err, newCompany) {
+      expect(err).toBeNull();
+      expect(newCompany).toBeDefined();
+
+      oppMockData.minimum.company = newCompany._id;
+      Opp.create(oppMockData.minimum, function (err , newOpp) {
+        expect(err).toBeNull();
+        expect(newOpp).toBeDefined();
+
+        newCompany.opportunities.push(newOpp._id);
+        newCompany.save(function (err, savedCompany) {
+          expect(err).toBeNull();
+          expect(savedCompany).toBeDefined();
+          expect(savedCompany.opportunities[0]).toEqual(newOpp._id);
+          expect(savedCompany.opportunities.length).toEqual(1);
+          delete oppMockData.minimum.company;
+          done();
+        });
       });
     });
   });

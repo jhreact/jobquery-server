@@ -129,15 +129,6 @@ describe('User Model', function () {
     });
   });
 
-  it('should fail to create when missing isRegistered', function (done) {
-    User.create(userMockData.missing.isRegistered, function (err, newUser) {
-      expect(err).toBeDefined();
-      expect(err.errors.isRegistered.type).toEqual('required');
-      expect(newUser).toBeUndefined();
-      done();
-    });
-  });
-
   it('should fail to create if searchStage is not in enumerated list', function (done) {
     User.create(userMockData.invalid.searchStage, function (err, newUser) {
       expect(err).toBeDefined();

@@ -59,8 +59,8 @@ describe('Company Model', function () {
       expect(err).toBeNull();
       expect(newCompany).toBeDefined();
       expect(newCompany.name).toEqual(companyMockData.valid.name);
-      expect(newCompany.briefDescription).toEqual(companyMockData.valid.briefDescription);
-      expect(newCompany.longDescription).toEqual(companyMockData.valid.longDescription);
+      expect(newCompany.tagline).toEqual(companyMockData.valid.tagline);
+      expect(newCompany.description).toEqual(companyMockData.valid.description);
       expect(newCompany.address).toEqual(companyMockData.valid.address);
       expect(newCompany.city).toEqual(companyMockData.valid.city);
       expect(newCompany.state).toEqual(companyMockData.valid.state);

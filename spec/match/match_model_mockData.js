@@ -5,6 +5,7 @@ data.valid = {
   oppId:          null,
   isProcessed:    false,
   userInterest:   4,
+  adminOverride:  1,
   answers:
     [
       {
@@ -31,3 +32,16 @@ data.invalid.userInterestMin = {
   oppId:          null,
   userInterest:   -1
 };
+
+data.invalid.adminOverrideMax = {
+  userId:         null,
+  oppId:          null,
+  adminOverride:  5
+};
+
+data.invalid.adminOverrideMin = {
+  userId:         null,
+  oppId:          null,
+  adminOverride:  -1
+};
+

@@ -66,14 +66,6 @@ data.missing.isAdmin = {
   searchStage:    'Early'
 };
 
-data.missing.isRegistered = {
-  email:          'ksmith@gmail.com',
-  password:       'verysecure password',
-  name:           'Kevin Smith',
-  isAdmin:        true,
-  searchStage:    'Early'
-};
-
 data.missing.searchStage = {
   email:          'ksmith@gmail.com',
   password:       'verysecure password',

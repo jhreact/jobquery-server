@@ -8,7 +8,7 @@ var matchSchema = new mongoose.Schema({
   userId:         {type: mongoOID, required: true, ref: 'User'},
   oppId:          {type: mongoOID, required: true, ref: 'Opportunity'},
   isProcessed:    {type: Boolean, required: true, default: false},
-  userInterest:   {type: Number, min: 1, max: 4},
+  userInterest:   {type: Number, min: 0, max: 4},
   answers:
     [{
       date:       {type: Date, required: true, default: Date.now},

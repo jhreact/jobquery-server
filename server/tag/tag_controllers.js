@@ -56,7 +56,7 @@ module.exports = exports = {
           res.json(500, err);
           return;
         }
-        res.json(200, item.id);
+        res.json(201, item.id);
       });
     });
   }

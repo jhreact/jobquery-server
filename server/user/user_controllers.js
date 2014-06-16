@@ -9,17 +9,17 @@ module.exports = exports = {
     .populate('tags.tagId')
     .exec(function (err, user) {
       if (err) {
-        res.send(500, err);
+        res.json(500, err);
         return;
       }
-      res.send(200, user);
+      res.json(200, user);
     });
   },
 
   putById: function (req, res) {
     User.findById(req.params.id, function (err, user) {
       if (err) {
-        res.send(500, err);
+        res.json(500, err);
         return;
       }
 
@@ -33,10 +33,10 @@ module.exports = exports = {
 
       user.save(function (err, item) {
         if (err) {
-          res.send(500, err);
+          res.json(500, err);
           return;
         }
-        res.send(200, item.id);
+        res.json(201, item.id);
       });
     });
   },
@@ -46,10 +46,10 @@ module.exports = exports = {
     .populate('tags.tagId')
     .exec(function (err, users) {
       if (err) {
-        res.send(500, err);
+        res.json(500, err);
         return;
       }
-      res.send(200, users);
+      res.json(200, users);
     });
   },
 
@@ -63,16 +63,17 @@ module.exports = exports = {
       linkedin:     req.body.linkedin,
       // TODO: need to protect this property from being changed by users
       isAdmin:      req.body.isAdmin,
+      isRegistered: req.body.isRegistered,
       searchStage:  req.body.searchStage,
       city:         req.body.city,
       state:        req.body.state,
       country:      req.body.country
     }, function (err, user) {
       if (err) {
-        res.send(500, err);
+        res.json(500, err);
         return;
       }
-      res.send(201, user.id);
+      res.json(201, user.id);
     });
   }
 

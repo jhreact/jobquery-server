@@ -63,7 +63,6 @@ describe('Tag Model', function () {
       expect(newTag.label).toEqual(tagMockData.valid.label);
       // TODO: figure out why scaleDescription cannot be compared
       // expect(newTag.scaleDescription).toBe(tagMockData.valid.scaleDescription);
-      expect(newTag.category).toEqual(tagMockData.valid.category);
       expect(newTag.isPublic).toEqual(true);
       done();
     });
@@ -93,15 +92,6 @@ describe('Tag Model', function () {
     Tag.create(tagMockData.missing.label, function (err, newTag) {
       expect(err).toBeDefined();
       expect(err.errors.label.type).toEqual('required');
-      expect(newTag).toBeUndefined();
-      done();
-    });
-  });
-
-  it('should fail to create when missing category', function (done) {
-    Tag.create(tagMockData.missing.category, function (err, newTag) {
-      expect(err).toBeDefined();
-      expect(err.errors.category.type).toEqual('required');
       expect(newTag).toBeUndefined();
       done();
     });

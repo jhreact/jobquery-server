@@ -15,8 +15,9 @@ describe("config", function () {
     routers.OpportunityRouter = express.Router();
     routers.TagRouter         = express.Router();
     routers.UserRouter        = express.Router();
-    routers.CompanyRouter     = express.Router();
     routers.MatchRouter       = express.Router();
+    routers.CompanyRouter     = express.Router();
+    routers.CategoryRouter    = express.Router();
     routers.InviteRouter      = express.Router();
   });
 

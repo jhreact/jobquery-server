@@ -6,7 +6,10 @@ module.exports = exports = {
 
   getById: function (req, res) {
     User.findById(req.params.id)
-    .populate('tags.tagId')
+    .populate([
+      {path: 'category'},
+      {path: 'tags.tagId'}
+    ])
     .exec(function (err, user) {
       if (err) {
         res.json(500, err);
@@ -43,7 +46,10 @@ module.exports = exports = {
 
   get: function (req, res) {
     User.find()
-    .populate('tags.tagId')
+    .populate([
+      {path: 'category'},
+      {path: 'tags.tagId'}
+    ])
     .exec(function (err, users) {
       if (err) {
         res.json(500, err);

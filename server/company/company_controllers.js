@@ -54,17 +54,7 @@ module.exports = exports = {
   },
 
   post: function (req, res) {
-    Company.create({
-      name:               req.body.name,
-      briefDescription:   req.body.briefDescription,
-      longDescription:    req.body.longDescription,
-      address:            req.body.address,
-      city:               req.body.city,
-      state:              req.body.state,
-      country:            req.body.country,
-      media:              req.body.media,
-      links:              req.body.links
-    }, function (err, company) {
+    Company.create(req.body, function (err, company) {
       if (err) {
         res.json(500, err);
         return;

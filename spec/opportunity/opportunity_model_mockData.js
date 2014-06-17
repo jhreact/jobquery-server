@@ -50,6 +50,10 @@ data.minimum = {
   description:        "We're looking for someone with strong technical problem solving skills, excellent communication skills, and an eagerness to learn and take on responsibility. This engineer will be responsible for working on all aspects of the Upstart platform, from our data prediction model to our social networking platform and crowdfunding marketplace. You'll enjoy significant autonomy in designing new systems and crafting elegant user experiences."
 };
 
+data.minimum2 = {
+  jobTitle:           'CTO',
+  description:        "ALWAYS. BE. CODING."
+};
 
 data.invalid = {};
 

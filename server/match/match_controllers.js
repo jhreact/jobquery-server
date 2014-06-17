@@ -7,20 +7,20 @@ module.exports = exports = {
   getByUserId: function (req, res) {
     Match.find({userId: req.params.id}, function (err, matches) {
       if (err) {
-        res.send(500, err);
+        res.json(500, err);
         return;
       }
-      res.send(200, matches);
+      res.json(200, matches);
     });
   },
 
   getByOppId: function (req, res) {
     Match.find({oppId: req.params.id}, function (err, matches) {
       if (err) {
-        res.send(500, err);
+        res.json(500, err);
         return;
       }
-      res.send(200, matches);
+      res.json(200, matches);
     });
   },
 
@@ -30,7 +30,7 @@ module.exports = exports = {
       userId: req.params.userId
     }, function (err, match) {
       if (err) {
-        res.send(500, err);
+        res.json(500, err);
         return;
       }
 
@@ -44,37 +44,31 @@ module.exports = exports = {
 
       match.save(function (err, item) {
         if (err) {
-          res.send(500, err);
+          res.json(500, err);
           return;
         }
-        res.send(200, item.id);
+        res.json(201, item.id);
       });
     });
   },
 
   post: function (req, res) {
-    Match.create({
-      oppId:          req.body.oppId,
-      userId:         req.body.userId,
-      isProcessed:    req.body.isProcessed,
-      userInterest:   req.body.userInterest,
-      answers:        req.body.answers
-    }, function (err, match) {
+    Match.create(req.body, function (err, match) {
       if (err) {
-        res.send(500, err);
+        res.json(500, err);
         return;
       }
-      res.send(200, match.id);
+      res.json(201, match.id);
     });
   },
 
   get: function (req, res) {
     Match.find(function (err, matches) {
       if (err) {
-        res.send(500, err);
+        res.json(500, err);
         return;
       }
-      res.send(200, matches);
+      res.json(200, matches);
     });
   }
 

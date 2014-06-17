@@ -54,21 +54,9 @@ module.exports = exports = {
   },
 
   post: function (req, res) {
-    User.create({
-      email:        req.body.email,
-      // TODO: need to generate a password rather than take one from user
-      password:     req.body.password,
-      name:         req.body.name,
-      github:       req.body.github,
-      linkedin:     req.body.linkedin,
-      // TODO: need to protect this property from being changed by users
-      isAdmin:      req.body.isAdmin,
-      isRegistered: req.body.isRegistered,
-      searchStage:  req.body.searchStage,
-      city:         req.body.city,
-      state:        req.body.state,
-      country:      req.body.country
-    }, function (err, user) {
+    // TODO: need to generate a password rather than take one from user
+    // TODO: need to protect this property from being changed by users
+    User.create(req.body, function (err, user) {
       if (err) {
         res.json(500, err);
         return;

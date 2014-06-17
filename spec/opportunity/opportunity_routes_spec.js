@@ -6,8 +6,8 @@ opportunityRoutes(router); // extends 'router' with opportunityRoutes module
 
 // fill int desired paths and verbs (use lower case for verbs)
 var expectedAPI = {
-  '/':      ['get', 'post'],
-  '/:id':   ['get', 'put']
+  '/':                  ['get', 'post'],
+  '/:id':               ['get', 'put']
 };
 
 describe('Opportunity Routes', function () {

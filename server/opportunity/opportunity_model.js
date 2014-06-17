@@ -6,7 +6,7 @@ var mongoOID = mongoose.Schema.Types.ObjectId;
 
 var opportunitySchema = new mongoose.Schema({
   active:       {type: Boolean, default: true, required: true},
-  company:      {type: mongoOID, required: true, index: true},
+  company:      {type: mongoOID, ref: 'Company', required: true, index: true},
   jobTitle:     {type: String, required: true},
   description:  {type: String, required: true},
   tags:

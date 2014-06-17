@@ -38,6 +38,10 @@ data.minimum = {
   name:           'Upstart'
 };
 
+data.minimum2 = {
+  name:           'Google'
+};
+
 data.missing = {};
 
 data.missing.name = {

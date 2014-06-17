@@ -9,17 +9,17 @@ module.exports = exports = {
     .populate('opportunities')
     .exec(function (err, company) {
       if (err) {
-        res.send(500, err);
+        res.json(500, err);
         return;
       }
-      res.send(200, company);
+      res.json(200, company);
     });
   },
 
   putById: function (req, res) {
     Company.findById(req.params.id, function (err, company) {
       if (err) {
-        res.send(500, err);
+        res.json(500, err);
         return;
       }
 
@@ -33,10 +33,10 @@ module.exports = exports = {
 
       company.save(function (err, item) {
         if (err) {
-          res.send(500, err);
+          res.json(500, err);
           return;
         }
-        res.send(200, item.id);
+        res.json(201, item.id);
       });
     });
   },
@@ -46,30 +46,20 @@ module.exports = exports = {
     .populate('opportunities')
     .exec(function (err, companies) {
       if (err) {
-        res.send(500, err);
+        res.json(500, err);
         return;
       }
-      res.send(200, companies);
+      res.json(200, companies);
     });
   },
 
   post: function (req, res) {
-    Company.create({
-      name:               req.body.name,
-      briefDescription:   req.body.briefDescription,
-      longDescription:    req.body.longDescription,
-      address:            req.body.address,
-      city:               req.body.city,
-      state:              req.body.state,
-      country:            req.body.country,
-      media:              req.body.media,
-      links:              req.body.links
-    }, function (err, company) {
+    Company.create(req.body, function (err, company) {
       if (err) {
-        res.send(500, err);
+        res.json(500, err);
         return;
       }
-      res.send(201, company.id);
+      res.json(201, company.id);
     });
   }
 

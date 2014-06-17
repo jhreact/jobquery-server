@@ -13,17 +13,17 @@ module.exports = exports = {
     ])
     .exec(function (err, opp) {
       if (err) {
-        res.send(500, err);
+        res.json(500, err);
         return;
       }
-      res.send(200, opp);
+      res.json(200, opp);
     });
   },
 
   putById: function (req, res) {
     Opportunity.findById(req.params.id, function (err, opp) {
       if (err) {
-        res.send(500, err);
+        res.json(500, err);
         return;
       }
 
@@ -37,10 +37,10 @@ module.exports = exports = {
 
       opp.save(function (err, item) {
         if (err) {
-          res.send(500, err);
+          res.json(500, err);
           return;
         }
-        res.send(200, item.id);
+        res.json(201, item.id);
       });
     });
   },
@@ -54,30 +54,20 @@ module.exports = exports = {
     ])
     .exec(function (err, opps) {
       if (err) {
-        res.send(500, err);
+        res.json(500, err);
         return;
       }
-      res.send(200, opps);
+      res.json(200, opps);
     });
   },
 
   post: function (req, res) {
-    Opportunity.create({
-      active:         req.body.active,
-      company:        req.body.company,
-      jobTitle:       req.body.jobTitle,
-      description:    req.body.description,
-      tags:           req.body.tags,
-      links:          req.body.links,
-      notes:          req.body.notes,
-      internalNotes:  req.body.internalNotes,
-      questions:      req.body.questions
-    }, function (err, opp) {
+    Opportunity.create(req.body, function (err, opp) {
       if (err) {
-        res.send(500, err);
+        res.json(500, err);
         return;
       }
-      res.send(201, opp.id);
+      res.json(201, opp.id);
     });
   }
 

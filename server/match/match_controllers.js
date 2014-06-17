@@ -1,26 +1,53 @@
-"use strict";
-
 var Match = require('./match_model.js');
+var Tag = require('../tag/tag_model.js');
 
 module.exports = exports = {
 
   getByUserId: function (req, res) {
-    Match.find({userId: req.params.id}, function (err, matches) {
+    Match.find({userId: req.params.id})
+    .populate([
+      {path: 'userId'},
+      {path: 'oppId'}
+    ])
+    .exec(function (err, matches) {
       if (err) {
-        res.send(500, err);
+        res.json(500, err);
         return;
       }
-      res.send(200, matches);
+      Tag.populate(
+        matches,
+        {path: 'oppId.tags.tagId userId.tags.tagId'},
+        function (err, deepMatches) {
+          if (err) {
+            res.json(500, err);
+            return;
+          }
+          res.json(200, deepMatches);
+        });
     });
   },
 
   getByOppId: function (req, res) {
-    Match.find({oppId: req.params.id}, function (err, matches) {
+    Match.find({oppId: req.params.id})
+    .populate([
+      {path: 'userId'},
+      {path: 'oppId'}
+    ])
+    .exec(function (err, matches) {
       if (err) {
-        res.send(500, err);
+        res.json(500, err);
         return;
       }
-      res.send(200, matches);
+      Tag.populate(
+        matches,
+        {path: 'oppId.tags.tagId userId.tags.tagId'},
+        function (err, deepMatches) {
+          if (err) {
+            res.json(500, err);
+            return;
+          }
+          res.json(200, deepMatches);
+        });
     });
   },
 
@@ -30,7 +57,7 @@ module.exports = exports = {
       userId: req.params.userId
     }, function (err, match) {
       if (err) {
-        res.send(500, err);
+        res.json(500, err);
         return;
       }
 
@@ -44,37 +71,62 @@ module.exports = exports = {
 
       match.save(function (err, item) {
         if (err) {
-          res.send(500, err);
+          res.json(500, err);
           return;
         }
-        res.send(200, item.id);
+        res.json(201, item.id);
       });
     });
   },
 
-  post: function (req, res) {
-    Match.create({
-      oppId:          req.body.oppId,
-      userId:         req.body.userId,
-      isProcessed:    req.body.isProcessed,
-      userInterest:   req.body.userInterest,
-      answers:        req.body.answers
-    }, function (err, match) {
+  getByIds: function (req, res) {
+    Match.findOne({
+      oppId: req.params.oppId,
+      userId: req.params.userId
+    })
+    .populate([
+      {path: 'userId'},
+      {path: 'oppId'}
+    ])
+    .exec(function (err, matches) {
       if (err) {
-        res.send(500, err);
+        res.json(500, err);
         return;
       }
-      res.send(200, match.id);
+      Tag.populate(
+        matches,
+        {path: 'oppId.tags.tagId userId.tags.tagId'},
+        function (err, deepMatches) {
+          if (err) {
+            res.json(500, err);
+            return;
+          }
+          res.json(200, deepMatches);
+        });
     });
   },
 
   get: function (req, res) {
-    Match.find(function (err, matches) {
+    Match.find()
+    .populate([
+      {path: 'userId'},
+      {path: 'oppId'}
+    ])
+    .exec(function (err, matches) {
       if (err) {
-        res.send(500, err);
+        res.json(500, err);
         return;
       }
-      res.send(200, matches);
+      Tag.populate(
+        matches,
+        {path: 'oppId.tags.tagId userId.tags.tagId'},
+        function (err, deepMatches) {
+          if (err) {
+            res.json(500, err);
+            return;
+          }
+          res.json(200, deepMatches);
+        });
     });
   }
 

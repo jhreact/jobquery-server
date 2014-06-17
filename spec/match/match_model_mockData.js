@@ -3,20 +3,31 @@ module.exports = exports = data = {};
 data.valid = {
   userId:         null,
   oppId:          null,
+  isProcessed:    true,
+  userInterest:   1,
+  adminOverride:  4
+};
+
+data.valid2 = {
+  userId:         null,
+  oppId:          null,
+  isProcessed:    true,
+  userInterest:   3,
+  adminOverride:  1
+};
+
+data.valid3 = {
+  userId:         null,
+  oppId:          null,
   isProcessed:    false,
-  userInterest:   4,
-  adminOverride:  1,
-  answers:
-    [
-      {
-        date: new Date(),
-        answer: '1%'
-      },
-      {
-        date: new Date(),
-        answer: 'Only if it remains in the south bay'
-      }
-    ]
+  userInterest:   4
+};
+
+data.valid4 = {
+  userId:         null,
+  oppId:          null,
+  isProcessed:    false,
+  userInterest:   2
 };
 
 data.invalid = {};

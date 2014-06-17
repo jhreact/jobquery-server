@@ -28,6 +28,7 @@ require('../login/login_routes.js')(LoginRouter);
 require('../opportunity/opportunity_routes.js')(OpportunityRouter);
 require('../tag/tag_routes.js')(TagRouter);
 require('../user/user_routes.js')(UserRouter);
+require('../match/match_routes.js')(MatchRouter);
 require('../company/company_routes.js')(CompanyRouter);
 require('../invite/invite_routes.js')(InviteRouter);
 

@@ -12,6 +12,7 @@ describe("config", function () {
 
     routers = {};
     routers.LoginRouter       = express.Router();
+    routers.PublicRouter      = express.Router();
     routers.OpportunityRouter = express.Router();
     routers.TagRouter         = express.Router();
     routers.UserRouter        = express.Router();

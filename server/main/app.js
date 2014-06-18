@@ -7,6 +7,7 @@ var app          = express();
 
 /* Router */
 var LoginRouter       = express.Router();
+var PublicRouter      = express.Router();
 var OpportunityRouter = express.Router();
 var TagRouter         = express.Router();
 var UserRouter        = express.Router();
@@ -18,6 +19,7 @@ var InviteRouter      = express.Router();
 var routers      = {};
 
 routers.LoginRouter       = LoginRouter;
+routers.PublicRouter      = PublicRouter;
 routers.OpportunityRouter = OpportunityRouter;
 routers.TagRouter         = TagRouter;
 routers.UserRouter        = UserRouter;
@@ -29,6 +31,7 @@ routers.InviteRouter      = InviteRouter;
 require('./config.js')(app, express, routers);
 
 require('../login/login_routes.js')(LoginRouter);
+require('../public/public_routes.js')(PublicRouter);
 require('../opportunity/opportunity_routes.js')(OpportunityRouter);
 require('../tag/tag_routes.js')(TagRouter);
 require('../user/user_routes.js')(UserRouter);

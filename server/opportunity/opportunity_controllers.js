@@ -31,6 +31,34 @@ module.exports = exports = {
       Opportunity.schema.eachPath(function (field) {
         if ( (field !== '_id') && (field !== '__v') ) {
           if (req.body[field] !== undefined) {
+            // depopulate company
+            if (field === 'company') {
+              if (req.body.company._id) {
+                req.body.company = req.body.company._id;
+              }
+            }
+            // depopulate category
+            if (field === 'category') {
+              if (req.body.category._id) {
+                req.body.category = req.body.category._id;
+              }
+            }
+            // depopulate survey
+            if (field === 'survey') {
+              for (var i = 0; i < req.body.survey.length; i += 1) {
+                if (req.body.survey[i].userId._id) {
+                  req.body.survey[i].userId = req.body.survey[i].userId._id;
+                }
+              }
+            }
+            // depopulate tags
+            if (field === 'tags') {
+              for (var j = 0; j < req.body.tags.length; j += 1) {
+                if (req.body.tags[j].tagId._id) {
+                  req.body.tags[j].tagId = req.body.tags[j].tagId._id;
+                }
+              }
+            }
             opp[field] = req.body[field];
           }
         }

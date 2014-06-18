@@ -29,11 +29,18 @@ module.exports = exports = {
       User.schema.eachPath(function (field) {
         if ( (field !== '_id') && (field !== '__v') ) {
           if (req.body[field] !== undefined) {
+            // depopulate tags
             if (field === 'tags') {
               for (var i = 0; i < req.body.tags.length; i += 1) {
                 if (req.body.tags[i].tagId._id) {
                   req.body.tags[i].tagId = req.body.tags[i].tagId._id;
                 }
+              }
+            }
+            // depopulate category
+            if (field === 'category') {
+              if (req.body.category._id) {
+                req.body.category = req.body.category._id;
               }
             }
             user[field] = req.body[field];
@@ -68,7 +75,7 @@ module.exports = exports = {
 
   post: function (req, res) {
     // TODO: need to generate a password rather than take one from user
-    // TODO: need to protect this property from being changed by users
+    // TODO: need to protect isAdmin property from being changed by users
     User.create(req.body, function (err, user) {
       if (err) {
         res.json(500, err);

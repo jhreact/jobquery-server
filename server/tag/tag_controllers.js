@@ -17,7 +17,9 @@ module.exports = exports = {
   },
 
   get: function (req, res) {
-    Tag.find(function(err, tags) {
+    Tag.find()
+    .populate('category')
+    .exec(function(err, tags) {
       if (err) {
         res.json(500, UNABLE_TO_RETRIEVE);
         return;
@@ -27,7 +29,9 @@ module.exports = exports = {
   },
 
   getById: function (req, res) {
-    Tag.findById(req.params.id, function (err, tag) {
+    Tag.findById(req.params.id)
+    .populate('category')
+    .exec(function (err, tag) {
       if (err) {
         res.json(500, UNABLE_TO_RETRIEVE);
         return;
@@ -46,6 +50,12 @@ module.exports = exports = {
       Tag.schema.eachPath(function (field) {
         if ( (field !== '_id') && (field !== '__v') ) {
           if (req.body[field] !== undefined) {
+            // depopulate category
+            if (field === 'category') {
+              if (req.body.category._id) {
+                req.body.category = req.body.category._id;
+              }
+            }
             tag[field] = req.body[field];
           }
         }

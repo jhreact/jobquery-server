@@ -9,7 +9,7 @@ var mongoOID = mongoose.Schema.Types.ObjectId;
 var tagSchema = new mongoose.Schema({
   name:             {type: String, required: true, unique: true, index: true},
   label:            {type: String, required: true},
-  scaleDescription: [String],
+  scaleDescription: {type: mongoose.Schema.Types.Mixed},
   isPublic:         {type: Boolean, required: true, default: true},
   category:         {type: mongoOID, ref: 'Category'},
   createdAt:        {type: Date, required: true, default: Date.now},

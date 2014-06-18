@@ -7,9 +7,15 @@ data.valid = {
 };
 
 data.valid2 = {
-  name:   'HTML5',
+  name:   'Skills',
   type:   'Tag',
   rank:   2
+};
+
+data.valid3 = {
+  name:   'Location Preference',
+  type:   'Tag',
+  rank:   1
 };
 
 data.minimum = {

@@ -11,7 +11,9 @@ conn.on('error', function (err) {
 });
 
 var Tag = require('../../server/tag/tag_model.js');
+var Category = require('../../server/category/category_model.js');
 var tagMockData = require('./tag_model_MockData.js');
+var categoryMockData = require('../category/category_model_MockData.js');
 
 var removeCollections = function (done) {
   var numCollections = Object.keys(conn.collections).length;
@@ -184,28 +186,68 @@ describe('Tag Controller', function () {
   });
 
   it('should update (via PUT) and populate tagId an existing tagId', function (done) {
-    // create tag
-    var tagId;
+    // create category
+    var categoryId;
     request(app)
-    .post('/api/tags')
-    .send(tagMockData.valid4)
-    .end(function (err, res) {
-      if (err) return done(err);
-      expect(res.statusCode).toEqual(201);
-      tagId = res.body;
+    .post('/api/categories')
+    .send(categoryMockData.valid2)
+    .end(function (err, newCategory) {
+      categoryId = newCategory.body;
 
-      // update tag
+      var category1;
       request(app)
-      .put('/api/tags/' + tagId)
-      .send({
-        name: 'Node',
-      })
-      .end(function (err, res2) {
-        if (err) return done(err);
-        expect(res2.statusCode).toEqual(201);
-        done();
+      .get('/api/categories')
+      .end(function (err, cat1) {
+        category1 = cat1.body[0];
+
+        // create category2
+        var categoryId2;
+        request(app)
+        .post('/api/categories')
+        .send(categoryMockData.valid3)
+        .end(function (err, newCategory2) {
+          categoryId2 = newCategory2.body;
+
+          // create tag
+          var tagId;
+          tagMockData.valid4.category = categoryId2;
+          request(app)
+          .post('/api/tags')
+          .send(tagMockData.valid4)
+          .end(function (err, res) {
+            if (err) return done(err);
+            expect(res.statusCode).toEqual(201);
+            tagId = res.body;
+
+            // request tag
+            request(app)
+            .get('/api/tags/' + tagId)
+            .end(function (err, reqTag) {
+
+              // update tag
+              reqTag.body.name = 'Bare Node';
+              reqTag.body.category = category1;
+              request(app)
+              .put('/api/tags/' + tagId)
+              .send(reqTag.body)
+              .end(function (err, res2) {
+                if (err) return done(err);
+                expect(res2.statusCode).toEqual(201);
+
+                request(app)
+                .get('/api/tags')
+                .end(function (err, data) {
+                  expect(data.body[0].category).toBeDefined();
+                  expect(data.body[0].category.name).toEqual(
+                    categoryMockData.valid2.name);
+                  done();
+                });
+              });
+            });
+          });
         });
       });
+    });
   });
 
 });

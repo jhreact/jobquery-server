@@ -97,8 +97,8 @@ describe('Opp Model', function () {
   });
 
   afterEach(function () {
-    delete matchMockData.valid.userId;
-    delete matchMockData.valid.oppId;
+    delete matchMockData.valid.user;
+    delete matchMockData.valid.opportunity;
   });
 
   it('should create a user, company, and opportunity', function () {
@@ -108,13 +108,13 @@ describe('Opp Model', function () {
   });
 
   it('should be able to create new match', function (done) {
-    matchMockData.valid.userId = mockUser._id;
-    matchMockData.valid.oppId = mockOpp._id;
+    matchMockData.valid.user = mockUser._id;
+    matchMockData.valid.opportunity = mockOpp._id;
     Match.create(matchMockData.valid, function (err, newMatch) {
       expect(err).toBeNull();
       expect(newMatch).toBeDefined();
-      expect(newMatch.userId).toEqual(matchMockData.valid.userId);
-      expect(newMatch.oppId).toEqual(matchMockData.valid.oppId);
+      expect(newMatch.user).toEqual(matchMockData.valid.user);
+      expect(newMatch.opportunity).toEqual(matchMockData.valid.opportunity);
       expect(newMatch.isProcessed).toEqual(matchMockData.valid.isProcessed);
       expect(newMatch.userInterest).toEqual(matchMockData.valid.userInterest);
       expect(newMatch.adminOverride).toEqual(matchMockData.valid.adminOverride);
@@ -123,61 +123,61 @@ describe('Opp Model', function () {
   });
 
   it('should fail when adding userInterest with score above max', function (done) {
-    matchMockData.invalid.userInterestMax.userId = mockUser._id;
-    matchMockData.invalid.userInterestMax.oppId = mockOpp._id;
+    matchMockData.invalid.userInterestMax.user = mockUser._id;
+    matchMockData.invalid.userInterestMax.opportunity = mockOpp._id;
     Match.create(matchMockData.invalid.userInterestMax, function (err, newMatch) {
       expect(err).toBeDefined();
       expect(err.errors.userInterest.type).toEqual('max');
       expect(newMatch).toBeUndefined();
-      delete matchMockData.invalid.userInterestMax.oppId;
-      delete matchMockData.invalid.userInterestMax.userId;
+      delete matchMockData.invalid.userInterestMax.opportunity;
+      delete matchMockData.invalid.userInterestMax.user;
       done();
     });
   });
 
 
   it('should fail when adding userInterest with score below min', function (done) {
-    matchMockData.invalid.userInterestMin.userId = mockUser._id;
-    matchMockData.invalid.userInterestMin.oppId = mockOpp._id;
+    matchMockData.invalid.userInterestMin.user = mockUser._id;
+    matchMockData.invalid.userInterestMin.opportunity = mockOpp._id;
     Match.create(matchMockData.invalid.userInterestMin, function (err, newMatch) {
       expect(err).toBeDefined();
       expect(err.errors.userInterest.type).toEqual('min');
       expect(newMatch).toBeUndefined();
-      delete matchMockData.invalid.userInterestMin.oppId;
-      delete matchMockData.invalid.userInterestMin.userId;
+      delete matchMockData.invalid.userInterestMin.opportunity;
+      delete matchMockData.invalid.userInterestMin.user;
       done();
     });
   });
 
   it('should fail when adding adminOverride with score above max', function (done) {
-    matchMockData.invalid.adminOverrideMax.userId = mockUser._id;
-    matchMockData.invalid.adminOverrideMax.oppId = mockOpp._id;
+    matchMockData.invalid.adminOverrideMax.user = mockUser._id;
+    matchMockData.invalid.adminOverrideMax.opportunity = mockOpp._id;
     Match.create(matchMockData.invalid.adminOverrideMax, function (err, newMatch) {
       expect(err).toBeDefined();
       expect(err.errors.adminOverride.type).toEqual('max');
       expect(newMatch).toBeUndefined();
-      delete matchMockData.invalid.adminOverrideMax.oppId;
-      delete matchMockData.invalid.adminOverrideMax.userId;
+      delete matchMockData.invalid.adminOverrideMax.opportunity;
+      delete matchMockData.invalid.adminOverrideMax.user;
       done();
     });
   });
 
 
   it('should fail when adding adminOverride with score below min', function (done) {
-    matchMockData.invalid.adminOverrideMin.userId = mockUser._id;
-    matchMockData.invalid.adminOverrideMin.oppId = mockOpp._id;
+    matchMockData.invalid.adminOverrideMin.user = mockUser._id;
+    matchMockData.invalid.adminOverrideMin.opportunity = mockOpp._id;
     Match.create(matchMockData.invalid.adminOverrideMin, function (err, newMatch) {
       expect(err).toBeDefined();
       expect(err.errors.adminOverride.type).toEqual('min');
       expect(newMatch).toBeUndefined();
-      delete matchMockData.invalid.adminOverrideMin.oppId;
-      delete matchMockData.invalid.adminOverrideMin.userId;
+      delete matchMockData.invalid.adminOverrideMin.opportunity;
+      delete matchMockData.invalid.adminOverrideMin.user;
       done();
     });
   });
-  it('should fail to create when userId and oppId is not unique', function (done) {
-    matchMockData.valid.userId = mockUser._id;
-    matchMockData.valid.oppId = mockOpp._id;
+  it('should fail to create when user and opportunity is not unique', function (done) {
+    matchMockData.valid.user = mockUser._id;
+    matchMockData.valid.opportunity = mockOpp._id;
     Match.create(matchMockData.valid, function (err, firsMatch) {
       expect(err).toBeNull();
       expect(firsMatch).toBeDefined();
@@ -190,29 +190,29 @@ describe('Opp Model', function () {
     });
   });
 
-  it('should fail to create when missing userId', function (done) {
-    matchMockData.valid.oppId = mockOpp._id;
+  it('should fail to create when missing user', function (done) {
+    matchMockData.valid.opportunity = mockOpp._id;
     Match.create(matchMockData.valid, function (err, newMatch) {
       expect(err).toBeDefined();
-      expect(err.errors.userId.type).toEqual('required');
+      expect(err.errors.user.type).toEqual('required');
       expect(newMatch).toBeUndefined();
       done();
     });
   });
 
-  it('should fail to create when missing oppId', function (done) {
-    matchMockData.valid.userId = mockUser._id;
+  it('should fail to create when missing opportunity', function (done) {
+    matchMockData.valid.user = mockUser._id;
     Match.create(matchMockData.valid, function (err, newMatch) {
       expect(err).toBeDefined();
-      expect(err.errors.oppId.type).toEqual('required');
+      expect(err.errors.opportunity.type).toEqual('required');
       expect(newMatch).toBeUndefined();
       done();
     });
   });
 
   it('should have new updatedAt property on update', function (done) {
-    matchMockData.valid.userId = mockUser._id;
-    matchMockData.valid.oppId = mockOpp._id;
+    matchMockData.valid.user = mockUser._id;
+    matchMockData.valid.opportunity = mockOpp._id;
     Match.create(matchMockData.valid, function (err, newMatch) {
       expect(err).toBeNull();
       expect(newMatch).toBeDefined();

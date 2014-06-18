@@ -8,8 +8,8 @@ module.exports = exports = {
     Opportunity.findById(req.params.id)
     .populate([
       {path: 'company'},
-      {path: 'tags.tagId'},
-      {path: 'survey.userId', select: '_id name'},
+      {path: 'tags.tag'},
+      {path: 'survey.user', select: '_id name'},
       {path: 'category'}
     ])
     .exec(function (err, opp) {
@@ -46,16 +46,16 @@ module.exports = exports = {
             // depopulate survey
             if (field === 'survey') {
               for (var i = 0; i < req.body.survey.length; i += 1) {
-                if (req.body.survey[i].userId._id) {
-                  req.body.survey[i].userId = req.body.survey[i].userId._id;
+                if (req.body.survey[i].user._id) {
+                  req.body.survey[i].user = req.body.survey[i].user._id;
                 }
               }
             }
             // depopulate tags
             if (field === 'tags') {
               for (var j = 0; j < req.body.tags.length; j += 1) {
-                if (req.body.tags[j].tagId._id) {
-                  req.body.tags[j].tagId = req.body.tags[j].tagId._id;
+                if (req.body.tags[j].tag._id) {
+                  req.body.tags[j].tag = req.body.tags[j].tag._id;
                 }
               }
             }
@@ -78,8 +78,8 @@ module.exports = exports = {
     Opportunity.find()
     .populate([
       {path: 'company'},
-      {path: 'tags.tagId'},
-      {path: 'survey.userId', select: '_id name'},
+      {path: 'tags.tag'},
+      {path: 'survey.user', select: '_id name'},
       {path: 'category'}
     ])
     .exec(function (err, opps) {

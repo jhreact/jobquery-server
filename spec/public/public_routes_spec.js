@@ -10,7 +10,7 @@ var expectedAPI = {
   '/companies':             ['get'],
   '/companies/:id':         ['get'],
   '/opportunities':         ['get'],
-  '/opportunities/:oppId':  ['put']
+  '/opportunities/:opportunity':  ['put']
 };
 
 describe('Company Routes', function () {

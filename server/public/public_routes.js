@@ -18,9 +18,9 @@ module.exports = exports = function (router) {
   router.route('/companies')
     .get(companyController.get);
 
-  router.route('/opportunities/:oppId')
+  router.route('/opportunities/:opportunity')
     .put(function (req, res) {
-      req.params.userId = req.params.id;
+      req.params.user = req.params.id;
       matchController.putByIds(req, res);
     });
 

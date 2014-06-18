@@ -5,17 +5,17 @@ var mongoose = require('mongoose');
 var mongoOID = mongoose.Schema.Types.ObjectId;
 
 var historySchema = new mongoose.Schema({
-  userId:         {type: mongoOID, required: true, ref: 'User'},
+  user:         {type: mongoOID, required: true, ref: 'User'},
   priorJobSearch:
     [{
       tags:
         [{
-          tagId: {type: mongoOID, ref: 'Tag'},
+          tag: {type: mongoOID, ref: 'Tag'},
           score: {type: Number, min: 1, max: 4}
         }],
       userInterest:
         [{
-          oppId:  {type: mongoOID, ref: 'Opportunity'},
+          opportunity:  {type: mongoOID, ref: 'Opportunity'},
           score:  {type: Number, min: 1, max: 4}
         }],
     }],

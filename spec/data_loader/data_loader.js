@@ -29,7 +29,7 @@ Q.all(tagSaves)
       var user_tags = [];
       user_tags = tags.map(function(item){
         var tag = {
-          tagId : item._id,
+          tag : item._id,
           score : Math.floor(Math.random() * 4)
         };
         return tag;

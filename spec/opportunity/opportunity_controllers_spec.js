@@ -95,13 +95,13 @@ describe('Opportunity Controller', function () {
 
   it('should be able to POST', function (done) {
     // create tag
-    var tagId;
+    var tag;
     request(app)
     .post('/api/tags')
     .send(tagMockData.valid2)
     .end(function (err, newTag) {
       if (err) return done(err);
-      tagId = newTag.body;
+      tag = newTag.body;
       expect(newTag.statusCode).toEqual(201);
 
       // create user
@@ -116,7 +116,7 @@ describe('Opportunity Controller', function () {
 
         // create opportunity
         oppMockData.minimum.company = mockCompany._id;
-        oppMockData.minimum.tags = [{tagId: tagId, score: 1}];
+        oppMockData.minimum.tags = [{tag: tag, score: 1}];
         oppMockData.minimum.survey = [{
           userId: userId,
           salary: 75000,
@@ -141,13 +141,13 @@ describe('Opportunity Controller', function () {
 
   it('should be able to GET and populate', function (done) {
     // create tag
-    var tagId;
+    var tag;
     request(app)
     .post('/api/tags')
     .send(tagMockData.valid2)
     .end(function (err, newTag) {
       if (err) return done(err);
-      tagId = newTag.body;
+      tag = newTag.body;
       expect(newTag.statusCode).toEqual(201);
 
       // create user
@@ -162,7 +162,7 @@ describe('Opportunity Controller', function () {
 
         // setup & create opportunity1
         oppMockData.minimum.company = mockCompany._id;
-        oppMockData.minimum.tags = [{tagId: tagId, score: 1}];
+        oppMockData.minimum.tags = [{tag: tag, score: 1}];
         oppMockData.minimum.survey = [{
           userId: userId,
           salary: 75000,
@@ -181,7 +181,7 @@ describe('Opportunity Controller', function () {
 
           // setup & create opportunity2
           oppMockData.minimum2.company = mockCompany._id;
-          oppMockData.minimum2.tags = [{tagId: tagId, score: 4}];
+          oppMockData.minimum2.tags = [{tag: tag, score: 4}];
           oppMockData.minimum2.survey = [{
             userId: userId,
             salary: 150000,
@@ -207,7 +207,7 @@ describe('Opportunity Controller', function () {
               expect(results.statusCode).toEqual(200);
               expect(results.body.length).toEqual(2);
               expect(results.body[0].company.name).toEqual(mockCompany.name);
-              expect(results.body[0].tags[0].tagId.label).toEqual(tagMockData.valid2.label);
+              expect(results.body[0].tags[0].tag.label).toEqual(tagMockData.valid2.label);
               expect(results.body[0].survey[0].userId.name).toEqual(userMockData.minimum.name);
               done();
             });
@@ -219,13 +219,13 @@ describe('Opportunity Controller', function () {
 
 it('should be able to GET by oppId and populate', function (done) {
     // create tag
-    var tagId;
+    var tag;
     request(app)
     .post('/api/tags')
     .send(tagMockData.valid2)
     .end(function (err, newTag) {
       if (err) return done(err);
-      tagId = newTag.body;
+      tag = newTag.body;
       expect(newTag.statusCode).toEqual(201);
 
       // create user
@@ -240,7 +240,7 @@ it('should be able to GET by oppId and populate', function (done) {
 
         // setup & create opportunity2
         oppMockData.minimum2.company = mockCompany._id;
-        oppMockData.minimum2.tags = [{tagId: tagId, score: 4}];
+        oppMockData.minimum2.tags = [{tag: tag, score: 4}];
         oppMockData.minimum2.survey = [{
           userId: userId,
           salary: 150000,
@@ -267,7 +267,7 @@ it('should be able to GET by oppId and populate', function (done) {
             if (err) return done(err);
             expect(opp.statusCode).toEqual(200);
             expect(opp.body.company.name).toEqual(mockCompany.name);
-            expect(opp.body.tags[0].tagId.label).toEqual(tagMockData.valid2.label);
+            expect(opp.body.tags[0].tag.label).toEqual(tagMockData.valid2.label);
             expect(opp.body.survey[0].userId.name).toEqual(userMockData.minimum.name);
             done();
           });

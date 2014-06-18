@@ -186,7 +186,7 @@ describe('User Controller', function () {
     });
   });
 
-  it('should update (via PUT) and populate tagId an existing userId', function (done) {
+  it('should update (via PUT) and populate tag an existing userId', function (done) {
     // create a user
     var userId;
     request(app)
@@ -199,14 +199,14 @@ describe('User Controller', function () {
       expect(res.statusCode).toEqual(201);
 
       // create tag
-      var tagId;
+      var tag;
       request(app)
       .post('/api/tags')
       .send(tagMockData.valid4)
       .end(function (err, res4) {
         if (err) return done(err);
         expect(res4.statusCode).toEqual(201);
-        tagId = res4.body;
+        tag = res4.body;
 
         // update user
         request(app)
@@ -214,7 +214,7 @@ describe('User Controller', function () {
         .send({
           name: 'another random',
           isAdmin: true,
-          tags: [{tagId: tagId, score: 3}] // directly assign tag ID
+          tags: [{tag: tag, score: 3}] // directly assign tag ID
         })
         .end(function (err, res2) {
           if (err) return done(err);
@@ -235,17 +235,17 @@ describe('User Controller', function () {
 
   it('should create a user with tag, get the user, update user infor + tag', function (done) {
     // create tag
-    var tagId;
+    var tag;
     request(app)
     .post('/api/tags')
     .send(tagMockData.valid4)
     .end(function (err, newTag) {
       if (err) return done(err);
       expect(newTag.statusCode).toEqual(201);
-      tagId = newTag.body;
+      tag = newTag.body;
 
       // create a user
-      userMockData.minimum2.tags = [{tagId: tagId, score: 2}];
+      userMockData.minimum2.tags = [{tag: tag, score: 2}];
       var userId;
       request(app)
       .post('/api/users')

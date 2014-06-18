@@ -16,7 +16,7 @@ module.exports = exports = {
       }
       Tag.populate(
         matches,
-        {path: 'oppId.tags.tagId userId.tags.tagId'},
+        {path: 'oppId.tags.tag userId.tags.tag'},
         function (err, deepMatches) {
           if (err) {
             res.json(500, err);
@@ -40,7 +40,7 @@ module.exports = exports = {
       }
       Tag.populate(
         matches,
-        {path: 'oppId.tags.tagId userId.tags.tagId'},
+        {path: 'oppId.tags.tag userId.tags.tag'},
         function (err, deepMatches) {
           if (err) {
             res.json(500, err);
@@ -95,7 +95,7 @@ module.exports = exports = {
       }
       Tag.populate(
         matches,
-        {path: 'oppId.tags.tagId userId.tags.tagId'},
+        {path: 'oppId.tags.tag userId.tags.tag'},
         function (err, deepMatches) {
           if (err) {
             res.json(500, err);
@@ -119,7 +119,7 @@ module.exports = exports = {
       }
       Tag.populate(
         matches,
-        {path: 'oppId.tags.tagId userId.tags.tagId'},
+        {path: 'oppId.tags.tag userId.tags.tag'},
         function (err, deepMatches) {
           if (err) {
             res.json(500, err);

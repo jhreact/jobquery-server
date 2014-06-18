@@ -8,7 +8,7 @@ module.exports = exports = {
     User.findById(req.params.id)
     .populate([
       {path: 'category'},
-      {path: 'tags.tagId'}
+      {path: 'tags.tag'}
     ])
     .exec(function (err, user) {
       if (err) {
@@ -32,8 +32,8 @@ module.exports = exports = {
             // depopulate tags
             if (field === 'tags') {
               for (var i = 0; i < req.body.tags.length; i += 1) {
-                if (req.body.tags[i].tagId._id) {
-                  req.body.tags[i].tagId = req.body.tags[i].tagId._id;
+                if (req.body.tags[i].tag._id) {
+                  req.body.tags[i].tag = req.body.tags[i].tag._id;
                 }
               }
             }
@@ -62,7 +62,7 @@ module.exports = exports = {
     User.find()
     .populate([
       {path: 'category'},
-      {path: 'tags.tagId'}
+      {path: 'tags.tag'}
     ])
     .exec(function (err, users) {
       if (err) {

@@ -141,7 +141,7 @@ describe('User Model', function () {
   it('should be able to create user with a single tag', function (done) {
     Tag.create(tagMockData.valid, function (err, newTag) {
       var withTag = userMockData.minimum;
-      withTag.tags = [{tagId: newTag._id, score: 1}]; // in an array!
+      withTag.tags = [{tag: newTag._id, score: 1}]; // in an array!
       User.create(userMockData.minimum, function (err, newUser) {
         expect(err).toBeNull();
         expect(newUser).toBeDefined();
@@ -164,7 +164,7 @@ describe('User Model', function () {
       userMockData.minimum.tags = [];
       for (var i = 0; i < tags.length; i += 1) {
         userMockData.minimum.tags.push({
-          tagId: tags[i]._id,
+          tag: tags[i]._id,
           score: 3
         });
       }
@@ -196,7 +196,7 @@ describe('User Model', function () {
         var tags = Array.prototype.slice.call(arguments, 1);
         for (var i = 0; i < tags.length; i += 1) {
           newUser.tags.push({
-            tagId: tags[i]._id,
+            tag: tags[i]._id,
             score: 2
           });
         }
@@ -215,7 +215,7 @@ describe('User Model', function () {
   it('should fail when adding a tag with score above max', function (done) {
     Tag.create(tagMockData.valid, function (err, newTag) {
       var withTag = userMockData.minimum;
-      withTag.tags = [{tagId: newTag._id, score: 5}];
+      withTag.tags = [{tag: newTag._id, score: 5}];
       User.create(userMockData.minimum, function (err, newUser) {
         expect(err).toBeDefined();
         expect(err.errors['tags.0.score'].type).toEqual('max');
@@ -229,7 +229,7 @@ describe('User Model', function () {
   it('should fail when adding a tag with score below min', function (done) {
     Tag.create(tagMockData.valid, function (err, newTag) {
       var withTag = userMockData.minimum;
-      withTag.tags = [{tagId: newTag._id, score: -1}];
+      withTag.tags = [{tag: newTag._id, score: -1}];
       User.create(userMockData.minimum, function (err, newUser) {
         expect(err).toBeDefined();
         expect(err.errors['tags.0.score'].type).toEqual('min');
@@ -240,9 +240,9 @@ describe('User Model', function () {
     });
   });
 
-  it('should fail when tagId is not valid tagId reference', function (done) {
+  it('should fail when tag is not valid tag reference', function (done) {
     Tag.create(tagMockData.valid, function (err, newTag) {
-      userMockData.minimum.tags = [{tagId: mongoose.Schema.Types.ObjectId(123), score: 1}];
+      userMockData.minimum.tags = [{tag: mongoose.Schema.Types.ObjectId(123), score: 1}];
       User.create(userMockData.minimum, function (err, newUser) {
         expect(err).toBeDefined();
         expect(err.name).toEqual('ValidationError');

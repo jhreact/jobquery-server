@@ -8,7 +8,7 @@ module.exports = exports = {
     Opportunity.findById(req.params.id)
     .populate([
       {path: 'company'},
-      {path: 'tags.tagId'},
+      {path: 'tags.tag'},
       {path: 'survey.userId', select: '_id name'},
       {path: 'category'}
     ])
@@ -54,8 +54,8 @@ module.exports = exports = {
             // depopulate tags
             if (field === 'tags') {
               for (var j = 0; j < req.body.tags.length; j += 1) {
-                if (req.body.tags[j].tagId._id) {
-                  req.body.tags[j].tagId = req.body.tags[j].tagId._id;
+                if (req.body.tags[j].tag._id) {
+                  req.body.tags[j].tag = req.body.tags[j].tag._id;
                 }
               }
             }
@@ -78,7 +78,7 @@ module.exports = exports = {
     Opportunity.find()
     .populate([
       {path: 'company'},
-      {path: 'tags.tagId'},
+      {path: 'tags.tag'},
       {path: 'survey.userId', select: '_id name'},
       {path: 'category'}
     ])

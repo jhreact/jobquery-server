@@ -91,8 +91,8 @@ describe('Opp Model', function () {
         oppMockData.valid.survey[0].userId = user1._id;
         oppMockData.valid.survey[1].userId = user2._id;
         oppMockData.valid.tags = [
-          {tagId: tag1._id, score: 1},
-          {tagId: tag2._id, score: 4}
+          {tag: tag1._id, score: 1},
+          {tag: tag2._id, score: 4}
         ];
         oppMockData.valid.company = mockCompany._id;
 
@@ -123,7 +123,7 @@ describe('Opp Model', function () {
 
   it('should fail when adding a tag with score above max', function (done) {
     Tag.create(tagMockData.valid, function (err, newTag) {
-      oppMockData.minimum.tags = [{tagId: newTag._id, score: 5}];
+      oppMockData.minimum.tags = [{tag: newTag._id, score: 5}];
       oppMockData.minimum.company = mockCompany._id;
       Opp.create(oppMockData.minimum, function (err, newOpp) {
         expect(err).toBeDefined();
@@ -138,7 +138,7 @@ describe('Opp Model', function () {
 
   it('should fail when adding a tag with score below min', function (done) {
     Tag.create(tagMockData.valid, function (err, newTag) {
-      oppMockData.minimum.tags = [{tagId: newTag._id, score: -1}];
+      oppMockData.minimum.tags = [{tag: newTag._id, score: -1}];
       oppMockData.minimum.company = mockCompany._id;
       Opp.create(oppMockData.minimum, function (err, newOpp) {
         expect(err).toBeDefined();
@@ -151,10 +151,10 @@ describe('Opp Model', function () {
     });
   });
 
-  xit('should fail when tagId is not valid tagId reference', function (done) {
+  xit('should fail when tag is not valid tag reference', function (done) {
     Tag.create(tagMockData.valid, function (err, newTag) {
       var withTag = oppMockData.minimum;
-      withTag.tags = [{tagId: mongoose.Schema.Types.ObjectId(123), score: 1}];
+      withTag.tags = [{tag: mongoose.Schema.Types.ObjectId(123), score: 1}];
       Opp.create(oppMockData.minimum, function (err, newOpp) {
         expect(err).toBeDefined();
         expect(err.name).toEqual('ValidationError');

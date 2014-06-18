@@ -10,7 +10,7 @@ var historySchema = new mongoose.Schema({
     [{
       tags:
         [{
-          tagId: {type: mongoOID, ref: 'Tag'},
+          tag: {type: mongoOID, ref: 'Tag'},
           score: {type: Number, min: 1, max: 4}
         }],
       userInterest:

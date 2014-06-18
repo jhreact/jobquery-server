@@ -51,6 +51,7 @@ var opportunitySchema = new mongoose.Schema({
             ]
         },
     }],
+  category:     {type: mongoOID, ref: 'Category'},
   createdAt:    {type: Date, required: true, default: Date.now},
   updatedAt:    {type: Date, required: true, default: Date.now}
 });

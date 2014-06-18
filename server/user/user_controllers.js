@@ -6,7 +6,10 @@ module.exports = exports = {
 
   getById: function (req, res) {
     User.findById(req.params.id)
-    .populate('tags.tagId')
+    .populate([
+      {path: 'category'},
+      {path: 'tags.tagId'}
+    ])
     .exec(function (err, user) {
       if (err) {
         res.json(500, err);
@@ -26,6 +29,13 @@ module.exports = exports = {
       User.schema.eachPath(function (field) {
         if ( (field !== '_id') && (field !== '__v') ) {
           if (req.body[field] !== undefined) {
+            if (field === 'tags') {
+              for (var i = 0; i < req.body.tags.length; i += 1) {
+                if (req.body.tags[i].tagId._id) {
+                  req.body.tags[i].tagId = req.body.tags[i].tagId._id;
+                }
+              }
+            }
             user[field] = req.body[field];
           }
         }
@@ -43,7 +53,10 @@ module.exports = exports = {
 
   get: function (req, res) {
     User.find()
-    .populate('tags.tagId')
+    .populate([
+      {path: 'category'},
+      {path: 'tags.tagId'}
+    ])
     .exec(function (err, users) {
       if (err) {
         res.json(500, err);

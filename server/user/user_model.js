@@ -24,11 +24,18 @@ var userSchema = new mongoose.Schema({
       tagId: {type: mongoOID, ref: 'Tag', required: true},
       score: {type: Number, min: 0, max: 4, required: true}
     }],
+  messages:
+    [{
+      date:     {type: Date, required: true, default: Date.now},
+      question: {type: String, required: true},
+      answer:   {type: String}
+    }],
   city:           {type: String},
   state:          {type: String},
   country:        {type: String},
   // coordinate-axis is [longitude, latitude], else store as GeoJSON object
   geo:            {type: [Number, Number], index: '2dsphere'},
+  category:       {type: mongoOID, ref: 'Category'},
   createdAt:      {type: Date, required: true, default: Date.now},
   updatedAt:      {type: Date, required: true, default: Date.now}
 });

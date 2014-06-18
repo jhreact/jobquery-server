@@ -1,3 +1,5 @@
+/* jslint node: true */
+
 "use strict";
 
 var bodyParser    = require('body-parser'),
@@ -18,12 +20,16 @@ module.exports = exports = function (app, express, routers) {
   app.use(bodyParser());
   app.use(middle.cors);
   app.use('/login', routers.LoginRouter);
+  // TODO: enable authentication
   // app.use('/api', expressJwt({secret: process.env.SECRET || 'secret'}));
+  // TODO: add middleware to add userID to body.params.id (if user)
+  app.use('/api/public', routers.PublicRouter);
   app.use('/api/opportunities', routers.OpportunityRouter);
   app.use('/api/tags', routers.TagRouter);
   app.use('/api/users' , routers.UserRouter);
-  app.use('/api/companies', routers.CompanyRouter);
   app.use('/api/matches', routers.MatchRouter);
+  app.use('/api/companies', routers.CompanyRouter);
+  app.use('/api/categories', routers.CategoryRouter);
   app.use('/api/invite', routers.InviteRouter);
   app.use(middle.logError);
   app.use(middle.handleError);

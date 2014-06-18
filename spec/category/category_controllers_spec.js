@@ -2,7 +2,7 @@ var request = require('supertest');
 var express = require('express');
 var app = require('../../server/main/app.js');
 
-var companyCtrl = require('../../server/company/company_controllers.js');
+var categoryCtrl = require('../../server/category/category_controllers.js');
 var mongoose = require('mongoose');
 var conn = mongoose.connection;
 
@@ -10,8 +10,8 @@ conn.on('error', function (err) {
   console.log('connection error:', err);
 });
 
-var Company = require('../../server/company/company_model.js');
-var companyMockData = require('./company_model_MockData.js');
+var Category = require('../../server/category/category_model.js');
+var categoryMockData = require('./category_model_MockData.js');
 
 var removeCollections = function (done) {
   var numCollections = Object.keys(conn.collections).length;
@@ -51,27 +51,27 @@ var checkState = function (done) {
   }
 };
 
-describe('Company Controller', function () {
+describe('Category Controller', function () {
 
   it('should have a get method', function () {
-    expect(companyCtrl.get).toEqual(jasmine.any(Function));
+    expect(categoryCtrl.get).toEqual(jasmine.any(Function));
   });
 
   it('should have a post method', function () {
-    expect(companyCtrl.post).toEqual(jasmine.any(Function));
+    expect(categoryCtrl.post).toEqual(jasmine.any(Function));
   });
 
-  it('should have a getById method', function () {
-    expect(companyCtrl.getById).toEqual(jasmine.any(Function));
+  it('should have a getByType method', function () {
+    expect(categoryCtrl.getByType).toEqual(jasmine.any(Function));
   });
 
   it('should have a putById method', function () {
-    expect(companyCtrl.putById).toEqual(jasmine.any(Function));
+    expect(categoryCtrl.putById).toEqual(jasmine.any(Function));
   });
 
 });
 
-describe('Company Controller', function () {
+describe('Category Controller', function () {
 
   beforeEach(function (done) {
     checkState(done);
@@ -79,8 +79,8 @@ describe('Company Controller', function () {
 
   it('should be able to POST', function (done) {
     request(app)
-    .post('/api/companies')
-    .send(companyMockData.valid)
+    .post('/api/categories')
+    .send(categoryMockData.valid)
     .end(function (err, res) {
       if (err) return done(err);
       expect(res.statusCode).toEqual(201);
@@ -89,23 +89,23 @@ describe('Company Controller', function () {
   });
 
   it('should be able to GET', function (done) {
-    // post company1
+    // post category1
     request(app)
-    .post('/api/companies')
-    .send(companyMockData.valid)
+    .post('/api/categories')
+    .send(categoryMockData.valid)
     .end(function (err, res) {
       expect(res.statusCode).toEqual(201);
 
-      // post company2
+      // post category2
       request(app)
-      .post('/api/companies')
-      .send(companyMockData.minimum2)
+      .post('/api/categories')
+      .send(categoryMockData.minimum2)
       .end(function (err, res) {
         expect(res.statusCode).toEqual(201);
 
-        // retrieve both companies
+        // retrieve both categories
         request(app)
-        .get('/api/companies')
+        .get('/api/categories')
         .end(function (err, res) {
           if (err) return done(err);
           expect(res.body.length).toEqual(2);
@@ -116,29 +116,28 @@ describe('Company Controller', function () {
     });
   });
 
-  it('should be able to GET a specific companyId', function (done) {
-    // post company1
-    var companyId;
+  it('should be able to GET a specific category type', function (done) {
+    // post category1
+    var categoryType = categoryMockData.valid.type;
     request(app)
-    .post('/api/companies')
-    .send(companyMockData.valid)
+    .post('/api/categories')
+    .send(categoryMockData.valid)
     .end(function (err, res) {
-      companyId = res.body;
       expect(res.statusCode).toEqual(201);
 
-      // post company2
+      // post category2
       request(app)
-      .post('/api/companies')
-      .send(companyMockData.minimum2)
+      .post('/api/categories')
+      .send(categoryMockData.valid2)
       .end(function (err, res) {
-      expect(res.statusCode).toEqual(201);
+        expect(res.statusCode).toEqual(201);
 
-        // retrieve only company1
+        // retrieve only category1
         request(app)
-        .get('/api/companies/' + companyId)
+        .get('/api/categories/type/' + categoryType)
         .end(function (err, res) {
           if (err) return done(err);
-          expect(res.body._id).toEqual(companyId);
+          expect(res.body[0].type).toEqual(categoryType);
           expect(res.statusCode).toEqual(200);
           done();
         });
@@ -146,47 +145,56 @@ describe('Company Controller', function () {
     });
   });
 
-  it('should FAIL to GET with an invalid companyId', function (done) {
-    var companyId = '/api/companies/' + '123456789';
+  it('should FAIL to PUT with an invalid categoryId', function (done) {
+    var categoryId = '/api/categories/' + '123456789';
     request(app)
-    .post('/api/companies')
-    .send(companyMockData.valid)
+    .put(categoryId)
     .end(function (err, res) {
-      expect(res.statusCode).toEqual(201);
+      if (err) return done(err);
+      expect(res.statusCode).toEqual(500);
 
       request(app)
-      .get(companyId)
-      .end(function (err, res) {
+      .get('/api/categories/')
+      .end(function (err, data) {
         if (err) return done(err);
-        expect(res.statusCode).toEqual(500);
+        expect(data.body.length).toEqual(0);
         done();
       });
     });
   });
 
-  it('should update (via PUT) an existing company by companyId', function (done) {
-    // create company
-    var companyId;
+  it('should update (via PUT) an existing category by categoryId', function (done) {
+    // create category
+    var categoryId;
     request(app)
-    .post('/api/companies')
-    .send(companyMockData.valid)
+    .post('/api/categories')
+    .send(categoryMockData.valid)
     .end(function (err, res) {
       if (err) return done(err);
       expect(res.statusCode).toEqual(201);
-      companyId = res.body;
+      categoryId = res.body;
 
-      // update company
+      // update category
       request(app)
-      .put('/api/companies/' + companyId)
+      .put('/api/categories/' + categoryId)
       .send({
-        name: 'Microsoft',
+        name: 'vertical jump',
+        type: 'Opportunity'
       })
       .end(function (err, res2) {
         if (err) return done(err);
         expect(res2.statusCode).toEqual(201);
-        done();
+
+        // check update
+        request(app)
+        .get('/api/categories')
+        .end(function (err, res3) {
+          if (err) return done(err);
+          expect(res3.statusCode).toEqual(200);
+          done();
         });
       });
+    });
   });
 
 });

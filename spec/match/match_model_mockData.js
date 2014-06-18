@@ -1,7 +1,7 @@
 module.exports = exports = data = {};
 
 data.valid = {
-  userId:         null,
+  user:         null,
   oppId:          null,
   isProcessed:    true,
   userInterest:   1,
@@ -9,7 +9,7 @@ data.valid = {
 };
 
 data.valid2 = {
-  userId:         null,
+  user:         null,
   oppId:          null,
   isProcessed:    true,
   userInterest:   3,
@@ -17,14 +17,14 @@ data.valid2 = {
 };
 
 data.valid3 = {
-  userId:         null,
+  user:         null,
   oppId:          null,
   isProcessed:    false,
   userInterest:   4
 };
 
 data.valid4 = {
-  userId:         null,
+  user:         null,
   oppId:          null,
   isProcessed:    false,
   userInterest:   2
@@ -33,25 +33,25 @@ data.valid4 = {
 data.invalid = {};
 
 data.invalid.userInterestMax = {
-  userId:         null,
+  user:         null,
   oppId:          null,
   userInterest:   5
 };
 
 data.invalid.userInterestMin = {
-  userId:         null,
+  user:         null,
   oppId:          null,
   userInterest:   -1
 };
 
 data.invalid.adminOverrideMax = {
-  userId:         null,
+  user:         null,
   oppId:          null,
   adminOverride:  5
 };
 
 data.invalid.adminOverrideMin = {
-  userId:         null,
+  user:         null,
   oppId:          null,
   adminOverride:  -1
 };

@@ -88,8 +88,8 @@ describe('Opp Model', function () {
         expect(tag1).toBeDefined();
         expect(tag2).toBeDefined();
 
-        oppMockData.valid.survey[0].userId = user1._id;
-        oppMockData.valid.survey[1].userId = user2._id;
+        oppMockData.valid.survey[0].user = user1._id;
+        oppMockData.valid.survey[1].user = user2._id;
         oppMockData.valid.tags = [
           {tag: tag1._id, score: 1},
           {tag: tag2._id, score: 4}
@@ -165,15 +165,15 @@ describe('Opp Model', function () {
     });
   });
 
-  it('should fail to create when userId for survey is invalid', function (done) {
-    oppMockData.invalid.surveyUserId.survey[0].userId =
+  it('should fail to create when user for survey is invalid', function (done) {
+    oppMockData.invalid.surveyUserId.survey[0].user =
       mongoose.Schema.Types.ObjectId(123);
     oppMockData.invalid.surveyUserId.company = mockCompany._id;
     Opp.create(oppMockData.invalid.surveyUserId, function (err, newOpp) {
       expect(err).toBeDefined();
-      expect(err.errors['survey.0.userId'].type).toEqual('required');
+      expect(err.errors['survey.0.user'].type).toEqual('required');
       expect(newOpp).toBeUndefined();
-      delete oppMockData.invalid.surveyUserId.survey[0].userId;
+      delete oppMockData.invalid.surveyUserId.survey[0].user;
       delete oppMockData.minimum.company;
       done();
     });
@@ -184,13 +184,13 @@ describe('Opp Model', function () {
       expect(err).toBeNull();
       expect(newUser).toBeDefined();
 
-      oppMockData.invalid.surveyStage.survey[0].userId = newUser._id;
+      oppMockData.invalid.surveyStage.survey[0].user = newUser._id;
       oppMockData.invalid.surveyStage.company = mockCompany._id;
       Opp.create(oppMockData.invalid.surveyStage, function (err, newOpp) {
         expect(err).toBeDefined();
         expect(err.errors['survey.0.stage'].type).toEqual('enum');
         expect(newOpp).toBeUndefined();
-        delete oppMockData.invalid.surveyStage.survey[0].userId;
+        delete oppMockData.invalid.surveyStage.survey[0].user;
         delete oppMockData.minimum.company;
         done();
       });

@@ -9,7 +9,7 @@ module.exports = exports = {
     .populate([
       {path: 'company'},
       {path: 'tags.tag'},
-      {path: 'survey.userId', select: '_id name'},
+      {path: 'survey.user', select: '_id name'},
       {path: 'category'}
     ])
     .exec(function (err, opp) {
@@ -46,8 +46,8 @@ module.exports = exports = {
             // depopulate survey
             if (field === 'survey') {
               for (var i = 0; i < req.body.survey.length; i += 1) {
-                if (req.body.survey[i].userId._id) {
-                  req.body.survey[i].userId = req.body.survey[i].userId._id;
+                if (req.body.survey[i].user._id) {
+                  req.body.survey[i].user = req.body.survey[i].user._id;
                 }
               }
             }
@@ -79,7 +79,7 @@ module.exports = exports = {
     .populate([
       {path: 'company'},
       {path: 'tags.tag'},
-      {path: 'survey.userId', select: '_id name'},
+      {path: 'survey.user', select: '_id name'},
       {path: 'category'}
     ])
     .exec(function (err, opps) {

@@ -37,7 +37,7 @@ var opportunitySchema = new mongoose.Schema({
     }],
   survey:
     [{
-      userId:   {type: mongoOID, ref: 'User', required: true},
+      user:   {type: mongoOID, ref: 'User', required: true},
       salary:   {type: Number},
       notes:    {type: [String]},
       stage:

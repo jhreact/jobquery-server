@@ -118,14 +118,14 @@ describe('User Controller', function () {
     });
   });
 
-  it('should be able to GET a specific userId', function (done) {
+  it('should be able to GET a specific user', function (done) {
     // post user1
-    var userId;
+    var user;
     request(app)
     .post('/api/users')
     .send(userMockData.valid)
     .end(function (err, res) {
-      userId = res.body;
+      user = res.body;
       expect(res.statusCode).toEqual(201);
 
       // post user2
@@ -137,10 +137,10 @@ describe('User Controller', function () {
 
         // retrieve only user1
         request(app)
-        .get('/api/users/' + userId)
+        .get('/api/users/' + user)
         .end(function (err, res) {
           if (err) return done(err);
-          expect(res.body._id).toEqual(userId);
+          expect(res.body._id).toEqual(user);
           expect(res.statusCode).toEqual(200);
           done();
         });
@@ -148,8 +148,8 @@ describe('User Controller', function () {
     });
   });
 
-  it('should FAIL to GET with an invalid userId', function (done) {
-    var userId = '/api/users/' + '123456789';
+  it('should FAIL to GET with an invalid user', function (done) {
+    var user = '/api/users/' + '123456789';
     request(app)
     .post('/api/users')
     .send(userMockData.valid)
@@ -157,7 +157,7 @@ describe('User Controller', function () {
       expect(res.statusCode).toEqual(201);
 
       request(app)
-      .get(userId)
+      .get(user)
       .end(function (err, res) {
         if (err) return done(err);
         expect(res.statusCode).toEqual(500);
@@ -186,16 +186,16 @@ describe('User Controller', function () {
     });
   });
 
-  it('should update (via PUT) and populate tag an existing userId', function (done) {
+  it('should update (via PUT) and populate tag an existing user', function (done) {
     // create a user
-    var userId;
+    var user;
     request(app)
     .post('/api/users')
     .send(userMockData.minimum2)
     .end(function (err, res) {
 
       if (err) return done(err);
-      userId = res.body;
+      user = res.body;
       expect(res.statusCode).toEqual(201);
 
       // create tag
@@ -210,7 +210,7 @@ describe('User Controller', function () {
 
         // update user
         request(app)
-        .put('/api/users/' + userId)
+        .put('/api/users/' + user)
         .send({
           name: 'another random',
           isAdmin: true,
@@ -222,7 +222,7 @@ describe('User Controller', function () {
 
           // get user
           request(app)
-          .get('/api/users/' + userId)
+          .get('/api/users/' + user)
           .end(function (err, res3) {
             if (err) return done(err);
             expect(res3.statusCode).toEqual(200);
@@ -233,7 +233,7 @@ describe('User Controller', function () {
     });
   });
 
-  it('should create a user with tag, get the user, update user infor + tag', function (done) {
+  it('should create a user with tag, get the user, update user info + tag', function (done) {
     // create tag
     var tag;
     request(app)
@@ -246,7 +246,7 @@ describe('User Controller', function () {
 
       // create a user
       userMockData.minimum2.tags = [{tag: tag, score: 2}];
-      var userId;
+      var user;
       request(app)
       .post('/api/users')
       .send(userMockData.minimum2)

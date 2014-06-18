@@ -20,7 +20,7 @@ module.exports = exports = function (router) {
 
   router.route('/opportunities/:oppId')
     .put(function (req, res) {
-      req.params.userId = req.params.id;
+      req.params.user = req.params.id;
       matchController.putByIds(req, res);
     });
 

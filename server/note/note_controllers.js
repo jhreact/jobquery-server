@@ -20,7 +20,7 @@ module.exports = exports = {
     var $promise = Q.nbind(Note.create, Note);
     $promise(note)
       .then(function (id) {
-        res.send(id);
+        res.send({_id: id});
       })
       .fail(function (reason) {
         next(reason);

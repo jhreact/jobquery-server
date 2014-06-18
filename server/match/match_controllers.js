@@ -64,6 +64,18 @@ module.exports = exports = {
       Match.schema.eachPath(function (field) {
         if ( (field !== '_id') && (field !== '__v') ) {
           if (req.body[field] !== undefined) {
+            // depopulate user
+            if (field === 'user') {
+              if (req.body.user._id) {
+                req.body.user = req.body.user._id;
+              }
+            }
+            // depopulate opportunity
+            if (field === 'opportunity') {
+              if (req.body.opportunity._id) {
+                req.body.opportunity = req.body.opportunity._id;
+              }
+            }
             match[field] = req.body[field];
           }
         }

@@ -12,7 +12,7 @@ module.exports = exports = {
         res.json(500, UNABLE_TO_SAVE);
         return;
       }
-      res.json(201, tag.id);
+      res.json(201, {_id: tag.id});
     });
   },
 
@@ -66,7 +66,7 @@ module.exports = exports = {
           res.json(500, err);
           return;
         }
-        res.json(201, item.id);
+        res.json(201, {_id: item.id});
       });
     });
   }

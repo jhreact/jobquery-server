@@ -214,7 +214,7 @@ describe('User Controller', function () {
         .send({
           name: 'another random',
           isAdmin: true,
-          tags: [{tagId: tagId, score: 3}]
+          tags: [{tagId: tagId, score: 3}] // directly assign tag ID
         })
         .end(function (err, res2) {
           if (err) return done(err);
@@ -227,6 +227,61 @@ describe('User Controller', function () {
             if (err) return done(err);
             expect(res3.statusCode).toEqual(200);
             done();
+          });
+        });
+      });
+    });
+  });
+
+  it('should create a user with tag, get the user, update user infor + tag', function (done) {
+    // create tag
+    var tagId;
+    request(app)
+    .post('/api/tags')
+    .send(tagMockData.valid4)
+    .end(function (err, newTag) {
+      if (err) return done(err);
+      expect(newTag.statusCode).toEqual(201);
+      tagId = newTag.body;
+
+      // create a user
+      userMockData.minimum2.tags = [{tagId: tagId, score: 2}];
+      var userId;
+      request(app)
+      .post('/api/users')
+      .send(userMockData.minimum2)
+      .end(function (err, newUser) {
+
+        if (err) return done(err);
+        userId = newUser.body;
+        expect(newUser.statusCode).toEqual(201);
+
+        //get user
+        request(app)
+        .get('/api/users/' + userId)
+        .end(function (err, user) {
+
+          // update user's tag
+          user.body.tags[0].score = 4; // tag has been populated!
+          user.body.name = 'another random';
+          user.body.isAdmin = true;
+
+          // update user
+          request(app)
+          .put('/api/users/' + userId)
+          .send(user.body)
+          .end(function (err, res2) {
+            if (err) return done(err);
+            expect(res2.statusCode).toEqual(201);
+
+            // get user
+            request(app)
+            .get('/api/users/' + userId)
+            .end(function (err, res3) {
+              if (err) return done(err);
+              expect(res3.statusCode).toEqual(200);
+              done();
+            });
           });
         });
       });

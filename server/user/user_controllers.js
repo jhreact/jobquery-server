@@ -29,6 +29,13 @@ module.exports = exports = {
       User.schema.eachPath(function (field) {
         if ( (field !== '_id') && (field !== '__v') ) {
           if (req.body[field] !== undefined) {
+            if (field === 'tags') {
+              for (var i = 0; i < req.body.tags.length; i += 1) {
+                if (req.body.tags[i].tagId._id) {
+                  req.body.tags[i].tagId = req.body.tags[i].tagId._id;
+                }
+              }
+            }
             user[field] = req.body[field];
           }
         }

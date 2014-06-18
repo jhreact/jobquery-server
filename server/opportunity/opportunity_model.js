@@ -1,6 +1,7 @@
 'use strict';
 
 var mongoose = require('mongoose');
+var Company = require('../company/company_model.js');
 
 var mongoOID = mongoose.Schema.Types.ObjectId;
 
@@ -59,6 +60,13 @@ var opportunitySchema = new mongoose.Schema({
 opportunitySchema.pre('save', function (next) {
   this.updatedAt = new Date();
   next();
+});
+
+opportunitySchema.post('save', function (doc) {
+  Company.findById(doc.company, function (err, company) {
+    company.opportunities.push(doc._id);
+    company.save();
+  });
 });
 
 module.exports = exports = mongoose.model('Opportunity', opportunitySchema);

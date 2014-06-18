@@ -125,25 +125,28 @@ describe('Company Model', function () {
     });
   });
 
-  it('should allow valid oppIds to be pushed onto opportunities property', function (done) {
+  it("should automatically append an opportunity to company's opportunities list", function (done) {
+    var companyId;
+    var oppId;
     Company.create(companyMockData.valid, function (err, newCompany) {
       expect(err).toBeNull();
       expect(newCompany).toBeDefined();
+      companyId = newCompany._id;
 
       oppMockData.minimum.company = newCompany._id;
       Opp.create(oppMockData.minimum, function (err , newOpp) {
         expect(err).toBeNull();
         expect(newOpp).toBeDefined();
+        oppId = newOpp._id;
 
-        newCompany.opportunities.push(newOpp._id);
-        newCompany.save(function (err, savedCompany) {
-          expect(err).toBeNull();
-          expect(savedCompany).toBeDefined();
-          expect(savedCompany.opportunities[0]).toEqual(newOpp._id);
-          expect(savedCompany.opportunities.length).toEqual(1);
-          delete oppMockData.minimum.company;
-          done();
-        });
+        var delay = function () {
+          Company.findById(companyId, function (err, data) {
+            expect(data.opportunities.length).toEqual(1);
+            expect(data.opportunities[0]).toEqual(oppId);
+            done();
+          });
+        };
+        setTimeout(delay, 200); // post save middleware needs time to save!
       });
     });
   });

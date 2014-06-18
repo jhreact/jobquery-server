@@ -111,15 +111,6 @@ describe('User Model', function () {
     });
   });
 
-  it('should fail to create when missing name', function (done) {
-    User.create(userMockData.missing.name, function (err, newUser) {
-      expect(err).toBeDefined();
-      expect(err.errors.name.type).toEqual('required');
-      expect(newUser).toBeUndefined();
-      done();
-    });
-  });
-
   it('should fail to create when missing isAdmin', function (done) {
     User.create(userMockData.missing.isAdmin, function (err, newUser) {
       expect(err).toBeDefined();

@@ -54,10 +54,10 @@ var sendInvites = function(req, res){
 };
 
 var createUsers = function(emails, callback) {
-  Tag.find(function(error, tags){
-    var user_tags = [];
+  Tag.find(function(error, tags) {
+    var userTags = [];
     // tags have to be populated on every new user
-    user_tags = tags.map(function(item){
+    userTags = tags.map(function(item){
       var tag = {
         tagId : item._id,
         score : 0
@@ -65,21 +65,17 @@ var createUsers = function(emails, callback) {
       return tag;
     });
     emails.forEach(function(email) {
-      var firstTimePassword = 'password';
-
-      bcrypt.hash(firstTimePassword, null, null, function(err, hash){
-       User.create({
-         email:     email,
-         password:  hash,
-         isAdmin:   false,
-         tags:      user_tags
-
-       }).then(function(user) {
-           callback();
+      bcrypt.hash('password', null, null, function(err, hash){
+        User.create({
+          email:     email,
+          password:  hash,
+          isAdmin:   false,
+          tags:      userTags
+        }).then( function(user) {
+          callback();
          }, function(err){
-         });
+        });
       });
-
     });
   });
 };

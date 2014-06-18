@@ -12,8 +12,14 @@ conn.on('error', function (err) {
 
 var User = require('../../server/user/user_model.js');
 var Tag = require('../../server/tag/tag_model.js');
+var Company = require('../../server/company/company_model.js');
+var Opp = require('../../server/opportunity/opportunity_model.js');
+var Match = require('../../server/match/match_model.js');
 var userMockData = require('./user_model_MockData.js');
 var tagMockData = require('../tag/tag_model_MockData.js');
+var companyMockData = require('../company/company_model_MockData.js');
+var oppMockData = require('../opportunity/opportunity_model_MockData.js');
+var matchMockData = require('../match/match_model_MockData.js');
 
 var removeCollections = function (done) {
   var numCollections = Object.keys(conn.collections).length;
@@ -338,6 +344,67 @@ describe('User Controller', function () {
               });
             };
             setTimeout(delay, 200); // post save middleware needs time to save!
+          });
+        });
+      });
+    });
+  });
+
+  it('should create matches for each existing opportunity for a new user', function (done) {
+    // create company
+    request(app)
+    .post('/api/companies')
+    .send(companyMockData.valid)
+    .end(function (err, company) {
+      if (err) return done(err);
+      expect(company.statusCode).toEqual(201);
+
+      // create opportunity (x2)
+      oppMockData.minimum.company = company.body;
+      request(app)
+      .post('/api/opportunities')
+      .send(oppMockData.minimum)
+      .end(function (err, opp1) {
+        if (err) return done(err);
+        expect(opp1.statusCode).toEqual(201);
+
+        oppMockData.minimum2.company = company.body;
+        request(app)
+        .post('/api/opportunities')
+        .send(oppMockData.minimum2)
+        .end(function (err, opp2) {
+          if (err) return done(err);
+          expect(opp2.statusCode).toEqual(201);
+
+          // create users (x2)
+          request(app)
+          .post('/api/users')
+          .send(userMockData.valid)
+          .end(function (err, user1) {
+            if (err) return done(err);
+            expect(user1.statusCode).toEqual(201);
+
+            request(app)
+            .post('/api/users')
+            .send(userMockData.minimum2)
+            .end(function (err, user2) {
+              if (err) return done(err);
+              expect(user2.statusCode).toEqual(201);
+
+              // check matches were all created automatically
+              request(app)
+              .get('/api/matches/')
+              .end(function (err, matches) {
+                if (err) return done(err);
+                expect(matches.statusCode).toEqual(200);
+                expect(matches.body.length).toEqual(4);
+                expect(matches.body[3].opportunity.jobTitle).toEqual(oppMockData.minimum2.jobTitle);
+                expect(matches.body[3].user.name).toEqual(userMockData.minimum2.name);
+                delete oppMockData.minimum.company;
+                delete oppMockData.minimum2.company;
+                done();
+              });
+            });
           });
         });
       });

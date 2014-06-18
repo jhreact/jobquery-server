@@ -9,7 +9,7 @@ var expectedAPI = {
   '/':                                      ['get'],
   '/users/:id':                             ['get'],
   '/opportunities/:id':                     ['get'],
-  '/users/:user/opportunities/:oppId':    ['get', 'put']
+  '/users/:user/opportunities/:opportunity':    ['get', 'put']
 };
 
 describe('Match Routes', function () {

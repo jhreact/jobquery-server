@@ -168,16 +168,16 @@ var populatedMatch;
 var createMatches = function (done) {
   // assign user and companies to opps
   matchMockData.valid.user  = mockUser1;
-  matchMockData.valid.oppId  = mockOpp1;
+  matchMockData.valid.opportunity  = mockOpp1;
 
   matchMockData.valid2.user  = mockUser1;
-  matchMockData.valid2.oppId  = mockOpp2;
+  matchMockData.valid2.opportunity  = mockOpp2;
 
   matchMockData.valid3.user  = mockUser2;
-  matchMockData.valid3.oppId  = mockOpp1;
+  matchMockData.valid3.opportunity  = mockOpp1;
 
   matchMockData.valid4.user  = mockUser2;
-  matchMockData.valid4.oppId  = mockOpp2;
+  matchMockData.valid4.opportunity  = mockOpp2;
 
   // create matchs
   Match.create(matchMockData.valid, function (err, newMatch) {
@@ -195,15 +195,15 @@ var createMatches = function (done) {
           Match.find()
           .populate([
             {path: 'user'},
-            {path: 'oppId'}
+            {path: 'opportunity'}
           ])
           .exec(function (err, matches) {
 
             Tag.populate(matches,
               // space delimited paths to populate!
-              {path: 'oppId.tags.tag user.tags.tag'},
+              {path: 'opportunity.tags.tag user.tags.tag'},
               function (err, deepMatches) {
-              // console.log('\ndeepMatches[0].oppId.tags:', deepMatches[0].oppId.tags);
+              // console.log('\ndeepMatches[0].opportunity.tags:', deepMatches[0].opportunity.tags);
               // console.log('\ndeepMatches[0].user.tags:', deepMatches[0].user.tags);
               populatedMatch = deepMatches;
               done();
@@ -281,14 +281,14 @@ describe('Opportunity Controller', function () {
     expect(populatedMatch[0].user.tags[3].score).toEqual(4);
 
     // test opportunity side
-    expect(populatedMatch[3].oppId.tags[0].tag.name).toEqual(tagMockData.valid4.name);
-    expect(populatedMatch[3].oppId.tags[1].tag.name).toEqual(tagMockData.valid5.name);
-    expect(populatedMatch[3].oppId.tags[2].tag.name).toEqual(tagMockData.valid2.name);
-    expect(populatedMatch[3].oppId.tags[3].tag.name).toEqual(tagMockData.valid3.name);
-    expect(populatedMatch[3].oppId.tags[0].score).toEqual(1);
-    expect(populatedMatch[3].oppId.tags[1].score).toEqual(2);
-    expect(populatedMatch[3].oppId.tags[2].score).toEqual(3);
-    expect(populatedMatch[3].oppId.tags[3].score).toEqual(4);
+    expect(populatedMatch[3].opportunity.tags[0].tag.name).toEqual(tagMockData.valid4.name);
+    expect(populatedMatch[3].opportunity.tags[1].tag.name).toEqual(tagMockData.valid5.name);
+    expect(populatedMatch[3].opportunity.tags[2].tag.name).toEqual(tagMockData.valid2.name);
+    expect(populatedMatch[3].opportunity.tags[3].tag.name).toEqual(tagMockData.valid3.name);
+    expect(populatedMatch[3].opportunity.tags[0].score).toEqual(1);
+    expect(populatedMatch[3].opportunity.tags[1].score).toEqual(2);
+    expect(populatedMatch[3].opportunity.tags[2].score).toEqual(3);
+    expect(populatedMatch[3].opportunity.tags[3].score).toEqual(4);
 
     done();
   });
@@ -313,20 +313,20 @@ describe('Opportunity Controller', function () {
       expect(data.body[0].user.tags[3].score).toEqual(4);
 
       // test opportunity side
-      expect(data.body[3].oppId.tags[0].tag.name).toEqual(tagMockData.valid4.name);
-      expect(data.body[3].oppId.tags[1].tag.name).toEqual(tagMockData.valid5.name);
-      expect(data.body[3].oppId.tags[2].tag.name).toEqual(tagMockData.valid2.name);
-      expect(data.body[3].oppId.tags[3].tag.name).toEqual(tagMockData.valid3.name);
-      expect(data.body[3].oppId.tags[0].score).toEqual(1);
-      expect(data.body[3].oppId.tags[1].score).toEqual(2);
-      expect(data.body[3].oppId.tags[2].score).toEqual(3);
-      expect(data.body[3].oppId.tags[3].score).toEqual(4);
+      expect(data.body[3].opportunity.tags[0].tag.name).toEqual(tagMockData.valid4.name);
+      expect(data.body[3].opportunity.tags[1].tag.name).toEqual(tagMockData.valid5.name);
+      expect(data.body[3].opportunity.tags[2].tag.name).toEqual(tagMockData.valid2.name);
+      expect(data.body[3].opportunity.tags[3].tag.name).toEqual(tagMockData.valid3.name);
+      expect(data.body[3].opportunity.tags[0].score).toEqual(1);
+      expect(data.body[3].opportunity.tags[1].score).toEqual(2);
+      expect(data.body[3].opportunity.tags[2].score).toEqual(3);
+      expect(data.body[3].opportunity.tags[3].score).toEqual(4);
 
       done();
     });
   });
 
-  it('should be able to GET and populate using oppId', function (done) {
+  it('should be able to GET and populate using opportunity', function (done) {
     request(app)
     .get('/api/matches/opportunities/' + mockOpp1)
     .end(function (err, data) {
@@ -355,14 +355,14 @@ describe('Opportunity Controller', function () {
       expect(data.body[1].user.tags[3].score).toEqual(4);
 
       // test opp
-      expect(data.body[1].oppId.tags[0].tag.name).toEqual(tagMockData.valid3.name);
-      expect(data.body[1].oppId.tags[1].tag.name).toEqual(tagMockData.valid.name);
-      expect(data.body[1].oppId.tags[2].tag.name).toEqual(tagMockData.valid4.name);
-      expect(data.body[1].oppId.tags[3].tag.name).toEqual(tagMockData.valid5.name);
-      expect(data.body[1].oppId.tags[0].score).toEqual(1);
-      expect(data.body[1].oppId.tags[1].score).toEqual(2);
-      expect(data.body[1].oppId.tags[2].score).toEqual(3);
-      expect(data.body[1].oppId.tags[3].score).toEqual(4);
+      expect(data.body[1].opportunity.tags[0].tag.name).toEqual(tagMockData.valid3.name);
+      expect(data.body[1].opportunity.tags[1].tag.name).toEqual(tagMockData.valid.name);
+      expect(data.body[1].opportunity.tags[2].tag.name).toEqual(tagMockData.valid4.name);
+      expect(data.body[1].opportunity.tags[3].tag.name).toEqual(tagMockData.valid5.name);
+      expect(data.body[1].opportunity.tags[0].score).toEqual(1);
+      expect(data.body[1].opportunity.tags[1].score).toEqual(2);
+      expect(data.body[1].opportunity.tags[2].score).toEqual(3);
+      expect(data.body[1].opportunity.tags[3].score).toEqual(4);
 
       done();
     });
@@ -377,24 +377,24 @@ describe('Opportunity Controller', function () {
       expect(data.body.length).toEqual(2);
 
       // test opp1
-      expect(data.body[0].oppId.tags[0].tag.name).toEqual(tagMockData.valid3.name);
-      expect(data.body[0].oppId.tags[1].tag.name).toEqual(tagMockData.valid.name);
-      expect(data.body[0].oppId.tags[2].tag.name).toEqual(tagMockData.valid4.name);
-      expect(data.body[0].oppId.tags[3].tag.name).toEqual(tagMockData.valid5.name);
-      expect(data.body[0].oppId.tags[0].score).toEqual(1);
-      expect(data.body[0].oppId.tags[1].score).toEqual(2);
-      expect(data.body[0].oppId.tags[2].score).toEqual(3);
-      expect(data.body[0].oppId.tags[3].score).toEqual(4);
+      expect(data.body[0].opportunity.tags[0].tag.name).toEqual(tagMockData.valid3.name);
+      expect(data.body[0].opportunity.tags[1].tag.name).toEqual(tagMockData.valid.name);
+      expect(data.body[0].opportunity.tags[2].tag.name).toEqual(tagMockData.valid4.name);
+      expect(data.body[0].opportunity.tags[3].tag.name).toEqual(tagMockData.valid5.name);
+      expect(data.body[0].opportunity.tags[0].score).toEqual(1);
+      expect(data.body[0].opportunity.tags[1].score).toEqual(2);
+      expect(data.body[0].opportunity.tags[2].score).toEqual(3);
+      expect(data.body[0].opportunity.tags[3].score).toEqual(4);
 
       // test opp2
-      expect(data.body[1].oppId.tags[0].tag.name).toEqual(tagMockData.valid4.name);
-      expect(data.body[1].oppId.tags[1].tag.name).toEqual(tagMockData.valid5.name);
-      expect(data.body[1].oppId.tags[2].tag.name).toEqual(tagMockData.valid2.name);
-      expect(data.body[1].oppId.tags[3].tag.name).toEqual(tagMockData.valid3.name);
-      expect(data.body[1].oppId.tags[0].score).toEqual(1);
-      expect(data.body[1].oppId.tags[1].score).toEqual(2);
-      expect(data.body[1].oppId.tags[2].score).toEqual(3);
-      expect(data.body[1].oppId.tags[3].score).toEqual(4);
+      expect(data.body[1].opportunity.tags[0].tag.name).toEqual(tagMockData.valid4.name);
+      expect(data.body[1].opportunity.tags[1].tag.name).toEqual(tagMockData.valid5.name);
+      expect(data.body[1].opportunity.tags[2].tag.name).toEqual(tagMockData.valid2.name);
+      expect(data.body[1].opportunity.tags[3].tag.name).toEqual(tagMockData.valid3.name);
+      expect(data.body[1].opportunity.tags[0].score).toEqual(1);
+      expect(data.body[1].opportunity.tags[1].score).toEqual(2);
+      expect(data.body[1].opportunity.tags[2].score).toEqual(3);
+      expect(data.body[1].opportunity.tags[3].score).toEqual(4);
 
       // test user
       expect(data.body[1].user.tags[0].tag.name).toEqual(tagMockData.valid5.name);
@@ -410,7 +410,7 @@ describe('Opportunity Controller', function () {
     });
   });
 
-  it('should update (via PUT) and GET using oppId and user', function (done) {
+  it('should update (via PUT) and GET using opportunity and user', function (done) {
     request(app)
     .put('/api/matches/users/' + mockUser2 + '/opportunities/' + mockOpp1)
     .send({
@@ -426,14 +426,14 @@ describe('Opportunity Controller', function () {
         if (err) return done(err);
 
         // test opp
-        expect(data.body.oppId.tags[0].tag.name).toEqual(tagMockData.valid3.name);
-        expect(data.body.oppId.tags[1].tag.name).toEqual(tagMockData.valid.name);
-        expect(data.body.oppId.tags[2].tag.name).toEqual(tagMockData.valid4.name);
-        expect(data.body.oppId.tags[3].tag.name).toEqual(tagMockData.valid5.name);
-        expect(data.body.oppId.tags[0].score).toEqual(1);
-        expect(data.body.oppId.tags[1].score).toEqual(2);
-        expect(data.body.oppId.tags[2].score).toEqual(3);
-        expect(data.body.oppId.tags[3].score).toEqual(4);
+        expect(data.body.opportunity.tags[0].tag.name).toEqual(tagMockData.valid3.name);
+        expect(data.body.opportunity.tags[1].tag.name).toEqual(tagMockData.valid.name);
+        expect(data.body.opportunity.tags[2].tag.name).toEqual(tagMockData.valid4.name);
+        expect(data.body.opportunity.tags[3].tag.name).toEqual(tagMockData.valid5.name);
+        expect(data.body.opportunity.tags[0].score).toEqual(1);
+        expect(data.body.opportunity.tags[1].score).toEqual(2);
+        expect(data.body.opportunity.tags[2].score).toEqual(3);
+        expect(data.body.opportunity.tags[3].score).toEqual(4);
 
         // test user
         expect(data.body.user.tags[0].tag.name).toEqual(tagMockData.valid5.name);

@@ -15,7 +15,7 @@ var historySchema = new mongoose.Schema({
         }],
       userInterest:
         [{
-          oppId:  {type: mongoOID, ref: 'Opportunity'},
+          opportunity:  {type: mongoOID, ref: 'Opportunity'},
           score:  {type: Number, min: 1, max: 4}
         }],
     }],

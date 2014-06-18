@@ -217,7 +217,7 @@ describe('Opportunity Controller', function () {
     });
   });
 
-it('should be able to GET by oppId and populate', function (done) {
+it('should be able to GET by opportunity and populate', function (done) {
     // create tag
     var tag;
     request(app)
@@ -248,13 +248,13 @@ it('should be able to GET by oppId and populate', function (done) {
           stage: 'Offer Received'
         }];
 
-        var oppId;
+        var opportunity;
         request(app)
         .post('/api/opportunities')
         .send(oppMockData.minimum2)
         .end(function (err, newOpp) {
           if (err) return done(err);
-          oppId = newOpp.body;
+          opportunity = newOpp.body;
           expect(newOpp.statusCode).toEqual(201);
           delete oppMockData.minimum2.company;
           delete oppMockData.minimum2.tags;
@@ -262,7 +262,7 @@ it('should be able to GET by oppId and populate', function (done) {
 
           // check properties returned in GET
           request(app)
-          .get('/api/opportunities/' + oppId)
+          .get('/api/opportunities/' + opportunity)
           .end(function (err, opp) {
             if (err) return done(err);
             expect(opp.statusCode).toEqual(200);
@@ -276,8 +276,8 @@ it('should be able to GET by oppId and populate', function (done) {
     });
   });
 
-  it('should FAIL to GET with an invalid oppId', function (done) {
-    var oppId = '/api/opportunities/' + '123456789';
+  it('should FAIL to GET with an invalid opportunity', function (done) {
+    var opportunity = '/api/opportunities/' + '123456789';
     oppMockData.minimum.company = mockCompany._id;
 
     request(app)
@@ -287,7 +287,7 @@ it('should be able to GET by oppId and populate', function (done) {
       expect(res.statusCode).toEqual(201);
 
       request(app)
-      .get(oppId)
+      .get(opportunity)
       .end(function (err, res) {
         if (err) return done(err);
         expect(res.statusCode).toEqual(500);
@@ -297,19 +297,19 @@ it('should be able to GET by oppId and populate', function (done) {
     });
   });
 
-  it('should update (via PUT) an existing oppId', function (done) {
+  it('should update (via PUT) an existing opportunity', function (done) {
     oppMockData.minimum.company = mockCompany._id;
-    var oppId;
+    var opportunity;
     request(app)
     .post('/api/opportunities')
     .send(oppMockData.minimum)
     .end(function (err, res) {
       expect(res.statusCode).toEqual(201);
-      oppId = res.body;
+      opportunity = res.body;
 
       // add properties
       request(app)
-      .put('/api/opportunities/' + oppId)
+      .put('/api/opportunities/' + opportunity)
       .send({internalNotes: [{date: new Date(), text: 'omgwtfbbq'}]})
       .end(function (err, res2) {
         expect(res2.statusCode).toEqual(201);
@@ -317,7 +317,7 @@ it('should be able to GET by oppId and populate', function (done) {
         delete oppMockData.minimum.internalNotes;
 
         request(app)
-        .get('/api/opportunities/' + oppId)
+        .get('/api/opportunities/' + opportunity)
         .end(function (err, res3) {
           expect(res3.statusCode).toEqual(200);
           expect(res3.body.internalNotes[0].text).toEqual('omgwtfbbq');

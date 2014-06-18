@@ -127,7 +127,7 @@ describe('Company Model', function () {
 
   it("should automatically append an opportunity to company's opportunities list", function (done) {
     var companyId;
-    var oppId;
+    var opportunity;
     Company.create(companyMockData.valid, function (err, newCompany) {
       expect(err).toBeNull();
       expect(newCompany).toBeDefined();
@@ -137,12 +137,12 @@ describe('Company Model', function () {
       Opp.create(oppMockData.minimum, function (err , newOpp) {
         expect(err).toBeNull();
         expect(newOpp).toBeDefined();
-        oppId = newOpp._id;
+        opportunity = newOpp._id;
 
         var delay = function () {
           Company.findById(companyId, function (err, data) {
             expect(data.opportunities.length).toEqual(1);
-            expect(data.opportunities[0]).toEqual(oppId);
+            expect(data.opportunities[0]).toEqual(opportunity);
             done();
           });
         };

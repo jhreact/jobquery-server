@@ -7,7 +7,7 @@ module.exports = exports = {
     Match.find({user: req.params.id})
     .populate([
       {path: 'user'},
-      {path: 'oppId'}
+      {path: 'opportunity'}
     ])
     .exec(function (err, matches) {
       if (err) {
@@ -16,7 +16,7 @@ module.exports = exports = {
       }
       Tag.populate(
         matches,
-        {path: 'oppId.tags.tag user.tags.tag'},
+        {path: 'opportunity.tags.tag user.tags.tag'},
         function (err, deepMatches) {
           if (err) {
             res.json(500, err);
@@ -28,10 +28,10 @@ module.exports = exports = {
   },
 
   getByOppId: function (req, res) {
-    Match.find({oppId: req.params.id})
+    Match.find({opportunity: req.params.id})
     .populate([
       {path: 'user'},
-      {path: 'oppId'}
+      {path: 'opportunity'}
     ])
     .exec(function (err, matches) {
       if (err) {
@@ -40,7 +40,7 @@ module.exports = exports = {
       }
       Tag.populate(
         matches,
-        {path: 'oppId.tags.tag user.tags.tag'},
+        {path: 'opportunity.tags.tag user.tags.tag'},
         function (err, deepMatches) {
           if (err) {
             res.json(500, err);
@@ -53,7 +53,7 @@ module.exports = exports = {
 
   putByIds: function (req, res) {
     Match.findOne({
-      oppId: req.params.oppId,
+      opportunity: req.params.opportunity,
       user: req.params.user
     }, function (err, match) {
       if (err) {
@@ -81,12 +81,12 @@ module.exports = exports = {
 
   getByIds: function (req, res) {
     Match.findOne({
-      oppId: req.params.oppId,
+      opportunity: req.params.opportunity,
       user: req.params.user
     })
     .populate([
       {path: 'user'},
-      {path: 'oppId'}
+      {path: 'opportunity'}
     ])
     .exec(function (err, matches) {
       if (err) {
@@ -95,7 +95,7 @@ module.exports = exports = {
       }
       Tag.populate(
         matches,
-        {path: 'oppId.tags.tag user.tags.tag'},
+        {path: 'opportunity.tags.tag user.tags.tag'},
         function (err, deepMatches) {
           if (err) {
             res.json(500, err);
@@ -110,7 +110,7 @@ module.exports = exports = {
     Match.find()
     .populate([
       {path: 'user'},
-      {path: 'oppId'}
+      {path: 'opportunity'}
     ])
     .exec(function (err, matches) {
       if (err) {
@@ -119,7 +119,7 @@ module.exports = exports = {
       }
       Tag.populate(
         matches,
-        {path: 'oppId.tags.tag user.tags.tag'},
+        {path: 'opportunity.tags.tag user.tags.tag'},
         function (err, deepMatches) {
           if (err) {
             res.json(500, err);

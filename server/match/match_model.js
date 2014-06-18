@@ -6,7 +6,7 @@ var mongoOID = mongoose.Schema.Types.ObjectId;
 
 var matchSchema = new mongoose.Schema({
   user:         {type: mongoOID, required: true, ref: 'User'},
-  oppId:          {type: mongoOID, required: true, ref: 'Opportunity'},
+  opportunity:          {type: mongoOID, required: true, ref: 'Opportunity'},
   isProcessed:    {type: Boolean, required: true, default: false},
   userInterest:   {type: Number, min: 0, max: 4},
   adminOverride:  {type: Number, min: 0, max: 4},
@@ -25,6 +25,6 @@ matchSchema.pre('save', function (next) {
 });
 
 // compound index
-matchSchema.index({user: 1, oppId: 1}, {unique: true});
+matchSchema.index({user: 1, opportunity: 1}, {unique: true});
 
 module.exports = exports = mongoose.model('Match', matchSchema);

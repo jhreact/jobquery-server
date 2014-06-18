@@ -26,6 +26,16 @@ module.exports = exports = {
       Company.schema.eachPath(function (field) {
         if ( (field !== '_id') && (field !== '__v') ) {
           if (req.body[field] !== undefined) {
+            // depopulate opportunities
+            if (field === 'opportunities') {
+              if (req.body.company._id) {
+                for (var i = 0; i < req.body.company.length; i += 1) {
+                  if (req.body.company[i]._id) {
+                    req.body.company[i] = req.body.company[i]._id;
+                  }
+                }
+              }
+            }
             company[field] = req.body[field];
           }
         }

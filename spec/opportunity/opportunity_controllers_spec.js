@@ -14,10 +14,12 @@ var Opp = require('../../server/opportunity/opportunity_model.js');
 var Company = require('../../server/company/company_model.js');
 var Tag = require('../../server/tag/tag_model.js');
 var User = require('../../server/user/user_model.js');
+var Match = require('../../server/match/match_model.js');
 var oppMockData = require('./opportunity_model_MockData.js');
 var companyMockData = require('../company/company_model_MockData.js');
 var tagMockData = require('../tag/tag_model_MockData.js');
 var userMockData = require('../user/user_model_MockData.js');
+var matchMockData = require('../match/match_model_MockData.js');
 
 var mockCompany;
 

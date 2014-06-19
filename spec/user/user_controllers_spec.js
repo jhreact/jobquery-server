@@ -131,7 +131,7 @@ describe('User Controller', function () {
     .post('/api/users')
     .send(userMockData.valid)
     .end(function (err, res) {
-      user = res.body;
+      user = res.body._id;
       expect(res.statusCode).toEqual(201);
 
       // post user2
@@ -183,7 +183,7 @@ describe('User Controller', function () {
 
       // retrieve tag
       request(app)
-      .get('/api/tags/' + res.body)
+      .get('/api/tags/' + res.body._id)
       .end(function (err, res) {
       if (err) return done(err);
         expect(res.statusCode).toEqual(200);
@@ -199,9 +199,8 @@ describe('User Controller', function () {
     .post('/api/users')
     .send(userMockData.minimum2)
     .end(function (err, res) {
-
       if (err) return done(err);
-      user = res.body;
+      user = res.body._id;
       expect(res.statusCode).toEqual(201);
 
       // create tag
@@ -211,8 +210,8 @@ describe('User Controller', function () {
       .send(tagMockData.valid4)
       .end(function (err, res4) {
         if (err) return done(err);
+        tag = res4.body._id;
         expect(res4.statusCode).toEqual(201);
-        tag = res4.body;
 
         // update user
         request(app)
@@ -248,7 +247,7 @@ describe('User Controller', function () {
     .end(function (err, newTag) {
       if (err) return done(err);
       expect(newTag.statusCode).toEqual(201);
-      tag = newTag.body;
+      tag = newTag.body._id;
 
       // create a user
       userMockData.minimum2.tags = [{tag: tag, score: 2}];
@@ -259,7 +258,7 @@ describe('User Controller', function () {
       .end(function (err, newUser) {
 
         if (err) return done(err);
-        userId = newUser.body;
+        userId = newUser.body._id;
         expect(newUser.statusCode).toEqual(201);
 
         //get user
@@ -360,7 +359,7 @@ describe('User Controller', function () {
       expect(company.statusCode).toEqual(201);
 
       // create opportunity (x2)
-      oppMockData.minimum.company = company.body;
+      oppMockData.minimum.company = company.body._id;
       request(app)
       .post('/api/opportunities')
       .send(oppMockData.minimum)
@@ -368,7 +367,7 @@ describe('User Controller', function () {
         if (err) return done(err);
         expect(opp1.statusCode).toEqual(201);
 
-        oppMockData.minimum2.company = company.body;
+        oppMockData.minimum2.company = company.body._id;
         request(app)
         .post('/api/opportunities')
         .send(oppMockData.minimum2)

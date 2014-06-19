@@ -123,7 +123,7 @@ describe('Company Controller', function () {
     .post('/api/companies')
     .send(companyMockData.valid)
     .end(function (err, res) {
-      companyId = res.body;
+      companyId = res.body._id;
       expect(res.statusCode).toEqual(201);
 
       // post company2
@@ -173,7 +173,7 @@ describe('Company Controller', function () {
     .end(function (err, res) {
       if (err) return done(err);
       expect(res.statusCode).toEqual(201);
-      companyId = res.body;
+      companyId = res.body._id;
 
       // update company
       request(app)

@@ -49,7 +49,7 @@ var populate = function() {
         var tag = {
           name:             faker.random.bs_noun() + i,
           label:            faker.random.catch_phrase_descriptor(),
-          scaleDescription: ['None', 'Basic', 'Experienced', 'Expert'],
+          scaleDescription: [null,'None', 'Basic', 'Experienced', 'Expert'],
           category:         categoryResults[Math.floor(Math.random() * categoryResults.length)]._id
         };
         tagSaves.push(Tag.create(tag));

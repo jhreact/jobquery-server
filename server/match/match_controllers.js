@@ -2,64 +2,65 @@ var Match = require('./match_model.js');
 var Tag = require('../tag/tag_model.js');
 var Category = require('../category/category_model.js');
 var Company = require('../company/company_model.js');
+var Q = require('q');
 
+var formattedOutput = function (res, populated) {
+  var formatted = {};
+  var user;
+  var opp;
+  for (var i = 0; i < populated.length; i += 1) {
+    userId = populated[i].user._id;
+    opp = {};
+    // check to see if user exists
+    if (!formatted.hasOwnProperty(userId)) {
+      // if user does not exist, create user portion
+      formatted[userId] = {
+        user:           populated[i].user,
+        opportunities:  []
+      };
+    }
+    // always, format opportunity portion, then push
+    opp = populated[i].opportunity;
+    opp.isProcessed     = populated[i].isProcessed;
+    opp.userInterest    = populated[i].userInterest;
+    opp.adminOverride   = populated[i].adminOverride;
+    opp.answers         = populated[i].answers;
+    formatted[userId].opportunities.push(opp);
+  }
+  res.send(200, formatted);
+};
 
-var popAndConvert = function (res, matches) {
+var poppoppop = function (res, matches) {
+  var deferred = Q.defer();
   Tag.populate(
     matches,
     {path: 'opportunity.tags.tag user.tags.tag'},
     function (err, matchesWithTags) {
       if (err) {
-        res.json(500, err);
-        return;
+        deferred.reject(err);
       }
       Company.populate(
         matchesWithTags,
         {path: 'opportunity.company'},
         function (err, matchesWithTagsAndCompany) {
           if (err) {
-            res.json(500, err);
-            return;
+            deferred.reject(err);
           }
           Category.populate(
             matchesWithTagsAndCompany,
             {path: 'opportunity.company.category user.category opportunity.tags.tag.category user.tags.tag.category'},
             function (err, populated) {
               if (err) {
-                res.json(500, err);
-                return;
+                deferred.reject(err);
               }
-              // res.json(200, populated);
-
-              var formatted = {};
-              var user;
-              var opp;
-              for (var i = 0; i < populated.length; i += 1) {
-                userId = populated[i].user._id;
-                opp = {};
-                // check to see if user exists
-                if (!formatted.hasOwnProperty(userId)) {
-                  // if user does not exist, create user portion
-                  formatted[userId] = {
-                    user:           populated[i].user,
-                    opportunities:  []
-                  };
-                }
-                // always, format opportunity portion, then push
-                opp = populated[i].opportunity;
-                opp.isProcessed     = populated[i].isProcessed;
-                opp.userInterest    = populated[i].userInterest;
-                opp.adminOverride   = populated[i].adminOverride;
-                opp.answers         = populated[i].answers;
-                formatted[userId].opportunities.push(opp);
-              }
-              res.send(200, formatted);
+              deferred.resolve(populated);
             }
           );
         }
       );
     }
   );
+  return deferred.promise;
 };
 
 module.exports = exports = {
@@ -75,7 +76,12 @@ module.exports = exports = {
         res.json(500, err);
         return;
       }
-      popAndConvert(res, matches);
+      poppoppop(res, matches)
+      .then(function (populatedResults) {
+        formattedOutput(res, populatedResults);
+      }, function (err) {
+        res.json(500, err);
+      });
     });
   },
 
@@ -90,7 +96,12 @@ module.exports = exports = {
         res.json(500, err);
         return;
       }
-      popAndConvert(res, matches);
+      poppoppop(res, matches)
+      .then(function (populatedResults) {
+        formattedOutput(res, populatedResults);
+      }, function (err) {
+        res.json(500, err);
+      });
     });
   },
 
@@ -148,7 +159,12 @@ module.exports = exports = {
         res.json(500, err);
         return;
       }
-      popAndConvert(res, matches);
+      poppoppop(res, matches)
+      .then(function (populatedResults) {
+        formattedOutput(res, populatedResults);
+      }, function (err) {
+        res.json(500, err);
+      });
     });
   },
 
@@ -163,7 +179,12 @@ module.exports = exports = {
         res.json(500, err);
         return;
       }
-      popAndConvert(res, matches);
+      poppoppop(res, matches)
+      .then(function (populatedResults) {
+        res.json(200, populatedResults);
+      }, function (err) {
+        res.json(500, err);
+      });
     });
   }
 };

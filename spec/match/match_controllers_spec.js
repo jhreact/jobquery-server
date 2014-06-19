@@ -273,7 +273,7 @@ describe('Opportunity Controller', function () {
     });
   });
 
-  xit('should be able to GET and populate', function (done) {
+  it('should be able to GET and populate', function (done) {
     request(app)
     .get('/api/matches')
     .end(function (err, data) {
@@ -347,50 +347,16 @@ describe('Opportunity Controller', function () {
     });
   });
 
-  xit('should be able to GET and populate using user', function (done) {
+  it('should be able to GET and populate using user', function (done) {
     request(app)
     .get('/api/matches/users/' + mockUser2)
     .end(function (err, data) {
       if (err) return done(err);
 
-      expect(data.body.length).toEqual(2);
+      expect(Object.keys(data.body).length).toEqual(1);
 
-      // test opp1
-      expect(data.body[0].opportunity.tags[0].tag.name).toEqual(tagMockData.valid3.name);
-      expect(data.body[0].opportunity.tags[1].tag.name).toEqual(tagMockData.valid.name);
-      expect(data.body[0].opportunity.tags[2].tag.name).toEqual(tagMockData.valid4.name);
-      expect(data.body[0].opportunity.tags[3].tag.name).toEqual(tagMockData.valid5.name);
-      expect(data.body[0].opportunity.tags[0].score).toEqual(1);
-      expect(data.body[0].opportunity.tags[1].score).toEqual(2);
-      expect(data.body[0].opportunity.tags[2].score).toEqual(3);
-      expect(data.body[0].opportunity.tags[3].score).toEqual(4);
-
-      // test opp2
-      expect(data.body[1].opportunity.tags[0].tag.name).toEqual(tagMockData.valid4.name);
-      expect(data.body[1].opportunity.tags[1].tag.name).toEqual(tagMockData.valid5.name);
-      expect(data.body[1].opportunity.tags[2].tag.name).toEqual(tagMockData.valid2.name);
-      expect(data.body[1].opportunity.tags[3].tag.name).toEqual(tagMockData.valid3.name);
-      expect(data.body[1].opportunity.tags[0].score).toEqual(1);
-      expect(data.body[1].opportunity.tags[1].score).toEqual(2);
-      expect(data.body[1].opportunity.tags[2].score).toEqual(3);
-      expect(data.body[1].opportunity.tags[3].score).toEqual(4);
-
-      // test user
-      expect(data.body[1].user.tags[0].tag.name).toEqual(tagMockData.valid5.name);
-      expect(data.body[1].user.tags[1].tag.name).toEqual(tagMockData.valid4.name);
-      expect(data.body[1].user.tags[2].tag.name).toEqual(tagMockData.valid3.name);
-      expect(data.body[1].user.tags[3].tag.name).toEqual(tagMockData.valid2.name);
-      expect(data.body[1].user.tags[0].score).toEqual(1);
-      expect(data.body[1].user.tags[1].score).toEqual(2);
-      expect(data.body[1].user.tags[2].score).toEqual(3);
-      expect(data.body[1].user.tags[3].score).toEqual(4);
-
-      // test population through category
-      expect(data.body[0].user.category.name).toEqual(categoryMockData.validUser2.name);
-      expect(data.body[0].user.tags[0].tag.category.name).toEqual(categoryMockData.validTag.name);
-      expect(data.body[0].opportunity.company.category.name).toEqual(categoryMockData.validCompany.name);
-      expect(data.body[0].opportunity.tags[0].tag.category.name).toEqual(categoryMockData.validTag.name);
-      expect(data.body[0].opportunity.company.category.name).toEqual(categoryMockData.validCompany.name);
+      expect(data.body[mockUser2]).toBeDefined();
+      expect(data.body[mockUser2].user.name).toEqual(userMockData.minimum2.name);
 
       done();
     });

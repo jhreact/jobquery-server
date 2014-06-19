@@ -14,10 +14,12 @@ var Opp = require('../../server/opportunity/opportunity_model.js');
 var Company = require('../../server/company/company_model.js');
 var Tag = require('../../server/tag/tag_model.js');
 var User = require('../../server/user/user_model.js');
+var Match = require('../../server/match/match_model.js');
 var oppMockData = require('./opportunity_model_MockData.js');
 var companyMockData = require('../company/company_model_MockData.js');
 var tagMockData = require('../tag/tag_model_MockData.js');
 var userMockData = require('../user/user_model_MockData.js');
+var matchMockData = require('../match/match_model_MockData.js');
 
 var mockCompany;
 
@@ -101,7 +103,7 @@ describe('Opportunity Controller', function () {
     .send(tagMockData.valid2)
     .end(function (err, newTag) {
       if (err) return done(err);
-      tag = newTag.body;
+      tag = newTag.body._id;
       expect(newTag.statusCode).toEqual(201);
 
       // create user
@@ -111,7 +113,7 @@ describe('Opportunity Controller', function () {
       .send(userMockData.minimum)
       .end(function (err, newUser) {
         if (err) return done(err);
-        user = newUser.body;
+        user = newUser.body._id;
         expect(newUser.statusCode).toEqual(201);
 
         // create opportunity
@@ -147,7 +149,7 @@ describe('Opportunity Controller', function () {
     .send(tagMockData.valid2)
     .end(function (err, newTag) {
       if (err) return done(err);
-      tag = newTag.body;
+      tag = newTag.body._id;
       expect(newTag.statusCode).toEqual(201);
 
       // create user
@@ -157,7 +159,7 @@ describe('Opportunity Controller', function () {
       .send(userMockData.minimum)
       .end(function (err, newUser) {
         if (err) return done(err);
-        user = newUser.body;
+        user = newUser.body._id;
         expect(newUser.statusCode).toEqual(201);
 
         // setup & create opportunity1
@@ -225,7 +227,7 @@ it('should be able to GET by opportunity and populate', function (done) {
     .send(tagMockData.valid2)
     .end(function (err, newTag) {
       if (err) return done(err);
-      tag = newTag.body;
+      tag = newTag.body._id;
       expect(newTag.statusCode).toEqual(201);
 
       // create user
@@ -235,7 +237,7 @@ it('should be able to GET by opportunity and populate', function (done) {
       .send(userMockData.minimum)
       .end(function (err, newUser) {
         if (err) return done(err);
-        user = newUser.body;
+        user = newUser.body._id;
         expect(newUser.statusCode).toEqual(201);
 
         // setup & create opportunity2
@@ -254,7 +256,7 @@ it('should be able to GET by opportunity and populate', function (done) {
         .send(oppMockData.minimum2)
         .end(function (err, newOpp) {
           if (err) return done(err);
-          opportunity = newOpp.body;
+          opportunity = newOpp.body._id;
           expect(newOpp.statusCode).toEqual(201);
           delete oppMockData.minimum2.company;
           delete oppMockData.minimum2.tags;
@@ -305,7 +307,7 @@ it('should be able to GET by opportunity and populate', function (done) {
     .send(oppMockData.minimum)
     .end(function (err, res) {
       expect(res.statusCode).toEqual(201);
-      opportunity = res.body;
+      opportunity = res.body._id;
 
       // add properties
       request(app)

@@ -8,8 +8,8 @@ var matchSchema = new mongoose.Schema({
   user:         {type: mongoOID, required: true, ref: 'User'},
   opportunity:          {type: mongoOID, required: true, ref: 'Opportunity'},
   isProcessed:    {type: Boolean, required: true, default: false},
-  userInterest:   {type: Number, min: 0, max: 4},
-  adminOverride:  {type: Number, min: 0, max: 4},
+  userInterest:   {type: Number, min: 0, max: 4, default: 0},
+  adminOverride:  {type: Number, min: 0, max: 4, default: 0},
   answers:
     [{
       date:       {type: Date, required: true, default: Date.now},

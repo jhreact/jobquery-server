@@ -155,66 +155,10 @@ var createOpps = function (done) {
 
     Opp.create(oppMockData.minimum2, function (err, newOpp2) {
     mockOpp2 = newOpp2._id;
-      done();
+      setTimeout(done, 200);
     });
   });
 };
-
-var mockMatch1;
-var mockMatch2;
-var mockMatch3;
-var mockMatch4;
-var populatedMatch;
-var createMatches = function (done) {
-  // assign user and companies to opps
-  matchMockData.valid.user  = mockUser1;
-  matchMockData.valid.opportunity  = mockOpp1;
-
-  matchMockData.valid2.user  = mockUser1;
-  matchMockData.valid2.opportunity  = mockOpp2;
-
-  matchMockData.valid3.user  = mockUser2;
-  matchMockData.valid3.opportunity  = mockOpp1;
-
-  matchMockData.valid4.user  = mockUser2;
-  matchMockData.valid4.opportunity  = mockOpp2;
-
-  // create matchs
-  Match.create(matchMockData.valid, function (err, newMatch) {
-    mockMatch1 = newMatch._id;
-
-    Match.create(matchMockData.valid2, function (err, newMatch2) {
-      mockMatch2 = newMatch2._id;
-
-      Match.create(matchMockData.valid3, function (err, newMatch3) {
-        mockMatch3 = newMatch3._id;
-
-        Match.create(matchMockData.valid4, function (err, newMatch4) {
-          mockMatch4 = newMatch4._id;
-
-          Match.find()
-          .populate([
-            {path: 'user'},
-            {path: 'opportunity'}
-          ])
-          .exec(function (err, matches) {
-
-            Tag.populate(matches,
-              // space delimited paths to populate!
-              {path: 'opportunity.tags.tag user.tags.tag'},
-              function (err, deepMatches) {
-              // console.log('\ndeepMatches[0].opportunity.tags:', deepMatches[0].opportunity.tags);
-              // console.log('\ndeepMatches[0].user.tags:', deepMatches[0].user.tags);
-              populatedMatch = deepMatches;
-              done();
-            });
-          });
-        });
-      });
-    });
-  });
-};
-
 
 describe('Opportunity Controller', function () {
 
@@ -262,35 +206,22 @@ describe('Opportunity Controller', function () {
     createOpps(done);
   });
 
-  beforeEach(function (done) {
-    createMatches(done);
-  });
+  it('should automatically create matches from new users and opportunities', function (done) {
+    Match.find(function (err, matches) {
+      expect(matches.length).toEqual(4);
 
-  it('should have company, opps, tags, and users created, populated too', function (done) {
-    expect(true).toEqual(true);
-    expect(populatedMatch.length).toEqual(4);
+      expect(matches[0].user).toEqual(mockUser1);
+      expect(matches[1].user).toEqual(mockUser2);
+      expect(matches[2].user).toEqual(mockUser1);
+      expect(matches[3].user).toEqual(mockUser2);
 
-    // test user side
-    expect(populatedMatch[0].user.tags[0].tag.name).toEqual(tagMockData.valid.name);
-    expect(populatedMatch[0].user.tags[1].tag.name).toEqual(tagMockData.valid2.name);
-    expect(populatedMatch[0].user.tags[2].tag.name).toEqual(tagMockData.valid3.name);
-    expect(populatedMatch[0].user.tags[3].tag.name).toEqual(tagMockData.valid4.name);
-    expect(populatedMatch[0].user.tags[0].score).toEqual(1);
-    expect(populatedMatch[0].user.tags[1].score).toEqual(2);
-    expect(populatedMatch[0].user.tags[2].score).toEqual(3);
-    expect(populatedMatch[0].user.tags[3].score).toEqual(4);
+      expect(matches[0].opportunity).toEqual(mockOpp1);
+      expect(matches[1].opportunity).toEqual(mockOpp1);
+      expect(matches[2].opportunity).toEqual(mockOpp2);
+      expect(matches[3].opportunity).toEqual(mockOpp2);
 
-    // test opportunity side
-    expect(populatedMatch[3].opportunity.tags[0].tag.name).toEqual(tagMockData.valid4.name);
-    expect(populatedMatch[3].opportunity.tags[1].tag.name).toEqual(tagMockData.valid5.name);
-    expect(populatedMatch[3].opportunity.tags[2].tag.name).toEqual(tagMockData.valid2.name);
-    expect(populatedMatch[3].opportunity.tags[3].tag.name).toEqual(tagMockData.valid3.name);
-    expect(populatedMatch[3].opportunity.tags[0].score).toEqual(1);
-    expect(populatedMatch[3].opportunity.tags[1].score).toEqual(2);
-    expect(populatedMatch[3].opportunity.tags[2].score).toEqual(3);
-    expect(populatedMatch[3].opportunity.tags[3].score).toEqual(4);
-
-    done();
+      done();
+    });
   });
 
   it('should be able to GET and populate', function (done) {
@@ -312,7 +243,7 @@ describe('Opportunity Controller', function () {
       expect(data.body[0].user.tags[2].score).toEqual(3);
       expect(data.body[0].user.tags[3].score).toEqual(4);
 
-      // test opportunity side
+      // // test opportunity side
       expect(data.body[3].opportunity.tags[0].tag.name).toEqual(tagMockData.valid4.name);
       expect(data.body[3].opportunity.tags[1].tag.name).toEqual(tagMockData.valid5.name);
       expect(data.body[3].opportunity.tags[2].tag.name).toEqual(tagMockData.valid2.name);

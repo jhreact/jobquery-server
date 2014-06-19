@@ -52,7 +52,7 @@ module.exports = exports = {
           if (req.body[field] !== undefined) {
             // depopulate category
             if (field === 'category') {
-              if (req.body.category._id) {
+              if (req.body.category && req.body.category._id) {
                 req.body.category = req.body.category._id;
               }
             }

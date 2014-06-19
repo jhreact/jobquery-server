@@ -31,15 +31,17 @@ module.exports = exports = {
           if (req.body[field] !== undefined) {
             // depopulate tags
             if (field === 'tags') {
-              for (var i = 0; i < req.body.tags.length; i += 1) {
-                if (req.body.tags[i].tag._id) {
-                  req.body.tags[i].tag = req.body.tags[i].tag._id;
+              if (req.body.tags) {
+                for (var i = 0; i < req.body.tags.length; i += 1) {
+                  if (req.body.tags[i].tag._id) {
+                    req.body.tags[i].tag = req.body.tags[i].tag._id;
+                  }
                 }
               }
             }
             // depopulate category
             if (field === 'category') {
-              if (req.body.category._id) {
+              if (req.body.category && req.body.category._id) {
                 req.body.category = req.body.category._id;
               }
             }

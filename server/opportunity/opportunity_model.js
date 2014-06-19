@@ -2,6 +2,7 @@
 
 var mongoose = require('mongoose');
 var Company = require('../company/company_model.js');
+var Match = require('../match/match_model.js');
 
 var mongoOID = mongoose.Schema.Types.ObjectId;
 
@@ -70,3 +71,17 @@ opportunitySchema.post('save', function (doc) {
 });
 
 module.exports = exports = mongoose.model('Opportunity', opportunitySchema);
+
+opportunitySchema.post('save', function (doc) {
+  // find all users
+  // import here to avoid circular reference when requiring
+  require('../user/user_model.js').find(function (err, users) {
+    users.forEach(function (user) {
+      // then create a match per user for the new opportunity
+      Match.create({
+        user:           user._id,
+        opportunity:    doc._id,
+      });
+    });
+  });
+});

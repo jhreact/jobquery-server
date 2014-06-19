@@ -1,6 +1,8 @@
 "use strict";
 
 var mongoose = require('mongoose');
+var Match = require('../match/match_model.js');
+var Opportunity = require('../opportunity/opportunity_model.js');
 
 var mongoOID = mongoose.Schema.Types.ObjectId;
 
@@ -43,6 +45,19 @@ var userSchema = new mongoose.Schema({
 userSchema.pre('save', function (next) {
   this.updatedAt = new Date();
   next();
+});
+
+userSchema.post('save', function (doc) {
+  // find all opportunities
+  Opportunity.find(function (err, opps) {
+    opps.forEach(function (opp) {
+      // then create a match per opportunity for the given user
+      Match.create({
+        user:           doc._id,
+        opportunity:    opp._id,
+      });
+    });
+  });
 });
 
 module.exports = exports = mongoose.model('User', userSchema);

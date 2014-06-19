@@ -124,7 +124,7 @@ describe('Tag Controller', function () {
     .post('/api/tags')
     .send(tagMockData.valid)
     .end(function (err, res) {
-      tag = res.body;
+      tag = res.body._id;
       expect(res.statusCode).toEqual(201);
 
       // post tag2
@@ -176,7 +176,7 @@ describe('Tag Controller', function () {
 
       // retrieve tag
       request(app)
-      .get('/api/tags/' + res.body)
+      .get('/api/tags/' + res.body._id)
       .end(function (err, res) {
       if (err) return done(err);
         expect(res.statusCode).toEqual(200);
@@ -217,7 +217,7 @@ describe('Tag Controller', function () {
           .end(function (err, res) {
             if (err) return done(err);
             expect(res.statusCode).toEqual(201);
-            tag = res.body;
+            tag = res.body._id;
 
             // request tag
             request(app)

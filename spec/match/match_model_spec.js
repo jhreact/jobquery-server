@@ -75,7 +75,7 @@ var createOpportunity = function (done) {
   oppMockData.minimum.company = mockCompany._id;
   Opp.create(oppMockData.minimum, function (err, newOpp) {
     mockOpp = newOpp;
-    done();
+    setTimeout(done, 200);
   });
 };
 

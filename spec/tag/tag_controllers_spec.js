@@ -192,7 +192,7 @@ describe('Tag Controller', function () {
     .post('/api/categories')
     .send(categoryMockData.valid2)
     .end(function (err, newCategory) {
-      categoryId = newCategory.body;
+      categoryId = newCategory.body._id;
 
       var category1;
       request(app)
@@ -206,7 +206,7 @@ describe('Tag Controller', function () {
         .post('/api/categories')
         .send(categoryMockData.valid3)
         .end(function (err, newCategory2) {
-          categoryId2 = newCategory2.body;
+          categoryId2 = newCategory2.body._id;
 
           // create tag
           var tag;

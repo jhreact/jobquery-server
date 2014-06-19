@@ -172,7 +172,7 @@ describe('Category Controller', function () {
     .end(function (err, res) {
       if (err) return done(err);
       expect(res.statusCode).toEqual(201);
-      categoryId = res.body;
+      categoryId = res.body._id;
 
       // update category
       request(app)

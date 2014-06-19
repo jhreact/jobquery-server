@@ -24,6 +24,7 @@ var companySchema = new mongoose.Schema({
       title:        {type: String, required: true},
       url:          {type: String, required: true}
     }],
+  category:         {type: mongoOID, ref: 'Category'},
   opportunities:    [{type: mongoOID, ref: 'Opportunity'}],
   createdAt:        {type: Date, required: true, default: Date.now},
   updatedAt:        {type: Date, required: true, default: Date.now}

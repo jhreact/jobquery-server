@@ -18,6 +18,30 @@ data.valid3 = {
   rank:   1
 };
 
+data.validTag = {
+  name:   'Skills',
+  type:   'Tag',
+  rank:   1
+};
+
+data.validCompany = {
+  name:   'Attending Hiring Day',
+  type:   'Opportunity',
+  rank:   1
+};
+
+data.validUser = {
+  name:   'HR12/13',
+  type:   'User',
+  rank:   1
+};
+
+data.validUser2 = {
+  name:   'HR10/11',
+  type:   'User',
+  rank:   2
+};
+
 data.minimum = {
   name:   'Location',
 };

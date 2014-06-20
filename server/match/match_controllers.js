@@ -2,7 +2,6 @@ var Match = require('./match_model.js');
 var Tag = require('../tag/tag_model.js');
 var Category = require('../category/category_model.js');
 var Opportunity = require('../opportunity/opportunity_model.js');
-var Match = require('../match/match_model.js');
 var Company = require('../company/company_model.js');
 var Q = require('q');
 var mongoose = require('mongoose');

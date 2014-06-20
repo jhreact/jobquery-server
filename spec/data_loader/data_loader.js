@@ -30,7 +30,7 @@ var populate = function() {
   var categorySaves = [];
   var categoryTypes = ['Tag', 'User', 'Opportunity'];
 
-  for (var i = 0; i < 10; i++) {
+  for (var i = 0; i < 8; i++) {
     var category = {
       name:   faker.random.bs_noun(),
       type:   categoryTypes[Math.floor(Math.random() * 3)],
@@ -38,6 +38,16 @@ var populate = function() {
     };
     categorySaves.push(Category.create(category));
   }
+
+  for (var i = 0; i < 2; i++) {
+    var category = {
+      name:   faker.random.bs_noun(),
+      type:   'Tag',
+      rank:   faker.Helpers.randomNumber(100, 1)
+    };
+    categorySaves.push(Category.create(category));
+  }
+
   console.log('Saving categories..');
   Q.all(categorySaves)
     .then(function(categoryResults){
@@ -47,13 +57,25 @@ var populate = function() {
       var options = ['scale', 'binary', 'text'];
       var tagCategories = categoryResults.filter(function(category){ return category.type === 'Tag' })
       // Populate 20 tags
-      for(var i = 0; i < 20; i++) {
+      for(var i = 0; i < 10; i++) {
         var tag = {
           name:             faker.random.bs_noun() + i,
           label:            faker.random.catch_phrase_descriptor(),
           type:             options[Math.floor(Math.random() * 3)],
           active:           true,
-          category:         tagCategories[Math.floor(Math.random() * tagCategories.length)]._id
+          position:         i,
+          category:         tagCategories[0]._id
+        };
+        tagSaves.push(Tag.create(tag));
+      }
+      for(var i = 0; i < 10; i++) {
+        var tag = {
+          name:             faker.random.bs_noun() + i,
+          label:            faker.random.catch_phrase_descriptor(),
+          type:             options[Math.floor(Math.random() * 3)],
+          active:           true,
+          position:         i,
+          category:         tagCategories[1]._id
         };
         tagSaves.push(Tag.create(tag));
       }

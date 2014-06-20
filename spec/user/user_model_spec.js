@@ -203,34 +203,6 @@ describe('User Model', function () {
     });
   });
 
-  it('should fail when adding a tag with score above max', function (done) {
-    Tag.create(tagMockData.valid, function (err, newTag) {
-      var withTag = userMockData.minimum;
-      withTag.tags = [{tag: newTag._id, score: 5}];
-      User.create(userMockData.minimum, function (err, newUser) {
-        expect(err).toBeDefined();
-        expect(err.errors['tags.0.score'].type).toEqual('max');
-        expect(newUser).toBeUndefined();
-        delete userMockData.minimum.tags;
-        done();
-      });
-    });
-  });
-
-  it('should fail when adding a tag with score below min', function (done) {
-    Tag.create(tagMockData.valid, function (err, newTag) {
-      var withTag = userMockData.minimum;
-      withTag.tags = [{tag: newTag._id, score: -1}];
-      User.create(userMockData.minimum, function (err, newUser) {
-        expect(err).toBeDefined();
-        expect(err.errors['tags.0.score'].type).toEqual('min');
-        expect(newUser).toBeUndefined();
-        delete userMockData.minimum.tags;
-        done();
-      });
-    });
-  });
-
   it('should fail when tag is not valid tag reference', function (done) {
     Tag.create(tagMockData.valid, function (err, newTag) {
       userMockData.minimum.tags = [{tag: mongoose.Schema.Types.ObjectId(123), score: 1}];

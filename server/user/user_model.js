@@ -23,8 +23,8 @@ var userSchema = new mongoose.Schema({
     },
   tags:
     [{
-      tag: {type: mongoOID, ref: 'Tag', required: true},
-      score: {type: Number, min: 0, max: 4, required: true}
+      tag:      {type: mongoOID, ref: 'Tag', required: true},
+      value:    {type: String, default: null}
     }],
   messages:
     [{

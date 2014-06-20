@@ -68,7 +68,7 @@ var populate = function() {
               };
               return tag;
             });
-            // Populate 20 users
+            // Populate users
             for(var i = 0; i < 20; i++) {
               var user = {
                 email:          faker.Internet.email(),
@@ -82,17 +82,18 @@ var populate = function() {
                 city:           'San Francisco',
                 state:          'CA',
                 country:        'USA',
-                tags:           userTags
+                tags:           userTags,
+                category:       categoryResults[Math.floor(Math.random() * categoryResults.length)]._id
               };
               userSaves.push(User.create(user));
             }
             console.log('Saving users.. ');
             Q.all(userSaves)
               .then(function(userResults) {
-                console.log('Saved users: ', results.length);
+                console.log('Saved users: ', userResults.length);
                 var companySaves = [];
 
-                // Create 10 companies
+                // Create companies
                 for(var j = 0; j < 10; j++) {
                   var company = {
                     name:        faker.Company.companyName(),

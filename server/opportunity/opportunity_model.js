@@ -78,10 +78,13 @@ opportunitySchema.post('save', function (doc) {
   require('../user/user_model.js').find(function (err, users) {
     users.forEach(function (user) {
       // then create a match per user for the new opportunity
-      Match.create({
-        user:           user._id,
-        opportunity:    doc._id,
-      });
+      // if the user is not an Admin
+      if (!user.isAdmin) {
+        Match.create({
+          user:           user._id,
+          opportunity:    doc._id,
+        });
+      }
     });
   });
 });

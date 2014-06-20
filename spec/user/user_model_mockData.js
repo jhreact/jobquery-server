@@ -6,7 +6,7 @@ data.valid = {
   name:           'Kevin Smith',
   github:         'github.com/ksmith',
   linkedin:       'linkedin.com/in/ksmith',
-  isAdmin:        true,
+  isAdmin:        false,
   isRegistered:   false,
   searchStage:    'Early',
   city:           'San Francisco',
@@ -18,7 +18,7 @@ data.minimum = {
   email:          'ksmith@gmail.com',
   password:       'verysecure password',
   name:           'Kevin Smith',
-  isAdmin:        true,
+  isAdmin:        false,
   isRegistered:   false,
   searchStage:    'Early'
 };
@@ -37,7 +37,7 @@ data.missing = {};
 data.missing.email = {
   name:          'Kevin Smith',
   password:       'verysecure password',
-  isAdmin:        true,
+  isAdmin:        false,
   isRegistered:   false,
   searchStage:    'Early'
 };
@@ -45,7 +45,7 @@ data.missing.email = {
 data.missing.password = {
   email:          'ksmith@gmail.com',
   name:           'Kevin Smith',
-  isAdmin:        true,
+  isAdmin:        false,
   isRegistered:   false,
   searchStage:    'Early'
 };
@@ -53,7 +53,7 @@ data.missing.password = {
 data.missing.name = {
   email:          'ksmith@gmail.com',
   password:       'verysecure password',
-  isAdmin:        true,
+  isAdmin:        false,
   isRegistered:   false,
   searchStage:    'Early'
 };
@@ -70,7 +70,7 @@ data.missing.searchStage = {
   email:          'ksmith@gmail.com',
   password:       'verysecure password',
   name:           'Kevin Smith',
-  isAdmin:        true,
+  isAdmin:        false,
   isRegistered:   false
 };
 
@@ -80,7 +80,7 @@ data.invalid.searchStage = {
   email:          'ksmith@gmail.com',
   password:       'verysecure password',
   name:           'Kevin Smith',
-  isAdmin:        true,
+  isAdmin:        false,
   isRegistered:   false,
   searchStage:    'notInEnumeratedList'
 };

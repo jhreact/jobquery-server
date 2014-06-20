@@ -50,15 +50,18 @@ userSchema.pre('save', function (next) {
 
 userSchema.post('save', function (doc) {
   // find all opportunities
-  Opportunity.find(function (err, opps) {
-    opps.forEach(function (opp) {
-      // then create a match per opportunity for the given user
-      Match.create({
-        user:           doc._id,
-        opportunity:    opp._id,
+  // if new user is not an admin
+  if (!doc.isAdmin) {
+    Opportunity.find(function (err, opps) {
+      opps.forEach(function (opp) {
+        // then create a match per opportunity for the given user
+        Match.create({
+          user:           doc._id,
+          opportunity:    opp._id,
+        });
       });
     });
-  });
+  }
 });
 
 module.exports = exports = mongoose.model('User', userSchema);

@@ -71,6 +71,38 @@ var populate = function() {
               };
               return tag;
             });
+            // create admin
+            var admin = {
+              email:          'admin@hack.com',
+              password:       '$2a$10$ZMxTxy3shQcCr09GQVSoF.KHWpdwT2BXInNbtUEEOz7iAcnRRhoQS',
+              name:           faker.Name.findName(),
+              github:         'github.com/' + faker.Name.firstName(),
+              linkedin:       'linkedin.com/in/' + faker.Name.firstName(),
+              isAdmin:        true,
+              isRegistered:   Math.random() > 0.5 ? true : false,
+              searchStage:    'Early',
+              city:           'San Francisco',
+              state:          'CA',
+              country:        'USA',
+              tags:           userTags,
+              category:       categoryResults[Math.floor(Math.random() * categoryResults.length)]._id
+            };
+            var testUser = {
+              email:          'user@hack.com',
+              password:       '$2a$10$ZMxTxy3shQcCr09GQVSoF.KHWpdwT2BXInNbtUEEOz7iAcnRRhoQS',
+              name:           faker.Name.findName(),
+              github:         'github.com/' + faker.Name.firstName(),
+              linkedin:       'linkedin.com/in/' + faker.Name.firstName(),
+              isAdmin:        false,
+              isRegistered:   Math.random() > 0.5 ? true : false,
+              searchStage:    'Early',
+              city:           'San Francisco',
+              state:          'CA',
+              country:        'USA',
+              tags:           userTags,
+              category:       categoryResults[Math.floor(Math.random() * categoryResults.length)]._id
+            };
+            userSaves.push(User.create(testUser));
             // Populate users
             for(var i = 0; i < 20; i++) {
               var user = {

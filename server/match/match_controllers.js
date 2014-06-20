@@ -1,6 +1,8 @@
 var Match = require('./match_model.js');
 var Tag = require('../tag/tag_model.js');
 var Category = require('../category/category_model.js');
+var Opportunity = require('../opportunity/opportunity_model.js');
+var Match = require('../match/match_model.js');
 var Company = require('../company/company_model.js');
 var Q = require('q');
 
@@ -169,22 +171,29 @@ module.exports = exports = {
   },
 
   get: function (req, res) {
-    Match.find()
-    .populate([
-      {path: 'user'},
-      {path: 'opportunity'}
+    var data = {};
+
+    Q.all([
+      Match
+      .find()
+      .select('-createdAt -updatedAt -answers')
+      .exec(function (err, matches) {
+        data.matches = matches;
+      }),
+      Opportunity
+      .find()
+      .select('active category company tags jobTitle')
+      .populate([
+        {path: 'company', select: 'name'},
+        {path: 'category', select: 'name'},
+        {path: 'tags.tag', select: 'name'}
+      ])
+      .exec(function (err, opportunities) {
+        data.opportunities = opportunities;
+      })
     ])
-    .exec(function (err, matches) {
-      if (err) {
-        res.json(500, err);
-        return;
-      }
-      poppoppop(res, matches)
-      .then(function (populatedResults) {
-        res.json(200, populatedResults);
-      }, function (err) {
-        res.json(500, err);
-      });
+    .then(function () {
+      res.json(200, data);
     });
   }
 };

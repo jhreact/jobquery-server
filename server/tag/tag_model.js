@@ -18,6 +18,7 @@ var tagSchema = new mongoose.Schema({
       enum: ['text', 'binary', 'scale'],
       default: 'scale'
     },
+  position:         {type: Number, required: true},
   active:           {type: Boolean, required: true, default: true},
   category:         {type: mongoOID, ref: 'Category'},
   createdAt:        {type: Date, required: true, default: Date.now},

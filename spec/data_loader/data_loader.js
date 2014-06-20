@@ -79,7 +79,7 @@ var populate = function() {
                 github:         'github.com/' + faker.Name.firstName(),
                 linkedin:       'linkedin.com/in/' + faker.Name.firstName(),
                 isAdmin:        false,
-                isRegistered:   true,
+                isRegistered:   Math.random() > 0.5 ? true : false,
                 searchStage:    'Early',
                 city:           'San Francisco',
                 state:          'CA',

@@ -10,7 +10,7 @@ module.exports = exports = {
   post: function (req, res, next) {
     var email = req.body.email;
     var password = req.body.password;
-    User.findOne({email : email}, null,{select : 'password name'} ,function(err, user){
+    User.findOne({email : email}, null,{select : 'password name isRegistered'} ,function(err, user){
       // user not found
       if(!user){
         res.send(401, WRONG_EMAIL_OR_PASSWORD);
@@ -24,6 +24,13 @@ module.exports = exports = {
               id    : user._id
             };
             var token = jwt.sign(profile, process.env.SECRET || 'secret', { expiresInMinutes: 360 } );
+
+            // user logins once, he is then registered
+            if (user.isRegistered === false) {
+              user.isRegistered = true;
+              user.save();
+            }
+
             res.json({token : token, _id : user._id});
           } else {
             // wrong password

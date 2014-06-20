@@ -45,6 +45,7 @@ var populate = function() {
 
       var tagSaves = [];
       var options = ['scale', 'binary', 'text'];
+      var tagCategories = categoryResults.filter(function(category){ return category.type === 'Tag' })
       // Populate 20 tags
       for(var i = 0; i < 20; i++) {
         var tag = {
@@ -52,7 +53,7 @@ var populate = function() {
           label:            faker.random.catch_phrase_descriptor(),
           type:             options[Math.floor(Math.random() * 3)],
           active:           true,
-          category:         categoryResults[Math.floor(Math.random() * categoryResults.length)]._id
+          category:         tagCategories[Math.floor(Math.random() * tagCategories.length)]._id
         };
         tagSaves.push(Tag.create(tag));
       }

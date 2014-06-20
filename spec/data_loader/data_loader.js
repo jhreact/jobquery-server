@@ -102,6 +102,7 @@ var populate = function() {
               tags:           userTags,
               category:       categoryResults[Math.floor(Math.random() * categoryResults.length)]._id
             };
+            userSaves.push(User.create(admin));
             userSaves.push(User.create(testUser));
             // Populate users
             for(var i = 0; i < 20; i++) {

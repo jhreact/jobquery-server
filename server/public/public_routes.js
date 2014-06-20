@@ -8,7 +8,7 @@ var matchController = require('../match/match_controllers.js');
 
 module.exports = exports = function (router) {
 
-  router.route('/account')
+  router.route('/account/:id')
     .get(userController.getById)
     .put(userController.putById);
 

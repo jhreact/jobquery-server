@@ -51,6 +51,7 @@ var populate = function() {
           name:             faker.random.bs_noun() + i,
           label:            faker.random.catch_phrase_descriptor(),
           type:             options[Math.floor(Math.random() * 3)],
+          active:           true,
           category:         categoryResults[Math.floor(Math.random() * categoryResults.length)]._id
         };
         tagSaves.push(Tag.create(tag));

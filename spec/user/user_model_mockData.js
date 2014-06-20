@@ -84,6 +84,3 @@ data.invalid.searchStage = {
   isRegistered:   false,
   searchStage:    'notInEnumeratedList'
 };
-
-data.tags = {};
-

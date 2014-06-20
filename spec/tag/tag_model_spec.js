@@ -52,8 +52,6 @@ describe('Tag Model', function () {
     checkState(done);
   });
 
-  // TODO: require scale to be a maximum of length 4?
-
   it('should be able to create new document', function (done) {
 
     Tag.create(tagMockData.valid, function (err, newTag) {
@@ -61,8 +59,6 @@ describe('Tag Model', function () {
       expect(newTag).toBeDefined();
       expect(newTag.name).toEqual(tagMockData.valid.name);
       expect(newTag.label).toEqual(tagMockData.valid.label);
-      // TODO: figure out why scaleDescription cannot be compared
-      // expect(newTag.scaleDescription).toBe(tagMockData.valid.scaleDescription);
       expect(newTag.isPublic).toEqual(true);
       done();
     });

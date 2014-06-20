@@ -286,20 +286,12 @@ describe('Opportunity Controller', function () {
       expect(data.body[0].user.tags[1].tag.name).toEqual(tagMockData.valid2.name);
       expect(data.body[0].user.tags[2].tag.name).toEqual(tagMockData.valid3.name);
       expect(data.body[0].user.tags[3].tag.name).toEqual(tagMockData.valid4.name);
-      expect(data.body[0].user.tags[0].score).toEqual(1);
-      expect(data.body[0].user.tags[1].score).toEqual(2);
-      expect(data.body[0].user.tags[2].score).toEqual(3);
-      expect(data.body[0].user.tags[3].score).toEqual(4);
 
       // // test opportunity side
       expect(data.body[3].opportunity.tags[0].tag.name).toEqual(tagMockData.valid4.name);
       expect(data.body[3].opportunity.tags[1].tag.name).toEqual(tagMockData.valid5.name);
       expect(data.body[3].opportunity.tags[2].tag.name).toEqual(tagMockData.valid2.name);
       expect(data.body[3].opportunity.tags[3].tag.name).toEqual(tagMockData.valid3.name);
-      expect(data.body[3].opportunity.tags[0].score).toEqual(1);
-      expect(data.body[3].opportunity.tags[1].score).toEqual(2);
-      expect(data.body[3].opportunity.tags[2].score).toEqual(3);
-      expect(data.body[3].opportunity.tags[3].score).toEqual(4);
 
       done();
     });
@@ -318,30 +310,18 @@ describe('Opportunity Controller', function () {
       expect(data.body[0].user.tags[1].tag.name).toEqual(tagMockData.valid2.name);
       expect(data.body[0].user.tags[2].tag.name).toEqual(tagMockData.valid3.name);
       expect(data.body[0].user.tags[3].tag.name).toEqual(tagMockData.valid4.name);
-      expect(data.body[0].user.tags[0].score).toEqual(1);
-      expect(data.body[0].user.tags[1].score).toEqual(2);
-      expect(data.body[0].user.tags[2].score).toEqual(3);
-      expect(data.body[0].user.tags[3].score).toEqual(4);
 
       // test user2
       expect(data.body[1].user.tags[0].tag.name).toEqual(tagMockData.valid5.name);
       expect(data.body[1].user.tags[1].tag.name).toEqual(tagMockData.valid4.name);
       expect(data.body[1].user.tags[2].tag.name).toEqual(tagMockData.valid3.name);
       expect(data.body[1].user.tags[3].tag.name).toEqual(tagMockData.valid2.name);
-      expect(data.body[1].user.tags[0].score).toEqual(1);
-      expect(data.body[1].user.tags[1].score).toEqual(2);
-      expect(data.body[1].user.tags[2].score).toEqual(3);
-      expect(data.body[1].user.tags[3].score).toEqual(4);
 
       // test opp
       expect(data.body[1].opportunity.tags[0].tag.name).toEqual(tagMockData.valid3.name);
       expect(data.body[1].opportunity.tags[1].tag.name).toEqual(tagMockData.valid.name);
       expect(data.body[1].opportunity.tags[2].tag.name).toEqual(tagMockData.valid4.name);
       expect(data.body[1].opportunity.tags[3].tag.name).toEqual(tagMockData.valid5.name);
-      expect(data.body[1].opportunity.tags[0].score).toEqual(1);
-      expect(data.body[1].opportunity.tags[1].score).toEqual(2);
-      expect(data.body[1].opportunity.tags[2].score).toEqual(3);
-      expect(data.body[1].opportunity.tags[3].score).toEqual(4);
 
       done();
     });
@@ -382,20 +362,12 @@ describe('Opportunity Controller', function () {
         expect(data.body.opportunity.tags[1].tag.name).toEqual(tagMockData.valid.name);
         expect(data.body.opportunity.tags[2].tag.name).toEqual(tagMockData.valid4.name);
         expect(data.body.opportunity.tags[3].tag.name).toEqual(tagMockData.valid5.name);
-        expect(data.body.opportunity.tags[0].score).toEqual(1);
-        expect(data.body.opportunity.tags[1].score).toEqual(2);
-        expect(data.body.opportunity.tags[2].score).toEqual(3);
-        expect(data.body.opportunity.tags[3].score).toEqual(4);
 
         // test user
         expect(data.body.user.tags[0].tag.name).toEqual(tagMockData.valid5.name);
         expect(data.body.user.tags[1].tag.name).toEqual(tagMockData.valid4.name);
         expect(data.body.user.tags[2].tag.name).toEqual(tagMockData.valid3.name);
         expect(data.body.user.tags[3].tag.name).toEqual(tagMockData.valid2.name);
-        expect(data.body.user.tags[0].score).toEqual(1);
-        expect(data.body.user.tags[1].score).toEqual(2);
-        expect(data.body.user.tags[2].score).toEqual(3);
-        expect(data.body.user.tags[3].score).toEqual(4);
 
         // test new properties
         expect(data.body.isProcessed).toEqual(true);

@@ -72,7 +72,7 @@ var populate = function() {
             for(var i = 0; i < 20; i++) {
               var user = {
                 email:          faker.Internet.email(),
-                password:       'password',
+                password:       '$2a$10$ZMxTxy3shQcCr09GQVSoF.KHWpdwT2BXInNbtUEEOz7iAcnRRhoQS',
                 name:           faker.Name.findName(),
                 github:         'github.com/' + faker.Name.firstName(),
                 linkedin:       'linkedin.com/in/' + faker.Name.firstName(),

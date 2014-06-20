@@ -59,7 +59,7 @@ var createUsers = function(emails, callback) {
     // tags have to be populated on every new user
     userTags = tags.map(function(item){
       var tag = {
-        tagId : item._id,
+        tag : item._id,
         score : 0
       };
       return tag;
@@ -74,6 +74,7 @@ var createUsers = function(emails, callback) {
         }).then( function(user) {
           callback();
          }, function(err){
+           console.log(err);
         });
       });
     });

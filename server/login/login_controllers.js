@@ -24,7 +24,7 @@ module.exports = exports = {
               id    : user._id
             };
             var token = jwt.sign(profile, process.env.SECRET || 'secret', { expiresInMinutes: 360 } );
-            res.json({token : token});
+            res.json({token : token, _id : user._id});
           } else {
             // wrong password
             res.send(401, WRONG_EMAIL_OR_PASSWORD);

@@ -21,9 +21,9 @@ module.exports = exports = function (app, express, routers) {
   app.use(middle.cors);
   app.use('/login', routers.LoginRouter);
   // TODO: enable authentication
-  // app.use('/api', expressJwt({secret: process.env.SECRET || 'secret'}));
-  // TODO: add middleware to add userID to body.params.id (if user)
-  app.use('/api/public', routers.PublicRouter);
+  // app.use('/api', expressJwt({secret: process.env.ADMIN_SECRET || 'admin'}));
+  // app.use('/public', expressJwt({secret: process.env.USER_SECRET || 'user'}));
+  app.use('/public', routers.PublicRouter);
   app.use('/api/opportunities', routers.OpportunityRouter);
   app.use('/api/tags', routers.TagRouter);
   app.use('/api/users' , routers.UserRouter);

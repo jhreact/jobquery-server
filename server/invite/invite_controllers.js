@@ -33,7 +33,7 @@ var sendInvites = function(req, res){
     });
 
     if (alreadyRegistered) {
-      res.send(403, emailsAlreadyRegistered);
+      res.send(400, emailsAlreadyRegistered);
     } else {
       createUsers(emails, function(){
         for(var i = 0; i < emails.length; i++){

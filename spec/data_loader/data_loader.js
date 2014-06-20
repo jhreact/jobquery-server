@@ -44,12 +44,13 @@ var populate = function() {
       console.log('Saved categories: ', categoryResults.length);
 
       var tagSaves = [];
+      var options = ['scale', 'binary', 'text'];
       // Populate 20 tags
       for(var i = 0; i < 20; i++) {
         var tag = {
           name:             faker.random.bs_noun() + i,
           label:            faker.random.catch_phrase_descriptor(),
-          scaleDescription: [null,'None', 'Basic', 'Experienced', 'Expert'],
+          type:             options[Math.floor(Math.random() * 3)],
           category:         categoryResults[Math.floor(Math.random() * categoryResults.length)]._id
         };
         tagSaves.push(Tag.create(tag));

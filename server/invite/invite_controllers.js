@@ -22,7 +22,6 @@ var sendInvites = function(req, res){
   var emails = req.body;
   var alreadyRegistered = false;
   var emailsAlreadyRegistered = [];
-
   // check if emails already taken
   User.find(function (error, users) {
     users.forEach(function(item, index, users){
@@ -35,22 +34,32 @@ var sendInvites = function(req, res){
     if (alreadyRegistered) {
       res.send(400, emailsAlreadyRegistered);
     } else {
-      createUsers(emails, function(){
-        for(var i = 0; i < emails.length; i++){
-          mailOptions.to   = emails[i];
-          mailOptions.text = 'username:' + emails[i] + ' ' + 'password:password';
-          smtpTransport.sendMail(mailOptions, function(error, response){
-            if(error){
-              console.log(error);
-            } else {
-              console.log('Message sent: ' + response.message);
-            }
-          });
-        }
+      createUsers(emails, function(email, password){
+        mailOptions.to   = email;
+        mailOptions.html = '<div>username: ' + email + '</div>' + '<div> password: ' + password +
+        '</div><div><a href="http://jobby.azurewebsites.net/login">Login</a></div>';
+        smtpTransport.sendMail(mailOptions, function(error, response){
+          if(error){
+            console.log(error);
+          } else {
+            console.log('Message sent: ' + response.message);
+          }
+        });
+
         res.send(202);
       });
     }
   });
+};
+
+var generatePassword = function() {
+    var length = 8,
+        charset = "abcdefghijklnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+        retVal = "";
+    for (var i = 0, n = charset.length; i < length; ++i) {
+        retVal += charset.charAt(Math.floor(Math.random() * n));
+    }
+    return retVal;
 };
 
 var createUsers = function(emails, callback) {
@@ -65,14 +74,15 @@ var createUsers = function(emails, callback) {
       return tag;
     });
     emails.forEach(function(email) {
-      bcrypt.hash('password', null, null, function(err, hash){
+      var password = generatePassword();
+      bcrypt.hash(password, null, null, function(err, hash){
         User.create({
           email:     email,
           password:  hash,
           isAdmin:   false,
           tags:      userTags
         }).then( function(user) {
-          callback();
+          callback(email, password);
          }, function(err){
            console.log(err);
         });

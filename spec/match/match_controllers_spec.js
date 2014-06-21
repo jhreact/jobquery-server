@@ -219,10 +219,6 @@ describe('Opportunity Controller', function () {
     expect(matchCtrl.getByOppId).toEqual(jasmine.any(Function));
   });
 
-  it('should have a getByIds method', function () {
-    expect(matchCtrl.getByIds).toEqual(jasmine.any(Function));
-  });
-
   it('should have a putByIds method', function () {
     expect(matchCtrl.putByIds).toEqual(jasmine.any(Function));
   });
@@ -322,10 +318,8 @@ describe('Opportunity Controller', function () {
     .end(function (err, data) {
       if (err) return done(err);
 
-      expect(Object.keys(data.body).length).toEqual(1);
-
-      expect(data.body[mockUser2]).toBeDefined();
-      expect(data.body[mockUser2].user.name).toEqual(userMockData.minimum2.name);
+      expect(Object.keys(data.body).length).toEqual(2);
+      expect(data.body.user.name).toEqual(userMockData.minimum2.name);
 
       done();
     });

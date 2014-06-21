@@ -50,50 +50,12 @@ module.exports = exports = {
     .then(function () {
       res.json(200, {user: user, matches: matches});
     });
-  },
-
-  getByOppId: function (req, res) {
-    var matches;
-    var opportunity;
-
-    Q.all([
-      Match
-      .find({opportunity: req.params.id})
-      .select('-createdAt -updatedAt -answers -opportunity')
-      .populate([
-        {path: 'user', select: 'name email tags category'}
-      ])
-      .exec()
-      .then(function (data) {
-        return Tag.populate(data,
-          {path: 'user.tags.tag', select: '-createdAt -updatedAt'}
-        ).then(function (matchesWithTags) {
-          matches = matchesWithTags;
-          return;
-        });
-      }),
-
-      Opportunity
-      .findOne({_id: req.params.id})
-      .select('-createdAt -updatedAt -answers')
-      .populate([
-        {path: 'company', select: 'name'},
-        {path: 'category', select: 'name'},
-        {path: 'tags.tag', select: '-createdAt -updatedAt'}
-      ])
-      .exec(function (err, opps) {
-        opportunity = opps;
-      })
-    ])
-    .then(function () {
-      res.json(200, {matches: matches, opportunity: opportunity});
-    });
-  },
+  }
 
   putByIds: function (req, res) {
     Match.findOne({
-      opportunity: req.params.opportunity,
-      user: req.params.user
+      opportunity: req.params.id,
+      user: req.user.id
     }, function (err, match) {
       if (err) {
         res.json(500, err);
@@ -127,33 +89,6 @@ module.exports = exports = {
         }
         res.json(201, {_id: item.id});
       });
-    });
-  },
-
-  get: function (req, res) {
-    var data = {};
-
-    Q.all([
-      Match
-      .find()
-      .select('-createdAt -updatedAt -answers')
-      .exec(function (err, matches) {
-        data.matches = matches;
-      }),
-
-      Opportunity
-      .find()
-      .select('active category company jobTitle')
-      .populate([
-        {path: 'company', select: 'name'},
-        {path: 'category', select: 'name'}
-      ])
-      .exec(function (err, opportunities) {
-        data.opportunities = opportunities;
-      })
-    ])
-    .then(function () {
-      res.json(200, data);
     });
   }
 };

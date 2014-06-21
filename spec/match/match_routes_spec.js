@@ -6,10 +6,10 @@ matchRoutes(router); // extends 'router' with matchRoutes module
 
 // fill int desired paths and verbs (use lower case for verbs)
 var expectedAPI = {
-  '/':                                      ['get'],
-  '/users/:id':                             ['get'],
-  '/opportunities/:id':                     ['get'],
-  '/users/:user/opportunities/:opportunity':    ['get', 'put']
+  '/':                                        ['get'],
+  '/users/:id':                               ['get'],
+  '/opportunities/:id':                       ['get'],
+  '/users/:user/opportunities/:opportunity':  ['put']
 };
 
 describe('Match Routes', function () {

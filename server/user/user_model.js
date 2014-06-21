@@ -32,7 +32,7 @@ var userSchema = new mongoose.Schema({
       question: {type: String, required: true},
       answer:   {type: String}
     }],
-  internalNotes:  {type: String, select: false},
+  internalNotes:  {type: String},
   city:           {type: String},
   state:          {type: String},
   country:        {type: String},

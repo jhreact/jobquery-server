@@ -89,7 +89,7 @@ var populate = function() {
               userTags = tags.map(function(item){
                 var tag = {
                   tag : item._id,
-                  value : Math.floor(Math.random() * 4 + 1)
+                  value : String(Math.floor(Math.random() * 4 + 1))
               };
               return tag;
             });

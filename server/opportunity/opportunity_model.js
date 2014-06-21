@@ -14,7 +14,7 @@ var opportunitySchema = new mongoose.Schema({
   tags:
     [{
       tag:    {type: mongoOID, ref: 'Tag', required: true},
-      score:    {type: Number, min: 0, max: 4, required: true}
+      value:  {type: String}
     }],
   links:
     [{

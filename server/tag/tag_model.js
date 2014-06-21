@@ -32,12 +32,14 @@ tagSchema.pre('save', function (next) {
 
 tagSchema.post('save', function (doc) {
   // add this new tag to each user
-  User.find(function (err, users) {
-    users.forEach(function (user) {
-      user.tags.push({tag: doc._id, score: 0});
-      user.save();
+  if (doc.__v === 0) {
+    User.find(function (err, users) {
+      users.forEach(function (user) {
+        user.tags.push({tag: doc._id});
+        user.save();
+      });
     });
-  });
+  }
 });
 
 module.exports = exports = mongoose.model('Tag', tagSchema);

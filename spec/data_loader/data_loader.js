@@ -10,8 +10,8 @@ var Message     = require('../../server/message/message_model.js');
 var Match       = require('../../server/match/match_model.js');
 
 
-var DB_URL = 'mongodb://jobquery:Team3van@ds061787.mongolab.com:61787/jobquery';
-//var DB_URL = 'mongodb://localhost/jobquery';
+// var DB_URL = 'mongodb://jobquery:Team3van@ds061787.mongolab.com:61787/jobquery';
+var DB_URL = 'mongodb://localhost/myApp';
 
 //Remove everything
 Category.collection.remove(function(){populate();});

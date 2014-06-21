@@ -2,124 +2,91 @@ var Match = require('./match_model.js');
 var Tag = require('../tag/tag_model.js');
 var Category = require('../category/category_model.js');
 var Opportunity = require('../opportunity/opportunity_model.js');
+var User = require('../user/user_model.js');
 var Company = require('../company/company_model.js');
 var Q = require('q');
 var mongoose = require('mongoose');
 
-var formattedOutput = function (res, populated) {
-  var formatted = {};
-  var user;
-  var opp;
-  for (var i = 0; i < populated.length; i += 1) {
-    userId = populated[i].user._id;
-    opp = {};
-    // check to see if user exists
-    if (!formatted.hasOwnProperty(userId)) {
-      // if user does not exist, create user portion
-      formatted[userId] = {
-        user:           populated[i].user,
-        opportunities:  []
-      };
-    }
-    // always, format opportunity portion, then push
-    opp = populated[i].opportunity;
-    opp.isProcessed     = populated[i].isProcessed;
-    opp.userInterest    = populated[i].userInterest;
-    opp.adminOverride   = populated[i].adminOverride;
-    opp.answers         = populated[i].answers;
-    formatted[userId].opportunities.push(opp);
-  }
-  res.send(200, formatted);
-};
-
-var poppoppop = function (res, matches) {
-  var deferred = Q.defer();
-  Tag.populate(
-    matches,
-    {path: 'opportunity.tags.tag user.tags.tag'},
-    function (err, matchesWithTags) {
-      if (err) {
-        deferred.reject(err);
-      }
-      Company.populate(
-        matchesWithTags,
-        {path: 'opportunity.company'},
-        function (err, matchesWithTagsAndCompany) {
-          if (err) {
-            deferred.reject(err);
-          }
-          Category.populate(
-            matchesWithTagsAndCompany,
-            {path: 'opportunity.company.category user.category opportunity.tags.tag.category user.tags.tag.category'},
-            function (err, populated) {
-              if (err) {
-                deferred.reject(err);
-              }
-              deferred.resolve(populated);
-            }
-          );
-        }
-      );
-    }
-  );
-  return deferred.promise;
-};
-
 module.exports = exports = {
 
   getByUserId: function (req, res) {
-    Match.find({user: req.params.id})
-    .populate([
-      {path: 'user'},
-      {path: 'opportunity'}
+    var user;
+    var matches;
+
+    Q.all([
+      Match
+      .find({user: req.params.id})
+      .select('-createdAt -updatedAt')
+      .populate([
+        {path: 'opportunity', select: '-createdAt -updatedAt'}
+      ])
+      .exec()
+      .then(function (data) {
+        return Tag.populate(data,
+          {path: 'opportunity.tags.tag', select: '-createdAt -updatedAt'}
+        ).then(function (matchesWithTags) {
+          matches = matchesWithTags;
+          return;
+        });
+      }),
+
+      User
+      .findById(req.params.id)
+      .select('-createdAt -updatedAt')
+      .populate([
+        {path: 'category', select: 'name'},
+        {path: 'tags.tag', select: '-createdAt -updatedAt'},
+      ])
+      .exec()
+      .then(function (data) {
+        return Category.populate(data,
+          {path: 'tags.tag.category', select: '-createdAt -updatedAt'}
+        ).then(function (usr) {
+          user = usr;
+          return;
+        });
+      })
     ])
-    .exec(function (err, matches) {
-      if (err) {
-        res.json(500, err);
-        return;
-      }
-      poppoppop(res, matches)
-      .then(function (populatedResults) {
-        formattedOutput(res, populatedResults);
-      }, function (err) {
-        res.json(500, err);
-      });
+    .then(function () {
+      res.json(200, {user: user, matches: matches});
     });
   },
 
   getByOppId: function (req, res) {
     var matches;
-    var opportunities;
+    var opportunity;
 
     Q.all([
       Match
       .find({opportunity: req.params.id})
-      .select('-createdAt -updatedAt -answers')
+      .select('-createdAt -updatedAt -answers -opportunity')
       .populate([
         {path: 'user', select: 'name email tags category'}
       ])
       .exec()
       .then(function (data) {
         return Tag.populate(data,
-          {path: 'user.tags.tag'}
+          {path: 'user.tags.tag', select: '-createdAt -updatedAt'}
         ).then(function (matchesWithTags) {
           matches = matchesWithTags;
           return;
         });
       }),
+
       Opportunity
       .findOne({_id: req.params.id})
+      .select('-createdAt -updatedAt -answers')
       .populate([
         {path: 'company', select: 'name'},
         {path: 'category', select: 'name'},
-        {path: 'tags.tag', select: 'name rank type'}
+        {path: 'tags.tag', select: '-createdAt -updatedAt'}
       ])
       .exec(function (err, opps) {
-        opportunities = opps;
+        opportunity = opps;
       })
     ])
     .then(function () {
-      res.json(200, {matches: matches, opportunities: opportunities});
+      res.json(200, {matches: matches, opportunity: opportunity});
     });
   },
 
@@ -163,29 +130,6 @@ module.exports = exports = {
     });
   },
 
-  getByIds: function (req, res) {
-    Match.findOne({
-      opportunity: req.params.opportunity,
-      user: req.params.user
-    })
-    .populate([
-      {path: 'user'},
-      {path: 'opportunity'}
-    ])
-    .exec(function (err, matches) {
-      if (err) {
-        res.json(500, err);
-        return;
-      }
-      poppoppop(res, matches)
-      .then(function (populatedResults) {
-        formattedOutput(res, populatedResults);
-      }, function (err) {
-        res.json(500, err);
-      });
-    });
-  },
-
   get: function (req, res) {
     var data = {};
 
@@ -196,6 +140,7 @@ module.exports = exports = {
       .exec(function (err, matches) {
         data.matches = matches;
       }),
+
       Opportunity
       .find()
       .select('active category company jobTitle')

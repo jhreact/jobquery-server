@@ -9,7 +9,7 @@ var tagController = require('../tag/tag_controllers.js');
 
 module.exports = exports = function (router) {
 
-  router.route('/account/:id')
+  router.route('/account')
     .get(userController.getById)
     .put(userController.putById);
 

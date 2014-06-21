@@ -91,7 +91,7 @@ var populate = function() {
                 if (item.type === 'binary') {
                   tag = {
                     tag : item._id,
-                    value : Math.random() > 0.5 ? "true" : "false",
+                    value : Math.random() > 0.5 ? "yes" : "no",
                   };
                 } else if (item.type === 'scale') {
                   tag = {

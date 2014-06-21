@@ -5,7 +5,7 @@ var User = require('../../user/user_model.js');
 module.exports = exports = {
 
   getById: function (req, res) {
-    User.findById(req.params.id)
+    User.findById(req.user.id)
     .populate([
       {path: 'category'},
       {path: 'tags.tag'}
@@ -21,7 +21,7 @@ module.exports = exports = {
   },
 
   putById: function (req, res) {
-    User.findById(req.params.id, function (err, user) {
+    User.findById(req.user.id, function (err, user) {
       if (err) {
         res.json(500, err);
         return;

@@ -86,10 +86,10 @@ var populate = function() {
           var userSaves = [];
           Tag.find(function(err, tags) {
             var userTags = [];
-            userTags = tags.map(function(item){
-              var tag = {
-                tag : item._id,
-                score : Math.floor(Math.random() * 4)
+              userTags = tags.map(function(item){
+                var tag = {
+                  tag : item._id,
+                  value : Math.floor(Math.random() * 4 + 1)
               };
               return tag;
             });

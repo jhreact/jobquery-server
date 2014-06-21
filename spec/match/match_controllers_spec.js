@@ -110,8 +110,6 @@ var createTags = function (done) {
   tagMockData.valid5.category = mockCategory1;
 
   Tag.create(tagMockData.valid, function (err, newTag) {
-    console.log('err:', err);
-    console.log('newTag:', newTag);
     mockTag1 = newTag._id;
 
     Tag.create(tagMockData.valid2, function (err, newTag2) {

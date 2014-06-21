@@ -7,10 +7,10 @@ publicRoutes(router); // extends 'router' with companyRoutes module
 // fill int desired paths and verbs (use lower case for verbs)
 var expectedAPI = {
   '/account/:id':                 ['get', 'put'],
+  '/tags':                        ['get'],
   '/companies':                   ['get'],
   '/companies/:id':               ['get'],
-  '/opportunities':               ['get'],
-  '/opportunities/:opportunity':  ['put']
+  '/opportunities/:id':           ['get', 'put']
 };
 
 describe('Company Routes', function () {

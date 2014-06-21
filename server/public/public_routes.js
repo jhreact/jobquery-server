@@ -2,9 +2,10 @@
 
 "use strict";
 
-var userController = require('../user/user_controllers.js');
+var userController = require('./user/user_controllers.js');
 var companyController = require('../company/company_controllers.js');
 var matchController = require('../match/match_controllers.js');
+var tagController = require('../tag/tag_controllers.js');
 
 module.exports = exports = function (router) {
 
@@ -15,16 +16,14 @@ module.exports = exports = function (router) {
   router.route('/companies/:id')
     .get(companyController.getById);
 
+  router.route('/tags')
+    .get(tagController.get);
+
   router.route('/companies')
     .get(companyController.get);
 
-  router.route('/opportunities/:opportunity')
-    .put(function (req, res) {
-      req.params.user = req.params.id;
-      matchController.putByIds(req, res);
-    });
-
-  router.route('/opportunities')
+  router.route('/opportunities/:id')
+    .put(matchController.putByIds)
     .get(matchController.getByUserId);
 
 };

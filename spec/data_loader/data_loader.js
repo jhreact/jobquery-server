@@ -87,10 +87,23 @@ var populate = function() {
           Tag.find(function(err, tags) {
             var userTags = [];
               userTags = tags.map(function(item){
-                var tag = {
-                  tag : item._id,
-                  value : String(Math.floor(Math.random() * 4 + 1))
-              };
+              var tag;
+                if (item.type === 'binary') {
+                  tag = {
+                    tag : item._id,
+                    value : Math.random() > 0.5 ? "true" : "false",
+                  };
+                } else if (item.type === 'scale') {
+                  tag = {
+                    tag : item._id,
+                    value : String(Math.floor(Math.random() * 4 + 1))
+                  };
+                } else if (item.type === 'text') {
+                  tag = {
+                    tag : item._id,
+                    value : faker.Lorem.sentence()
+                  };
+                }
               return tag;
             });
             // create admin

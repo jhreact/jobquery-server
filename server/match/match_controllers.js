@@ -1,8 +1,10 @@
 var Match = require('./match_model.js');
 var Tag = require('../tag/tag_model.js');
 var Category = require('../category/category_model.js');
+var Opportunity = require('../opportunity/opportunity_model.js');
 var Company = require('../company/company_model.js');
 var Q = require('q');
+var mongoose = require('mongoose');
 
 var formattedOutput = function (res, populated) {
   var formatted = {};
@@ -86,22 +88,38 @@ module.exports = exports = {
   },
 
   getByOppId: function (req, res) {
-    Match.find({opportunity: req.params.id})
-    .populate([
-      {path: 'user'},
-      {path: 'opportunity'}
+    var matches;
+    var opportunities;
+
+    Q.all([
+      Match
+      .find({opportunity: req.params.id})
+      .select('-createdAt -updatedAt -answers')
+      .populate([
+        {path: 'user', select: 'name email tags category'}
+      ])
+      .exec()
+      .then(function (data) {
+        return Tag.populate(data,
+          {path: 'user.tags.tag'}
+        ).then(function (matchesWithTags) {
+          matches = matchesWithTags;
+          return;
+        });
+      }),
+      Opportunity
+      .findOne({_id: req.params.id})
+      .populate([
+        {path: 'company', select: 'name'},
+        {path: 'category', select: 'name'},
+        {path: 'tags.tag', select: 'name rank type'}
+      ])
+      .exec(function (err, opps) {
+        opportunities = opps;
+      })
     ])
-    .exec(function (err, matches) {
-      if (err) {
-        res.json(500, err);
-        return;
-      }
-      poppoppop(res, matches)
-      .then(function (populatedResults) {
-        formattedOutput(res, populatedResults);
-      }, function (err) {
-        res.json(500, err);
-      });
+    .then(function () {
+      res.json(200, {matches: matches, opportunities: opportunities});
     });
   },
 
@@ -169,22 +187,28 @@ module.exports = exports = {
   },
 
   get: function (req, res) {
-    Match.find()
-    .populate([
-      {path: 'user'},
-      {path: 'opportunity'}
+    var data = {};
+
+    Q.all([
+      Match
+      .find()
+      .select('-createdAt -updatedAt -answers')
+      .exec(function (err, matches) {
+        data.matches = matches;
+      }),
+      Opportunity
+      .find()
+      .select('active category company jobTitle')
+      .populate([
+        {path: 'company', select: 'name'},
+        {path: 'category', select: 'name'}
+      ])
+      .exec(function (err, opportunities) {
+        data.opportunities = opportunities;
+      })
     ])
-    .exec(function (err, matches) {
-      if (err) {
-        res.json(500, err);
-        return;
-      }
-      poppoppop(res, matches)
-      .then(function (populatedResults) {
-        res.json(200, populatedResults);
-      }, function (err) {
-        res.json(500, err);
-      });
+    .then(function () {
+      res.json(200, data);
     });
   }
 };

@@ -279,19 +279,8 @@ describe('Opportunity Controller', function () {
     .end(function (err, data) {
       if (err) return done(err);
 
-      expect(data.body.length).toEqual(4);
-
-      // test user side
-      expect(data.body[0].user.tags[0].tag.name).toEqual(tagMockData.valid.name);
-      expect(data.body[0].user.tags[1].tag.name).toEqual(tagMockData.valid2.name);
-      expect(data.body[0].user.tags[2].tag.name).toEqual(tagMockData.valid3.name);
-      expect(data.body[0].user.tags[3].tag.name).toEqual(tagMockData.valid4.name);
-
-      // // test opportunity side
-      expect(data.body[3].opportunity.tags[0].tag.name).toEqual(tagMockData.valid4.name);
-      expect(data.body[3].opportunity.tags[1].tag.name).toEqual(tagMockData.valid5.name);
-      expect(data.body[3].opportunity.tags[2].tag.name).toEqual(tagMockData.valid2.name);
-      expect(data.body[3].opportunity.tags[3].tag.name).toEqual(tagMockData.valid3.name);
+      expect(data.body.matches).toBeDefined();
+      expect(data.body.opportunities).toBeDefined();
 
       done();
     });

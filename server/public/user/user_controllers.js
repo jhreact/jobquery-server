@@ -1,22 +1,29 @@
 "use strict";
 
 var User = require('../../user/user_model.js');
+var Category = require('../../category/category_model.js');
 
 module.exports = exports = {
 
   getById: function (req, res) {
     User.findById(req.user.id)
     .populate([
-      {path: 'category'},
-      {path: 'tags.tag'}
+      {path: 'category', select: '-createdAt -updatedAt'},
+      {path: 'tags.tag', select: '-createdAt -updatedAt'}
     ])
     .select('-isAdmin -internalNotes -password')
-    .exec(function (err, user) {
-      if (err) {
-        res.json(500, err);
-        return;
-      }
-      res.json(200, user);
+    .exec()
+    .then(function (data) {
+      Category.populate(data,
+        {path: 'tags.tag.category', select: '-createdAt -updatedAt'},
+        function (err, dataWithCategory) {
+          if (err) {
+            res.json(500, err);
+            return;
+          }
+          res.json(200, dataWithCategory);
+        }
+      );
     });
   },
 

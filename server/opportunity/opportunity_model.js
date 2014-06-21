@@ -60,31 +60,38 @@ var opportunitySchema = new mongoose.Schema({
 
 opportunitySchema.pre('save', function (next) {
   this.updatedAt = new Date();
+  this.wasNew = this.isNew;
   next();
 });
 
 opportunitySchema.post('save', function (doc) {
-  Company.findById(doc.company, function (err, company) {
-    company.opportunities.push(doc._id);
-    company.save();
-  });
+  // add this new opportunity to the company if new
+  if (this.wasNew) {
+    Company.findById(doc.company, function (err, company) {
+      company.opportunities.push(doc._id);
+      company.save();
+    });
+  }
 });
 
 module.exports = exports = mongoose.model('Opportunity', opportunitySchema);
 
 opportunitySchema.post('save', function (doc) {
-  // find all users
-  // import here to avoid circular reference when requiring
-  require('../user/user_model.js').find(function (err, users) {
-    users.forEach(function (user) {
-      // then create a match per user for the new opportunity
-      // if the user is not an Admin
-      if (!user.isAdmin) {
-        Match.create({
-          user:           user._id,
-          opportunity:    doc._id,
-        });
-      }
+  // add this new opportunity to each user on match table
+  if (this.wasNew) {
+    // find all users
+    // import here to avoid circular reference when requiring
+    require('../user/user_model.js').find(function (err, users) {
+      users.forEach(function (user) {
+        // then create a match per user for the new opportunity
+        // if the user is not an Admin
+        if (!user.isAdmin) {
+          Match.create({
+            user:           user._id,
+            opportunity:    doc._id,
+          });
+        }
+      });
     });
-  });
+  }
 });

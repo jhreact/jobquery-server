@@ -27,12 +27,13 @@ var tagSchema = new mongoose.Schema({
 
 tagSchema.pre('save', function (next) {
   this.updatedAt = new Date();
+  this.wasNew = this.isNew;
   next();
 });
 
 tagSchema.post('save', function (doc) {
   // add this new tag to each user
-  if (doc.__v === 0) {
+  if (this.wasNew) {
     User.find(function (err, users) {
       users.forEach(function (user) {
         user.tags.push({tag: doc._id});

@@ -12,8 +12,9 @@ var Match       = require('../../server/match/match_model.js');
 
 // var DB_URL = 'mongodb://jobquery:Team3van@ds061787.mongolab.com:61787/jobquery';
 var DB_URL = 'mongodb://localhost/myApp';
+var db = mongoose.connect(DB_URL);
 
-//Remove everything
+// Remove everything
 Category.collection.remove(function(){populate();});
 Company.collection.remove(function(){});
 Tag.collection.remove(function(){});
@@ -22,31 +23,50 @@ Opportunity.collection.remove(function(){});
 Message.collection.remove(function(){});
 Match.collection.remove(function(){});
 
-
-var db = mongoose.connect(DB_URL);
-
 var populate = function() {
 
   var categorySaves = [];
-  var categoryTypes = ['Tag', 'User', 'Opportunity'];
+  var categoriesData = [
+    {
+      name: 'Skills',
+      type: 'Tag',
+      rank: 1
+    },
+    {
+      name: 'Location Preference',
+      type: 'Tag',
+      rank: 2
+    },
+    {
+      name: 'Company Size',
+      type: 'Tag',
+      rank: 3
+    },
+    {
+      name: 'Attending Hiring Day',
+      type: 'User',
+      rank: 1
+    },
+    {
+      name: 'Not Attending Hiring Day',
+      type: 'User',
+      rank: 2
+    },
+    {
+      name: 'Attending Hiring Day',
+      type: 'Opportunity',
+      rank: 1
+    },
+    {
+      name: 'Not Attending Hiring Day',
+      type: 'Opportunity',
+      rank: 2
+    }
+  ];
 
-  for (var i = 0; i < 8; i++) {
-    var category = {
-      name:   faker.random.bs_noun(),
-      type:   categoryTypes[Math.floor(Math.random() * 3)],
-      rank:   faker.Helpers.randomNumber(100, 1)
-    };
+  categoriesData.forEach(function (category) {
     categorySaves.push(Category.create(category));
-  }
-
-  for (var i = 0; i < 2; i++) {
-    var category = {
-      name:   faker.random.bs_noun(),
-      type:   'Tag',
-      rank:   faker.Helpers.randomNumber(100, 1)
-    };
-    categorySaves.push(Category.create(category));
-  }
+  });
 
   console.log('Saving categories..');
   Q.all(categorySaves)
@@ -54,31 +74,30 @@ var populate = function() {
       console.log('Saved categories: ', categoryResults.length);
 
       var tagSaves = [];
-      var options = ['scale', 'binary', 'text'];
-      var tagCategories = categoryResults.filter(function(category){ return category.type === 'Tag' })
-      // Populate 20 tags
-      for(var i = 0; i < 10; i++) {
+      var typeOptions = ['scale', 'binary', 'text'];
+      var userCategories = categoryResults.filter(function (category) {
+        return category.type === 'User';
+      });
+      var oppCategories = categoryResults.filter(function (category) {
+        return category.type === 'Opportunity';
+      });
+      var tagCategories = categoryResults.filter(function (category) {
+        return category.type === 'Tag';
+      });
+
+      // Populate 50 tags
+      for(var i = 0; i < 50; i++) {
         var tag = {
           name:             faker.random.bs_noun() + i,
           label:            faker.random.catch_phrase_descriptor(),
-          type:             options[Math.floor(Math.random() * 3)],
-          active:           true,
+          type:             typeOptions[Math.floor(Math.random() * 3)],
           position:         i,
-          category:         tagCategories[0]._id
+          active:           true,
+          category:         tagCategories[Math.floor(Math.random() * tagCategories.length)]._id
         };
         tagSaves.push(Tag.create(tag));
       }
-      for(var i = 0; i < 10; i++) {
-        var tag = {
-          name:             faker.random.bs_noun() + i,
-          label:            faker.random.catch_phrase_descriptor(),
-          type:             options[Math.floor(Math.random() * 3)],
-          active:           true,
-          position:         i,
-          category:         tagCategories[1]._id
-        };
-        tagSaves.push(Tag.create(tag));
-      }
+
       console.log('Saving tags..');
       Q.all(tagSaves)
         .then(function(results) {
@@ -114,13 +133,12 @@ var populate = function() {
               github:         'github.com/' + faker.Name.firstName(),
               linkedin:       'linkedin.com/in/' + faker.Name.firstName(),
               isAdmin:        true,
-              isRegistered:   Math.random() > 0.5 ? true : false,
+              isRegistered:   true,
               searchStage:    'Early',
               city:           'San Francisco',
               state:          'CA',
               country:        'USA',
-              tags:           userTags,
-              category:       categoryResults[Math.floor(Math.random() * categoryResults.length)]._id
+              tags:           userTags
             };
             var testUser = {
               email:          'user@hack.com',
@@ -129,13 +147,13 @@ var populate = function() {
               github:         'github.com/' + faker.Name.firstName(),
               linkedin:       'linkedin.com/in/' + faker.Name.firstName(),
               isAdmin:        false,
-              isRegistered:   Math.random() > 0.5 ? true : false,
+              isRegistered:   true,
               searchStage:    'Early',
               city:           'San Francisco',
               state:          'CA',
               country:        'USA',
               tags:           userTags,
-              category:       categoryResults[Math.floor(Math.random() * categoryResults.length)]._id
+              category:       userCategories[Math.floor(Math.random() * userCategories.length)]._id
             };
             userSaves.push(User.create(admin));
             userSaves.push(User.create(testUser));
@@ -154,7 +172,7 @@ var populate = function() {
                 state:          'CA',
                 country:        'USA',
                 tags:           userTags,
-                category:       categoryResults[Math.floor(Math.random() * categoryResults.length)]._id
+                category:       userCategories[Math.floor(Math.random() * userCategories.length)]._id
               };
               userSaves.push(User.create(user));
             }
@@ -211,7 +229,7 @@ var populate = function() {
                                             notes:  [faker.Lorem.sentence(),faker.Lorem.sentence()],
                                             stage:  stageEnum[Math.floor(Math.random() * stageEnum.length)]
                                         }],
-                        category:       categoryResults[Math.floor(Math.random() * categoryResults.length)]._id
+                        category:       oppCategories[Math.floor(Math.random() * oppCategories.length)]._id
                       };
                       opportunitySaves.push(Opportunity.create(opportunity));
                     // UPDATE COMPANIES WITH OPPERTUNITY

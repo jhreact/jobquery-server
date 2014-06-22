@@ -15,7 +15,7 @@ var smtpTransport = nodemailer.createTransport("SMTP", {
 
 var mailOptions = {
   from: 'jobquerytest@gmail.com',
-  subject: 'Test Subject'
+  subject: 'Invitation to jobQuery'
 };
 
 var sendInvites = function(req, res){

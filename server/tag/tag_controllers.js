@@ -7,6 +7,10 @@ var UNABLE_TO_RETRIEVE  = "Server unable to retrieve tag.";
 module.exports = exports = {
 
   post: function (req, res) {
+    // depopulate category
+    if (req.body.category && req.body.category._id) {
+      req.body.category = req.body.category._id;
+    }
     Tag.create(req.body, function (err, tag) {
       if (err) {
         res.json(500, UNABLE_TO_SAVE);

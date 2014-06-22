@@ -76,8 +76,6 @@ module.exports = exports = {
   },
 
   post: function (req, res) {
-    // TODO: need to generate a password rather than take one from user
-    // TODO: need to protect isAdmin property from being changed by users
     User.create(req.body, function (err, user) {
       if (err) {
         res.json(500, err);

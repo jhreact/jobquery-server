@@ -32,7 +32,7 @@ var sendInvites = function(req, res){
     });
 
     if (alreadyRegistered) {
-      res.send(400, emailsAlreadyRegistered);
+      res.send(200, emailsAlreadyRegistered);
     } else {
       createUsers(emails, function(email, password){
         mailOptions.to   = email;

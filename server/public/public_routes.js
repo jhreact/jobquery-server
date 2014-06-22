@@ -23,7 +23,9 @@ module.exports = exports = function (router) {
     .get(companyController.get);
 
   router.route('/opportunities/:id')
-    .put(matchController.putByIds)
+    .put(matchController.putByIds);
+
+  router.route('/opportunities')
     .get(matchController.getByUserId);
 
 };

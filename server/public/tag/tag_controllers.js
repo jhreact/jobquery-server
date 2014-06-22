@@ -1,6 +1,6 @@
 "use strict";
 
-var Tag = require('./tag_model.js');
+var Tag = require('../../tag/tag_model.js');
 var UNABLE_TO_SAVE      = "Server unable to save tag.";
 var UNABLE_TO_RETRIEVE  = "Server unable to retrieve tag.";
 

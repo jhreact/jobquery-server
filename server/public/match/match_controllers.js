@@ -1,14 +1,13 @@
-var Match = require('./match_model.js');
-var Tag = require('../tag/tag_model.js');
-var Category = require('../category/category_model.js');
-var Opportunity = require('../opportunity/opportunity_model.js');
-var User = require('../user/user_model.js');
-var Company = require('../company/company_model.js');
+var Match = require('../../match/match_model.js');
+var Tag = require('../../tag/tag_model.js');
+var Category = require('../../category/category_model.js');
+var Opportunity = require('../../opportunity/opportunity_model.js');
+var User = require('../../user/user_model.js');
+var Company = require('../../company/company_model.js');
 var Q = require('q');
 var mongoose = require('mongoose');
 
 module.exports = exports = {
-
   getByUserId: function (req, res) {
     var user;
     var matches;
@@ -24,8 +23,20 @@ module.exports = exports = {
       .then(function (data) {
         return Tag.populate(data,
           {path: 'opportunity.tags.tag', select: '-createdAt -updatedAt'}
-        ).then(function (matchesWithTags) {
-          matches = matchesWithTags;
+        )
+        .then(function (matchesWithTags) {
+          console.log('matchesWithTags:', matchesWithTags);
+          return Company.populate(matchesWithTags,
+            {path: 'opportunity.company'});
+        })
+        .then(function (matchesWithTagsCompany) {
+          console.log('matchesWithTagsCompany:', matchesWithTagsCompany);
+          return Category.populate(matchesWithTagsCompany,
+            {path: 'opportunity.category'});
+        })
+        .then(function (results) {
+          console.log('results:', results);
+          matches = results;
           return;
         });
       }),
@@ -50,7 +61,7 @@ module.exports = exports = {
     .then(function () {
       res.json(200, {user: user, matches: matches});
     });
-  }
+  },
 
   putByIds: function (req, res) {
     Match.findOne({

@@ -8,7 +8,7 @@ var User = require('../user/user_model.js');
 var mongoOID = mongoose.Schema.Types.ObjectId;
 
 var tagSchema = new mongoose.Schema({
-  name:             {type: String, required: true, unique: true, index: true},
+  name:             {type: String, required: true, index: true},
   label:            {type: String, required: true},
   isPublic:         {type: Boolean, required: true, default: true},
   type:

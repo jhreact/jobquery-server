@@ -22,6 +22,7 @@ module.exports = exports = {
 
   get: function (req, res) {
     Tag.find()
+    .where('active').equals(true)
     .populate('category')
     .exec(function(err, tags) {
       if (err) {

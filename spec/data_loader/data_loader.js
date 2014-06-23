@@ -10,8 +10,8 @@ var Message     = require('../../server/message/message_model.js');
 var Match       = require('../../server/match/match_model.js');
 
 
-// var DB_URL = 'mongodb://jobquery:Team3van@ds061787.mongolab.com:61787/jobquery';
-var DB_URL = 'mongodb://localhost/myApp';
+var DB_URL = 'mongodb://jobquery:Team3van@ds061787.mongolab.com:61787/jobquery';
+// var DB_URL = 'mongodb://localhost/myApp';
 var db = mongoose.connect(DB_URL);
 
 // Remove everything
@@ -244,8 +244,10 @@ var populate = function() {
                     Q.all(opportunitySaves)
                       .then(function(opportunityResults) {
                         console.log('Saved opportunities: ', opportunityResults.length);
+                        process.exit();
                       }, function(error){
                         console.log(error);
+                        process.exit(1);
                       });
                   });
               });

@@ -212,6 +212,12 @@ var populate = function() {
                       'Phone Interview'
                     ];
 
+                    var importance = ['must', 'nice', 'unimportant'];
+                    userTags = userTags.map(function(tag){
+                      tag.importance = importance[Math.floor(Math.random() * 3)];
+                      return tag;
+                    });
+
                     for(var i = 0; i < 20; i++) {
                       var index = Math.floor(Math.random() * companyResults.length);
                       var opportunity = {

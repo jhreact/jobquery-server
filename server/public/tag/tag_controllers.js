@@ -10,7 +10,7 @@ module.exports = exports = {
     Tag.find()
     .where('active').equals(true)
     .where('isPublic').equals(true)
-    .select('-createdAt -updatedAt -isPublic -active')
+    .select('-createdAt -updatedAt -isPublic -active -isPublic')
     .populate({path: 'category', select: '-createdAt -updatedAt'})
     .exec(function(err, tags) {
       if (err) {

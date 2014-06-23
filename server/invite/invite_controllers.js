@@ -68,8 +68,8 @@ var createUsers = function(emails, callback) {
     // tags have to be populated on every new user
     userTags = tags.map(function(item){
       var tag = {
-        tag : item._id,
-        score : 0
+        tag: item._id,
+        value: null
       };
       return tag;
     });

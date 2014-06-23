@@ -13,6 +13,7 @@ var categorySchema = new mongoose.Schema({
     enum: ['Tag', 'User', 'Opportunity'],
     default: 'Tag'
   },
+  active:       {type: Boolean, required: true, default: true},
   rank:         {type: Number, default: 1},
   createdAt:    {type: Date, required: true, default: Date.now},
   updatedAt:    {type: Date, required: true, default: Date.now}

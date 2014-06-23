@@ -9,9 +9,11 @@ var Opportunity = require('../../server/opportunity/opportunity_model.js');
 var Message     = require('../../server/message/message_model.js');
 var Match       = require('../../server/match/match_model.js');
 
+var categoriesData = require('./categories.js');
+var tagsData = require('./tags.js');
 
-var DB_URL = 'mongodb://jobquery:Team3van@ds061787.mongolab.com:61787/jobquery';
-// var DB_URL = 'mongodb://localhost/myApp';
+// var DB_URL = 'mongodb://jobquery:Team3van@ds061787.mongolab.com:61787/jobquery';
+var DB_URL = 'mongodb://localhost/myApp';
 var db = mongoose.connect(DB_URL);
 
 // Remove everything
@@ -26,44 +28,6 @@ Match.collection.remove(function(){});
 var populate = function() {
 
   var categorySaves = [];
-  var categoriesData = [
-    {
-      name: 'Skills',
-      type: 'Tag',
-      rank: 1
-    },
-    {
-      name: 'Location Preference',
-      type: 'Tag',
-      rank: 2
-    },
-    {
-      name: 'Company Size',
-      type: 'Tag',
-      rank: 3
-    },
-    {
-      name: 'Attending Hiring Day',
-      type: 'User',
-      rank: 1
-    },
-    {
-      name: 'Not Attending Hiring Day',
-      type: 'User',
-      rank: 2
-    },
-    {
-      name: 'Attending Hiring Day',
-      type: 'Opportunity',
-      rank: 1
-    },
-    {
-      name: 'Not Attending Hiring Day',
-      type: 'Opportunity',
-      rank: 2
-    }
-  ];
-
   categoriesData.forEach(function (category) {
     categorySaves.push(Category.create(category));
   });
@@ -73,8 +37,6 @@ var populate = function() {
     .then(function(categoryResults){
       console.log('Saved categories: ', categoryResults.length);
 
-      var tagSaves = [];
-      var typeOptions = ['scale', 'binary', 'text'];
       var userCategories = categoryResults.filter(function (category) {
         return category.type === 'User';
       });
@@ -85,27 +47,26 @@ var populate = function() {
         return category.type === 'Tag';
       });
 
-      // Populate 50 tags
-      for(var i = 0; i < 50; i++) {
-        var tag = {
-          name:             faker.random.bs_noun() + i,
-          label:            faker.random.catch_phrase_descriptor(),
-          type:             typeOptions[Math.floor(Math.random() * 3)],
-          position:         i,
-          active:           true,
-          category:         tagCategories[Math.floor(Math.random() * tagCategories.length)]._id
-        };
+      var tagSaves = [];
+      tagsData.forEach(function (tag) {
+        for (var i = 0; i < tagCategories.length; i += 1) {
+          if (tagCategories[i].name === tag.category) {
+            tag.category = tagCategories[i]._id;
+            break;
+          }
+        }
         tagSaves.push(Tag.create(tag));
-      }
+      });
 
       console.log('Saving tags..');
       Q.all(tagSaves)
         .then(function(results) {
           console.log('Saved tags: ', results.length);
+
           var userSaves = [];
           Tag.find(function(err, tags) {
-            var userTags = [];
-              userTags = tags.map(function(item){
+            var allTags = [];
+              allTags = tags.map(function(item){
               var tag;
                 if (item.type === 'binary') {
                   tag = {
@@ -137,8 +98,7 @@ var populate = function() {
               searchStage:    'Early',
               city:           'San Francisco',
               state:          'CA',
-              country:        'USA',
-              tags:           userTags
+              country:        'USA'
             };
             var testUser = {
               email:          'user@hack.com',
@@ -152,7 +112,7 @@ var populate = function() {
               city:           'San Francisco',
               state:          'CA',
               country:        'USA',
-              tags:           userTags,
+              tags:           allTags,
               category:       userCategories[Math.floor(Math.random() * userCategories.length)]._id
             };
             userSaves.push(User.create(admin));
@@ -171,7 +131,7 @@ var populate = function() {
                 city:           'San Francisco',
                 state:          'CA',
                 country:        'USA',
-                tags:           userTags,
+                tags:           allTags,
                 category:       userCategories[Math.floor(Math.random() * userCategories.length)]._id
               };
               userSaves.push(User.create(user));
@@ -213,7 +173,7 @@ var populate = function() {
                     ];
 
                     var importance = ['must', 'nice', 'unimportant'];
-                    userTags = userTags.map(function(tag){
+                    allTags = allTags.map(function(tag){
                       tag.importance = importance[Math.floor(Math.random() * 3)];
                       return tag;
                     });
@@ -225,7 +185,7 @@ var populate = function() {
                         company:        companyResults[index]._id,
                         jobTitle:       faker.Company.bs(),
                         description:    faker.Company.catchPhrase(),
-                        tags:           userTags,
+                        tags:           allTags,
                         links:          [{title : faker.random.catch_phrase_descriptor(), url : faker.Image.imageUrl()}],
                         notes:          [{date : new Date(), text : faker.Lorem.sentence()}],
                         internalNotes:  [{date : new Date(), text : faker.Lorem.sentence()}],
@@ -238,16 +198,15 @@ var populate = function() {
                         category:       oppCategories[Math.floor(Math.random() * oppCategories.length)]._id
                       };
                       opportunitySaves.push(Opportunity.create(opportunity));
-                    // UPDATE COMPANIES WITH OPPERTUNITY
                     }
                     console.log('Saving opportunities.. ');
                     Q.all(opportunitySaves)
                       .then(function(opportunityResults) {
                         console.log('Saved opportunities: ', opportunityResults.length);
-                        process.exit();
+                        setTimeout(process.exit, 2000);
                       }, function(error){
                         console.log(error);
-                        process.exit(1);
+                        setTimeout(process.exit.bind(this, 1), 2000);
                       });
                   });
               });

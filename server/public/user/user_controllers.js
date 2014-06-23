@@ -21,9 +21,10 @@ module.exports = exports = {
             res.json(500, err);
             return;
           }
-          // hide non-public tags from users
+          // hide non-public and inactive tags from users
           for (var i = 0; i < dataWithCategory.tags.length; i += 1) {
-            if (dataWithCategory.tags[i].tag.isPublic === false) {
+            if (dataWithCategory.tags[i].tag.isPublic === false ||
+              dataWithCategory.tags[i].tag.active === false) {
               dataWithCategory.tags.splice(i, 1);
               i -= 1;
             }

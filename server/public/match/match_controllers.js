@@ -39,7 +39,8 @@ module.exports = exports = {
           // hide non-public tags from users
           for (var i = 0; i < results.length; i += 1) {
             for (var j = 0; j < results[i].opportunity.tags.length; j += 1) {
-              if (results[i].opportunity.tags[j].tag.isPublic === false) {
+              if (results[i].opportunity.tags[j].tag.isPublic === false ||
+                results[i].opportunity.tags[j].tag.active === false) {
                 results[i].opportunity.tags[j].splice(j, 1);
                 j -= 1;
               }
@@ -62,9 +63,10 @@ module.exports = exports = {
         return Category.populate(data,
           {path: 'tags.tag.category', select: '-createdAt -updatedAt'}
         ).then(function (usr) {
-          // hide non-public tags from users
+          // hide non-public and inactive tags from users
           for (var i = 0; i < usr.tags.length; i += 1) {
-            if (usr.tags[i].tag.isPublic === false) {
+            if (usr.tags[i].tag.isPublic === false ||
+              usr.tags[i].tag.active === false) {
               usr.tags.splice(i, 1);
               i -= 1;
             }

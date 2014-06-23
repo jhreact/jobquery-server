@@ -28,10 +28,10 @@ module.exports = exports = {
           if (req.body[field] !== undefined) {
             // depopulate opportunities
             if (field === 'opportunities') {
-              if (req.body.company && req.body.company._id) {
-                for (var i = 0; i < req.body.company.length; i += 1) {
-                  if (req.body.company[i]._id) {
-                    req.body.company[i] = req.body.company[i]._id;
+              if (req.body.opportunities) {
+                for (var i = 0; i < req.body.opportunities.length; i += 1) {
+                  if (req.body.opportunities[i]._id) {
+                    req.body.opportunities[i] = req.body.opportunities[i]._id;
                   }
                 }
               }

@@ -14,7 +14,12 @@ var opportunitySchema = new mongoose.Schema({
   tags:
     [{
       tag:    {type: mongoOID, ref: 'Tag', required: true},
-      value:  {type: String}
+      value:  {type: String},
+      importance: {
+        type: String,
+        required: true,
+        enum: ['must', 'nice', 'unimportant']
+      }
     }],
   links:
     [{

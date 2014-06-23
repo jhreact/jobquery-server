@@ -40,7 +40,7 @@ var categories = [
     name: 'ERROR - SHOULD NOT SHOW UP',
     type: 'Tag',
     rank: 7,
-    ACTIVE: false
+    active: false
   },
 
   {
@@ -71,7 +71,7 @@ var categories = [
     name: 'ERROR - SHOULD NOT SHOW UP',
     type: 'User',
     rank: 5,
-    ACTIVE: false
+    active: false
   },
   {
     name: 'Attending Hiring Day',
@@ -89,7 +89,7 @@ var categories = [
     name: 'ERROR - SHOULD NOT SHOW UP',
     type: 'Opportunity',
     rank: 3,
-    ACTIVE: false
+    active: false
   }
 ];
 

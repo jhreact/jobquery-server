@@ -6,6 +6,7 @@ module.exports = exports = {
 
   getByType: function (req, res) {
     Category.find({type: req.params.type})
+    .where('active').equals(true)
     .exec(function (err, category) {
       if (err) {
         res.json(500, err);
@@ -42,6 +43,7 @@ module.exports = exports = {
 
   get: function (req, res) {
     Category.find()
+    .where('active').equals(true)
     .exec(function (err, categories) {
       if (err) {
         res.json(500, err);

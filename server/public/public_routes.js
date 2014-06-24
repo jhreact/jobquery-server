@@ -23,6 +23,7 @@ module.exports = exports = function (router) {
     .get(tagController.get);
 
   router.route('/opportunities/:id')
+    .get(matchController.getByOppId)
     .put(matchController.putByIds);
 
   router.route('/opportunities')

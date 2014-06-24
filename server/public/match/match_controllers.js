@@ -79,6 +79,9 @@ module.exports = exports = {
     ])
     .then(function () {
       res.json(200, {user: user, matches: matches});
+    })
+    .catch(function (err) {
+      res.send(500, err);
     });
   },
 
@@ -111,6 +114,9 @@ module.exports = exports = {
     ])
     .then(function () {
       res.json(200, {matches: matches, opportunities: opportunities});
+    })
+    .catch(function (err) {
+      res.send(500, err);
     });
   },
 

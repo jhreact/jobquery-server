@@ -8,7 +8,8 @@ var Q = require('q');
 var mongoose = require('mongoose');
 
 module.exports = exports = {
-  getByUserId: function (req, res) {
+
+  getByOppId: function (req, res) {
     var user;
     var matches;
 
@@ -78,6 +79,38 @@ module.exports = exports = {
     ])
     .then(function () {
       res.json(200, {user: user, matches: matches});
+    });
+  },
+
+  getByUserId: function (req, res) {
+    var opportunities;
+    var matches;
+
+    Q.all([
+      Match
+      .find({user: req.user.id})
+      .select('-createdAt -updatedAt')
+      .exec()
+      .then(function (data) {
+          matches = data;
+          return;
+      }),
+
+      Opportunity
+      .find()
+      .select('-createdAt -updatedAt')
+      .populate([
+        {path: 'category', select: 'name'},
+        {path: 'company', select: 'name'}
+      ])
+      .exec()
+      .then(function (data) {
+          opportunities = data;
+          return;
+      })
+    ])
+    .then(function () {
+      res.json(200, {matches: matches, opportunities: opportunities});
     });
   },
 

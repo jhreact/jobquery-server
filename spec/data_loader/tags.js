@@ -68,19 +68,7 @@ var tags = [
 {name: 'Protactor',label: 'Protactor',type: 'scale',position: 33,active: true,isPublic: true,category: 'Skills'},
 {name: 'TDD',label: 'TDD',type: 'scale',position: 34,active: true,isPublic: true,category: 'Skills'},
 {name: 'Jasmine / Mocha',label: 'Jasmine / Mocha',type: 'scale',position: 35,active: true,isPublic: true,category: 'Skills'},
-{name: 'LESS / SASS/ Stylus',label: 'LESS / SASS/ Stylus',type: 'scale',position: 36,active: true,isPublic: true,category: 'Skills'},
-{name: 'NOT PUBLIC1',label: 'NOT PUBLIC; ONLY SEEN BY ADMIN',type: 'scale',position: 98,active: true,isPublic: false,category: 'Company Size'},
-{name: 'NOT PUBLIC2',label: 'NOT PUBLIC; ONLY SEEN BY ADMIN',type: 'scale',position: 98,active: true,isPublic: false,category: 'Location'},
-{name: 'NOT PUBLIC3',label: 'NOT PUBLIC; ONLY SEEN BY ADMIN',type: 'scale',position: 98,active: true,isPublic: false,category: 'Role'},
-{name: 'NOT PUBLIC4',label: 'NOT PUBLIC; ONLY SEEN BY ADMIN',type: 'scale',position: 98,active: true,isPublic: false,category: 'Job Search'},
-{name: 'NOT PUBLIC5',label: 'NOT PUBLIC; ONLY SEEN BY ADMIN',type: 'scale',position: 98,active: true,isPublic: false,category: 'Recent Experience'},
-{name: 'NOT PUBLIC6',label: 'NOT PUBLIC; ONLY SEEN BY ADMIN',type: 'scale',position: 98,active: true,isPublic: false,category: 'Skills'},
-{name: 'ERROR1',label: 'NOT ACTIVE; SHOULD NOT BE VISIBLE',type: 'scale',position: 99,active: false,isPublic: true,category: 'Company Size'},
-{name: 'ERROR2',label: 'NOT ACTIVE; SHOULD NOT BE VISIBLE',type: 'scale',position: 99,active: false,isPublic: true,category: 'Location'},
-{name: 'ERROR3',label: 'NOT ACTIVE; SHOULD NOT BE VISIBLE',type: 'scale',position: 99,active: false,isPublic: true,category: 'Role'},
-{name: 'ERROR4',label: 'NOT ACTIVE; SHOULD NOT BE VISIBLE',type: 'scale',position: 99,active: false,isPublic: true,category: 'Job Search'},
-{name: 'ERROR5',label: 'NOT ACTIVE; SHOULD NOT BE VISIBLE',type: 'scale',position: 99,active: false,isPublic: true,category: 'Recent Experience'},
-{name: 'ERROR6',label: 'NOT ACTIVE; SHOULD NOT BE VISIBLE',type: 'scale',position: 99,active: false,isPublic: true,category: 'Skills'}
+{name: 'LESS / SASS/ Stylus',label: 'LESS / SASS/ Stylus',type: 'scale',position: 36,active: true,isPublic: true,category: 'Skills'}
 
 ];
 

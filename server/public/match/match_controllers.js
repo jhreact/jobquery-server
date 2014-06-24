@@ -118,10 +118,7 @@ module.exports = exports = {
   },
 
   putByIds: function (req, res) {
-    Match.findOne({
-      opportunity: req.params.id,
-      user: req.user.id
-    }, function (err, match) {
+    Match.findOne({_id: req.params.id}, function (err, match) {
       if (err) {
         res.json(500, err);
         return;

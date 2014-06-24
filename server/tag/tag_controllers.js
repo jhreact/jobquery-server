@@ -23,7 +23,8 @@ module.exports = exports = {
   get: function (req, res) {
     Tag.find()
     .where('active').equals(true)
-    .populate('category')
+    .populate({path: 'category', select: '-createdAt -updatedAt'})
+    .select('-createdAt -updatedAt')
     .exec(function(err, tags) {
       if (err) {
         res.json(500, UNABLE_TO_RETRIEVE);
@@ -35,7 +36,8 @@ module.exports = exports = {
 
   getById: function (req, res) {
     Tag.findById(req.params.id)
-    .populate('category')
+    .populate({path: 'category', select: '-createdAt -updatedAt'})
+    .select('-createdAt -updatedAt')
     .exec(function (err, tag) {
       if (err) {
         res.json(500, UNABLE_TO_RETRIEVE);

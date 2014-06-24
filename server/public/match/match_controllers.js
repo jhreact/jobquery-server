@@ -11,11 +11,11 @@ module.exports = exports = {
 
   getByOppId: function (req, res) {
     var user;
-    var matches;
+    var match;
 
     Q.all([
       Match
-      .find({user: req.user.id, opportunity: req.params.id})
+      .findOne({user: req.user.id, opportunity: req.params.id})
       .select('-createdAt -updatedAt')
       .populate([
         {path: 'opportunity', select: '-createdAt -updatedAt'}
@@ -26,17 +26,14 @@ module.exports = exports = {
           {path: 'opportunity.tags.tag', select: '-createdAt -updatedAt'}
         )
         .then(function (matchesWithTags) {
-          console.log('matchesWithTags:', matchesWithTags);
           return Company.populate(matchesWithTags,
             {path: 'opportunity.company'});
         })
         .then(function (matchesWithTagsCompany) {
-          console.log('matchesWithTagsCompany:', matchesWithTagsCompany);
           return Category.populate(matchesWithTagsCompany,
             {path: 'opportunity.category'});
         })
         .then(function (results) {
-          console.log('results:', results);
           // hide non-public tags from users
           for (var i = 0; i < results.length; i += 1) {
             for (var j = 0; j < results[i].opportunity.tags.length; j += 1) {
@@ -47,7 +44,7 @@ module.exports = exports = {
               }
             }
           }
-          matches = results;
+          match = results;
           return;
         });
       }),
@@ -78,7 +75,7 @@ module.exports = exports = {
       })
     ])
     .then(function () {
-      res.json(200, {user: user, matches: matches});
+      res.json(200, {user: user, match: match});
     })
     .catch(function (err) {
       res.send(500, err);

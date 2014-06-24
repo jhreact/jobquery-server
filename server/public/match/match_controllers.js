@@ -85,8 +85,18 @@ module.exports = exports = {
   getByUserId: function (req, res) {
     var opportunities;
     var matches;
+    var user;
 
     Q.all([
+      User
+      .findOne({_id: req.user.id})
+      .select('-createdAt -updatedAt')
+      .exec()
+      .then(function (data) {
+          user = data;
+          return;
+      }),
+
       Match
       .find({user: req.user.id})
       .select('-createdAt -updatedAt')
@@ -110,7 +120,7 @@ module.exports = exports = {
       })
     ])
     .then(function () {
-      res.json(200, {matches: matches, opportunities: opportunities});
+      res.json(200, {matches: matches, opportunities: opportunities, user: user});
     })
     .catch(function (err) {
       res.send(500, err);

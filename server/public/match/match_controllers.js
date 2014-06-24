@@ -42,7 +42,7 @@ module.exports = exports = {
             for (var j = 0; j < results[i].opportunity.tags.length; j += 1) {
               if (results[i].opportunity.tags[j].tag.isPublic === false ||
                 results[i].opportunity.tags[j].tag.active === false) {
-                results[i].opportunity.tags[j].splice(j, 1);
+                results[i].opportunity.tags.splice(j, 1);
                 j -= 1;
               }
             }

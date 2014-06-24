@@ -203,10 +203,10 @@ var populate = function() {
                     Q.all(opportunitySaves)
                       .then(function(opportunityResults) {
                         console.log('Saved opportunities: ', opportunityResults.length);
-                        setTimeout(process.exit, 2000);
+                        setTimeout(process.exit, 3000);
                       }, function(error){
                         console.log(error);
-                        setTimeout(process.exit.bind(this, 1), 2000);
+                        setTimeout(process.exit.bind(this, 1), 3000);
                       });
                   });
               });

@@ -98,7 +98,7 @@ module.exports = exports = {
 
       Opportunity
       .find()
-      .select('-createdAt -updatedAt')
+      .select('active company jobTitle description category')
       .populate([
         {path: 'category', select: 'name'},
         {path: 'company', select: 'name'}

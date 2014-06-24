@@ -15,7 +15,7 @@ module.exports = exports = {
 
     Q.all([
       Match
-      .find({user: req.user.id})
+      .find({user: req.user.id, opportunity: req.params.id})
       .select('-createdAt -updatedAt')
       .populate([
         {path: 'opportunity', select: '-createdAt -updatedAt'}

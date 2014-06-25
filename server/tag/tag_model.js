@@ -34,7 +34,10 @@ tagSchema.pre('save', function (next) {
 tagSchema.post('save', function (doc) {
   // add this new tag to each user
   if (this.wasNew) {
-    User.find(function (err, users) {
+    User
+    .find()
+    .select('_id')
+    .exec(function (err, users) {
       users.forEach(function (user) {
         user.tags.push({tag: doc._id});
         user.save();

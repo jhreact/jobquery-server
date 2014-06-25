@@ -53,7 +53,10 @@ userSchema.post('save', function (doc) {
   // find all opportunities
   // if new user is not an admin and is new user
   if (!doc.isAdmin && this.wasNew) {
-    Opportunity.find(function (err, opps) {
+    Opportunity
+    .find()
+    .select('_id')
+    .exec(function (err, opps) {
       opps.forEach(function (opp) {
         // then create a match per opportunity for the given user
         Match.create({

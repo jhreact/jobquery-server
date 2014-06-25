@@ -65,9 +65,10 @@ var populate = function() {
 
           var userSaves = [];
           Tag.find(function(err, tags) {
-            var allTags = [];
-              allTags = tags.map(function(item){
-              var tag;
+            var generateTags = function (numItems) {
+                numItems = numItems || tags.length;
+                return (tags.map(function(item){
+                var tag;
                 if (item.type === 'binary') {
                   tag = {
                     tag : item._id,
@@ -84,8 +85,9 @@ var populate = function() {
                     value : faker.Lorem.sentence()
                   };
                 }
-              return tag;
-            });
+                return tag;
+              })).slice(0, numItems - 1);
+            };
             // create admin
             var admin = {
               email:          'admin@hack.com',
@@ -112,7 +114,7 @@ var populate = function() {
               city:           'San Francisco',
               state:          'CA',
               country:        'USA',
-              tags:           allTags,
+              tags:           generateTags(),
               category:       userCategories[Math.floor(Math.random() * userCategories.length)]._id
             };
             userSaves.push(User.create(admin));
@@ -131,7 +133,7 @@ var populate = function() {
                 city:           'San Francisco',
                 state:          'CA',
                 country:        'USA',
-                tags:           allTags,
+                tags:           generateTags(),
                 category:       userCategories[Math.floor(Math.random() * userCategories.length)]._id
               };
               userSaves.push(User.create(user));
@@ -173,7 +175,7 @@ var populate = function() {
                     ];
 
                     var importance = ['must', 'nice', 'unimportant'];
-                    allTags = allTags.map(function(tag){
+                    var allTags = generateTags().map(function(tag){
                       tag.importance = importance[Math.floor(Math.random() * 3)];
                       return tag;
                     });
@@ -185,7 +187,7 @@ var populate = function() {
                         company:        companyResults[index]._id,
                         jobTitle:       faker.Company.bs(),
                         description:    faker.Company.catchPhrase(),
-                        approved:       Math.random() > 0.2 ? true : false,
+                        approved:       Math.random() > 0.3 ? true : false,
                         tags:           allTags,
                         links:          [{title : faker.random.catch_phrase_descriptor(), url : faker.Image.imageUrl()}],
                         notes:          [{date : new Date(), text : faker.Lorem.sentence()}],
@@ -204,10 +206,24 @@ var populate = function() {
                     Q.all(opportunitySaves)
                       .then(function(opportunityResults) {
                         console.log('Saved opportunities: ', opportunityResults.length);
-                        setTimeout(process.exit, 3000);
-                      }, function(error){
-                        console.log(error);
-                        setTimeout(process.exit.bind(this, 1), 3000);
+
+                        console.log('Assigning userInterest...');
+                        var matchSaves = [];
+                        var generateInterest = function () {
+                          Match.find(function (err, matches) {
+                            matches.forEach(function (match) {
+                              // match.userInterest = Math.floor(Math.random() * 5);
+                              matchSaves.push(match.update({$set: {userInterest: Math.floor(Math.random() * 5)}}).exec());
+                            });
+
+                            Q.all(matchSaves)
+                            .then(function (matchSaves) {
+                              console.log('Assigned userInterest for ' + matchSaves.length + ' matches');
+                              process.exit();
+                            });
+                          });
+                        };
+                        setTimeout(generateInterest, 4000);
                       });
                   });
               });

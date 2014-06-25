@@ -24,8 +24,9 @@ var userSchema = new mongoose.Schema({
     },
   tags:
     [{
-      tag:      {type: mongoOID, ref: 'Tag', required: true},
-      value:    mongoose.Schema.Types.Mixed
+      tag:            {type: mongoOID, ref: 'Tag', required: true},
+      value:          mongoose.Schema.Types.Mixed,
+      privateValue:   {type: mongoose.Schema.Types.Mixed, default: null}
     }],
   messages:
     [{

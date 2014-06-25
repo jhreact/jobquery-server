@@ -68,8 +68,14 @@ var tags = [
 {name: 'Protactor',label: 'Protactor',type: 'scale',position: 33,active: true,isPublic: true,category: 'Skills'},
 {name: 'TDD',label: 'TDD',type: 'scale',position: 34,active: true,isPublic: true,category: 'Skills'},
 {name: 'Jasmine / Mocha',label: 'Jasmine / Mocha',type: 'scale',position: 35,active: true,isPublic: true,category: 'Skills'},
-{name: 'LESS / SASS/ Stylus',label: 'LESS / SASS/ Stylus',type: 'scale',position: 36,active: true,isPublic: true,category: 'Skills'}
-
+{name: 'LESS / SASS/ Stylus',label: 'LESS / SASS/ Stylus',type: 'scale',position: 36,active: true,isPublic: true,category: 'Skills'},
+{name: 'Private User Tag 1', label: 'PUT1', type: 'scale', position: 37, active: true, isPublic: false, category: 'Private User Tags'},
+{name: 'Private User Tag 2', label: 'PUT2', type: 'scale', position: 38, active: true, isPublic: false, category: 'Private User Tags'},
+{name: 'Private User Tag 3', label: 'PUT3', type: 'scale', position: 39, active: true, isPublic: false, category: 'Private User Tags'},
+{name: 'Private User Tag 4', label: 'PUT4', type: 'scale', position: 40, active: true, isPublic: false, category: 'Private User Tags'},
+{name: 'Private User Tag 5', label: 'PUT5', type: 'scale', position: 41, active: true, isPublic: false, category: 'Private User Tags'},
+{name: 'Private User Tag 6', label: 'PUT6', type: 'scale', position: 42, active: true, isPublic: false, category: 'Private User Tags'},
+{name: 'Private User Tag 7', label: 'PUT7', type: 'scale', position: 43, active: true, isPublic: false, category: 'Private User Tags'}
 ];
 
 module.exports = exports = tags;

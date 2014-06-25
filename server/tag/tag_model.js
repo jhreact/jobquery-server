@@ -10,7 +10,7 @@ var mongoOID = mongoose.Schema.Types.ObjectId;
 var tagSchema = new mongoose.Schema({
   name:             {type: String, required: true, index: true},
   label:            {type: String, required: true},
-  value:            {type: String},
+  value:            {type: String, default: null},
   isPublic:         {type: Boolean, required: true, default: true},
   type:
     {

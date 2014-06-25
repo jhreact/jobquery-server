@@ -44,7 +44,7 @@ module.exports = exports = {
           for (var i = 0; i < results.opportunity.tags.length; i += 1) {
             if (results.opportunity.tags[i].tag.isPublic === false ||
               results.opportunity.tags[i].tag.active === false) {
-              results.opportunity.tags[i].splice(i, 1);
+              results.opportunity.tags.splice(i, 1);
               i -= 1;
             }
           }

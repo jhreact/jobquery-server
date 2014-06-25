@@ -14,6 +14,7 @@ var userSchema = new mongoose.Schema({
   linkedin:       {type: String},
   isAdmin:        {type: Boolean, required: true},
   isRegistered:   {type: Boolean, required: true, default: false},
+  attending:      {type: Boolean, default: true},
   searchStage:
     {
       type: String,

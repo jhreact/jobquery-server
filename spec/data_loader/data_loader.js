@@ -174,9 +174,9 @@ var populate = function() {
                       'Phone Interview'
                     ];
 
-                    var importance = ['must', 'nice', 'unimportant'];
+                    var importance = ['must', 'nice'];
                     var allTags = generateTags().map(function(tag){
-                      tag.importance = importance[Math.floor(Math.random() * 3)];
+                      tag.importance = importance[Math.floor(Math.random() * 2)];
                       return tag;
                     });
 

@@ -10,6 +10,7 @@ var mongoOID = mongoose.Schema.Types.ObjectId;
 var tagSchema = new mongoose.Schema({
   name:             {type: String, required: true, index: true},
   label:            {type: String, required: true},
+  value:            {type: String},
   isPublic:         {type: Boolean, required: true, default: true},
   type:
     {
@@ -36,7 +37,7 @@ tagSchema.post('save', function (doc) {
   if (this.wasNew) {
     User
     .find()
-    .select('_id')
+    .select('_id tags')
     .exec(function (err, users) {
       users.forEach(function (user) {
         user.tags.push({tag: doc._id});

@@ -40,7 +40,8 @@ var opportunitySchema = new mongoose.Schema({
   questions:
     [{
       date:     {type: Date, required: true, default: Date.now},
-      question: {type: String, required: true}
+      question: {type: String, required: true},
+      active:   {type: Boolean, required: true, default: true}
     }],
   survey:
     [{

@@ -72,8 +72,8 @@ module.exports = exports = {
         ).then(function (usr) {
           // hide non-public and inactive tags from users
           for (var i = 0; i < usr.tags.length; i += 1) {
-            if (usr.tags[i].tag.isPublic === false ||
-              usr.tags[i].tag.active === false) {
+            if (usr.tags[i].isPublic === false ||
+              usr.tags[i].active === false) {
               usr.tags.splice(i, 1);
               i -= 1;
             }

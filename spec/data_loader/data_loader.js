@@ -175,10 +175,17 @@ var populate = function() {
                     ];
 
                     var importance = ['must', 'nice'];
-                    var allTags = generateTags().map(function(tag){
-                      tag.importance = importance[Math.floor(Math.random() * 2)];
-                      return tag;
-                    });
+                    var allTags = function () {
+                      return generateTags(10).map(function(tag){
+                        tag.importance = importance[Math.floor(Math.random() * 2)];
+                        if (tag.value.length > 5) {
+                          tag.value = 'text';
+                        } else if (tag.value === '1' || tag.value === '2') {
+                          tag.value = Math.random() > 0.5 ? '3' : '4';
+                        }
+                        return tag;
+                      });
+                    };
 
                     for(var i = 0; i < 20; i++) {
                       var index = Math.floor(Math.random() * companyResults.length);
@@ -188,7 +195,7 @@ var populate = function() {
                         jobTitle:       faker.Company.bs(),
                         description:    faker.Company.catchPhrase(),
                         approved:       Math.random() > 0.3 ? true : false,
-                        tags:           allTags,
+                        tags:           allTags(),
                         links:          [{title : faker.random.catch_phrase_descriptor(), url : faker.Image.imageUrl()}],
                         notes:          [{date : new Date(), text : faker.Lorem.sentence()}],
                         internalNotes:  [{date : new Date(), text : faker.Lorem.sentence()}],
@@ -212,7 +219,6 @@ var populate = function() {
                         var generateInterest = function () {
                           Match.find(function (err, matches) {
                             matches.forEach(function (match) {
-                              // match.userInterest = Math.floor(Math.random() * 5);
                               matchSaves.push(match.update({$set: {userInterest: Math.floor(Math.random() * 5)}}).exec());
                             });
 

@@ -36,6 +36,12 @@ var categories = [
     rank: 6
   },
 
+  {
+    name: 'Private User Tags',
+    type: 'Tag',
+    rank: 7
+  },
+
   // {
   //   name: 'ERROR - SHOULD NOT SHOW UP',
   //   type: 'Tag',

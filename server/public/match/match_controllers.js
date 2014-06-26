@@ -91,6 +91,7 @@ module.exports = exports = {
     var opportunities;
     var matches;
     var user;
+    var nonApproved = {};
 
     Q.all([
       User
@@ -123,6 +124,7 @@ module.exports = exports = {
           // filter opportunities that are not yet approved
           for (var i = 0; i < data.length; i += 1) {
             if (!data[i].approved) {
+              nonApproved[data[i]._id] = true;
               data.splice(i, 1);
               i -= 1;
             }
@@ -132,6 +134,9 @@ module.exports = exports = {
       })
     ])
     .then(function () {
+      matches = matches.filter(function (match) {
+        return nonApproved[match.opportunity];
+      });
       res.json(200, {matches: matches, opportunities: opportunities, user: user});
     })
     .catch(function (err) {

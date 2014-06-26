@@ -7,14 +7,14 @@ var nodemailer = require('nodemailer');
 var smtpTransport = nodemailer.createTransport("SMTP", {
   service: 'Gmail',
   auth: {
-    user: 'jobquerytest@gmail.com',
-    pass: '2p1XoftiuEN8'
+    user: global.smtpUsername,
+    pass: global.smtpPassword
   }
 });
 
 var mailOptions = {
-  from: 'jobquerytest@gmail.com',
-  subject: 'Invitation to jobQuery'
+  from: global.fromEmail,
+  subject: 'jobQuery Password Reset'
 };
 
 module.exports = exports = {
@@ -31,7 +31,7 @@ module.exports = exports = {
           hash = hash.replace(/\.|\/|\$/g, '');
           user.resetHash = hash;
           user.save(function(err){
-            var resetLink = 'http://localhost:8000/reset/' + hash;
+            var resetLink = global.url + '/reset/' + hash;
             mailOptions.to = email;
             mailOptions.html = '<a href="' + resetLink + '">Your Reset Link</a>'
 

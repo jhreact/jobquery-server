@@ -8,17 +8,18 @@ var bcrypt = require('bcrypt-nodejs');
 var smtpTransport = nodemailer.createTransport("SMTP", {
   service: 'Gmail',
   auth: {
-    user: 'jobquerytest@gmail.com',
-    pass: '2p1XoftiuEN8'
+    user: global.smtpUsername,
+    pass: global.smtpPassword
   }
 });
 
 var mailOptions = {
-  from: 'jobquerytest@gmail.com',
+  from: global.fromEmail,
   subject: 'Invitation to jobQuery'
 };
 
 var sendInvites = function(req, res){
+  console.log(global.url);
   var emails = req.body;
   var alreadyRegistered = false;
   var emailsAlreadyRegistered = [];
@@ -37,7 +38,7 @@ var sendInvites = function(req, res){
       createUsers(emails, function(email, password){
         mailOptions.to   = email;
         mailOptions.html = '<div>username: ' + email + '</div>' + '<div> password: ' + password +
-        '</div><div><a href="http://jobby.azurewebsites.net/login">Login</a></div>';
+        '</div><div><a href="' + global.url + '/login">Login</a></div>';
         smtpTransport.sendMail(mailOptions, function(error, response){
           if(error){
             console.log(error);

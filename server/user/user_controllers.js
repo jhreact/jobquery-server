@@ -6,6 +6,7 @@ module.exports = exports = {
 
   getById: function (req, res) {
     User.findById(req.params.id)
+    .where('isAdmin').equals(false)
     .populate([
       {path: 'category'},
       {path: 'tags.tag'}
@@ -62,6 +63,7 @@ module.exports = exports = {
 
   get: function (req, res) {
     User.find()
+    .where('isAdmin').equals(false)
     .populate([
       {path: 'category'}
     ])

@@ -20,6 +20,7 @@ module.exports = exports = function (app, express, routers) {
   app.use(bodyParser());
   app.use(middle.cors);
   app.use('/login', routers.LoginRouter);
+  app.use('/auth', routers.AuthRouter);
 
   app.use('/api', expressJwt({secret: process.env.ADMIN_SECRET || 'admin'}));
   app.use('/public', expressJwt({secret: process.env.USER_SECRET || 'user'}));

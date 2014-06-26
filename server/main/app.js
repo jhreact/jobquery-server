@@ -15,6 +15,7 @@ var MatchRouter       = express.Router();
 var CompanyRouter     = express.Router();
 var CategoryRouter    = express.Router();
 var InviteRouter      = express.Router();
+var AuthRouter        = express.Router();
 
 var routers      = {};
 
@@ -27,6 +28,7 @@ routers.MatchRouter       = MatchRouter;
 routers.CompanyRouter     = CompanyRouter;
 routers.CategoryRouter    = CategoryRouter;
 routers.InviteRouter      = InviteRouter;
+routers.AuthRouter        = AuthRouter;
 
 require('./config.js')(app, express, routers);
 
@@ -39,5 +41,6 @@ require('../match/match_routes.js')(MatchRouter);
 require('../company/company_routes.js')(CompanyRouter);
 require('../category/category_routes.js')(CategoryRouter);
 require('../invite/invite_routes.js')(InviteRouter);
+require('../auth/auth_routes.js')(AuthRouter);
 
 module.exports = exports = app;

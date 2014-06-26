@@ -114,10 +114,11 @@ module.exports = exports = {
 
       Opportunity
       .find()
-      .select('active approved company jobTitle description category questions createdAt updatedAt')
+      .select('active approved company jobTitle description category questions createdAt updatedAt tags')
       .populate([
         {path: 'category', select: 'name'},
-        {path: 'company', select: 'name'}
+        {path: 'company', select: 'name'},
+        {path: 'tags.tag', select: 'name type isPublic active'}
       ])
       .exec()
       .then(function (data) {
@@ -127,6 +128,14 @@ module.exports = exports = {
               nonApproved[data[i]._id] = true;
               data.splice(i, 1);
               i -= 1;
+            }
+            // hide non-public and inactive tags from users
+            for (var j = 0; j < data[i].tags.length; j += 1) {
+              if (data[i].tags[j].tag.isPublic === false ||
+                data[i].tags[j].tag.active === false) {
+                data[i].tags.splice(j, 1);
+                j -= 1;
+              }
             }
           }
           opportunities = data;

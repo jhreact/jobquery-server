@@ -63,8 +63,7 @@ module.exports = exports = {
   get: function (req, res) {
     User.find()
     .populate([
-      {path: 'category'},
-      {path: 'tags.tag', select: '-createdAt -updatedAt'}
+      {path: 'category'}
     ])
     .exec(function (err, users) {
       if (err) {

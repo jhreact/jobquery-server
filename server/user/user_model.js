@@ -9,6 +9,7 @@ var mongoOID = mongoose.Schema.Types.ObjectId;
 var userSchema = new mongoose.Schema({
   email:          {type: String, required: true, unique: true, index: true},
   password:       {type: String, required: true, select: false},
+  resetHash:      {type: String},
   name:           {type: String, index: true},
   github:         {type: String},
   linkedin:       {type: String},

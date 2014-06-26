@@ -135,7 +135,7 @@ module.exports = exports = {
     ])
     .then(function () {
       matches = matches.filter(function (match) {
-        return nonApproved[match.opportunity];
+        return !nonApproved[match.opportunity];
       });
       res.json(200, {matches: matches, opportunities: opportunities, user: user});
     })

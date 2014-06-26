@@ -7,6 +7,7 @@ module.exports = exports = {
 
   getById: function (req, res) {
     User.findById(req.user.id)
+    .where('isAdmin').equals(false)
     .populate([
       {path: 'category', select: '-createdAt -updatedAt'},
       {path: 'tags.tag', select: '-createdAt -updatedAt'}

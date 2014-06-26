@@ -12,7 +12,7 @@ module.exports = exports = {
       {path: 'category', select: '-createdAt -updatedAt'},
       {path: 'tags.tag', select: '-createdAt -updatedAt'}
     ])
-    .select('-isAdmin -internalNotes -password')
+    .select('-isAdmin -internalNotes -password -passwordHash')
     .exec()
     .then(function (data) {
       Category.populate(data,

@@ -5,6 +5,12 @@
 var express      = require('express');
 var app          = express();
 
+global.url = 'http://jqapp.azurewebsites.net';
+global.smtpUsername = 'jobquerytest@gmail.com';
+global.smtpPassword = '2p1XoftiuEN8';
+
+global.fromEmail = 'jobquery-do-not-respond@gmail.com';
+
 /* Router */
 var LoginRouter       = express.Router();
 var PublicRouter      = express.Router();

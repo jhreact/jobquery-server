@@ -3,7 +3,7 @@ var tags = [
 {name: 'Hiring Day',label: 'Are you participating in the [May 20th] Hiring Day?',type: 'binary',position: 1,active: true,isPublic: true,category: 'Job Search'},
 {name: 'US Citizen',label: 'Are you a U.S. citizen?',type: 'binary',position: 2,active: true,isPublic: true,category: 'Job Search'},
 {name: 'Locations of Interest',label: 'What other cities, if any, are you open to?',type: 'text',position: 3,active: true,isPublic: true,category: 'Job Search'},
-{name: 'Other',label: 'Anything else we should know about your job search situation?',type: 'text',position: 4,active: true,isPublic: true,category: 'Job Search'},
+{name: 'Other (Job Search)',label: 'Anything else we should know about your job search situation?',type: 'text',position: 4,active: true,isPublic: true,category: 'Job Search'},
 {name: 'San Francisco',label: 'I want to work in San Francisco',type: 'scale',position: 1,active: true,isPublic: true,category: 'Location'},
 {name: 'Peninsula',label: 'I want to work in the Peninsula (e.g. Redwood City)',type: 'scale',position: 2,active: true,isPublic: true,category: 'Location'},
 {name: 'South Bay',label: 'I want to work in the South Bay (e.g. Mountain View)',type: 'scale',position: 3,active: true,isPublic: true,category: 'Location'},
@@ -19,8 +19,8 @@ var tags = [
 {name: 'Testing',label: 'Stickler for Testing ',type: 'scale',position: 8,active: true,isPublic: true,category: 'Role'},
 {name: 'Feynman',label: 'Feynman: Solves Complex Problems in Any Language',type: 'scale',position: 9,active: true,isPublic: true,category: 'Role'},
 {name: 'Design-gineer',label: 'Design-gineer (comfortable and capable with Photoshop but can also turn mockups into functional prototypes)',type: 'scale',position: 10,active: true,isPublic: true,category: 'Role'},
-{name: 'null',label: 'What industries / domains excite you the most?',type: 'text',position: 11,active: true,isPublic: true,category: 'Role'},
-{name: 'null',label: 'What else should we know about the role you are looking for or the work you like doing?',type: 'text',position: 12,active: true,isPublic: true,category: 'Role'},
+{name: 'Exciting Industries',label: 'What industries / domains excite you the most?',type: 'text',position: 11,active: true,isPublic: true,category: 'Role'},
+{name: 'Other (Role)',label: 'What else should we know about the role you are looking for or the work you like doing?',type: 'text',position: 12,active: true,isPublic: true,category: 'Role'},
 {name: 'Engineer #1',label: 'Being engineer #1 or #2 at a small but awesome startup.  Lower base salary, more equity',type: 'scale',position: 1,active: true,isPublic: true,category: 'Company Size'},
 {name: 'Mid-Size Company',label: 'Being part of mid-sized engineering team in a mid-sized company',type: 'scale',position: 2,active: true,isPublic: true,category: 'Company Size'},
 {name: 'Large Company',label: 'Being part of a very large company',type: 'scale',position: 3,active: true,isPublic: true,category: 'Company Size'},
@@ -69,19 +69,13 @@ var tags = [
 {name: 'TDD',label: 'TDD',type: 'scale',position: 34,active: true,isPublic: true,category: 'Skills'},
 {name: 'Jasmine / Mocha',label: 'Jasmine / Mocha',type: 'scale',position: 35,active: true,isPublic: true,category: 'Skills'},
 {name: 'LESS / SASS/ Stylus',label: 'LESS / SASS/ Stylus',type: 'scale',position: 36,active: true,isPublic: true,category: 'Skills'},
-{name: 'NOT PUBLIC1',label: 'NOT PUBLIC; ONLY SEEN BY ADMIN',type: 'scale',position: 98,active: true,isPublic: false,category: 'Company Size'},
-{name: 'NOT PUBLIC2',label: 'NOT PUBLIC; ONLY SEEN BY ADMIN',type: 'scale',position: 98,active: true,isPublic: false,category: 'Location'},
-{name: 'NOT PUBLIC3',label: 'NOT PUBLIC; ONLY SEEN BY ADMIN',type: 'scale',position: 98,active: true,isPublic: false,category: 'Role'},
-{name: 'NOT PUBLIC4',label: 'NOT PUBLIC; ONLY SEEN BY ADMIN',type: 'scale',position: 98,active: true,isPublic: false,category: 'Job Search'},
-{name: 'NOT PUBLIC5',label: 'NOT PUBLIC; ONLY SEEN BY ADMIN',type: 'scale',position: 98,active: true,isPublic: false,category: 'Recent Experience'},
-{name: 'NOT PUBLIC6',label: 'NOT PUBLIC; ONLY SEEN BY ADMIN',type: 'scale',position: 98,active: true,isPublic: false,category: 'Skills'},
-{name: 'ERROR1',label: 'NOT ACTIVE; SHOULD NOT BE VISIBLE',type: 'scale',position: 99,active: false,isPublic: true,category: 'Company Size'},
-{name: 'ERROR2',label: 'NOT ACTIVE; SHOULD NOT BE VISIBLE',type: 'scale',position: 99,active: false,isPublic: true,category: 'Location'},
-{name: 'ERROR3',label: 'NOT ACTIVE; SHOULD NOT BE VISIBLE',type: 'scale',position: 99,active: false,isPublic: true,category: 'Role'},
-{name: 'ERROR4',label: 'NOT ACTIVE; SHOULD NOT BE VISIBLE',type: 'scale',position: 99,active: false,isPublic: true,category: 'Job Search'},
-{name: 'ERROR5',label: 'NOT ACTIVE; SHOULD NOT BE VISIBLE',type: 'scale',position: 99,active: false,isPublic: true,category: 'Recent Experience'},
-{name: 'ERROR6',label: 'NOT ACTIVE; SHOULD NOT BE VISIBLE',type: 'scale',position: 99,active: false,isPublic: true,category: 'Skills'}
-
+{name: 'Private User Tag 1', label: 'PUT1', type: 'scale', position: 37, active: true, isPublic: false, category: 'Private User Tags'},
+{name: 'Private User Tag 2', label: 'PUT2', type: 'scale', position: 38, active: true, isPublic: false, category: 'Private User Tags'},
+{name: 'Private User Tag 3', label: 'PUT3', type: 'scale', position: 39, active: true, isPublic: false, category: 'Private User Tags'},
+{name: 'Private User Tag 4', label: 'PUT4', type: 'scale', position: 40, active: true, isPublic: false, category: 'Private User Tags'},
+{name: 'Private User Tag 5', label: 'PUT5', type: 'scale', position: 41, active: true, isPublic: false, category: 'Private User Tags'},
+{name: 'Private User Tag 6', label: 'PUT6', type: 'scale', position: 42, active: true, isPublic: false, category: 'Private User Tags'},
+{name: 'Private User Tag 7', label: 'PUT7', type: 'scale', position: 43, active: true, isPublic: false, category: 'Private User Tags'}
 ];
 
 module.exports = exports = tags;

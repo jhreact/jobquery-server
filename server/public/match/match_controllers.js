@@ -8,13 +8,14 @@ var Q = require('q');
 var mongoose = require('mongoose');
 
 module.exports = exports = {
-  getByUserId: function (req, res) {
+
+  getByOppId: function (req, res) {
     var user;
-    var matches;
+    var match;
 
     Q.all([
       Match
-      .find({user: req.user.id})
+      .findOne({user: req.user.id, opportunity: req.params.id})
       .select('-createdAt -updatedAt')
       .populate([
         {path: 'opportunity', select: '-createdAt -updatedAt'}
@@ -25,28 +26,29 @@ module.exports = exports = {
           {path: 'opportunity.tags.tag', select: '-createdAt -updatedAt'}
         )
         .then(function (matchesWithTags) {
-          console.log('matchesWithTags:', matchesWithTags);
           return Company.populate(matchesWithTags,
             {path: 'opportunity.company'});
         })
         .then(function (matchesWithTagsCompany) {
-          console.log('matchesWithTagsCompany:', matchesWithTagsCompany);
           return Category.populate(matchesWithTagsCompany,
             {path: 'opportunity.category'});
         })
         .then(function (results) {
-          console.log('results:', results);
+          // filter opportunities that are not yet approved
+          if (!results.opportunity.approved) {
+            match = null;
+            return;
+          }
+
           // hide non-public tags from users
-          for (var i = 0; i < results.length; i += 1) {
-            for (var j = 0; j < results[i].opportunity.tags.length; j += 1) {
-              if (results[i].opportunity.tags[j].tag.isPublic === false ||
-                results[i].opportunity.tags[j].tag.active === false) {
-                results[i].opportunity.tags[j].splice(j, 1);
-                j -= 1;
-              }
+          for (var i = 0; i < results.opportunity.tags.length; i += 1) {
+            if (results.opportunity.tags[i].tag.isPublic === false ||
+              results.opportunity.tags[i].tag.active === false) {
+              results.opportunity.tags.splice(i, 1);
+              i -= 1;
             }
           }
-          matches = results;
+          match = results;
           return;
         });
       }),
@@ -63,6 +65,7 @@ module.exports = exports = {
         return Category.populate(data,
           {path: 'tags.tag.category', select: '-createdAt -updatedAt'}
         ).then(function (usr) {
+
           // hide non-public and inactive tags from users
           for (var i = 0; i < usr.tags.length; i += 1) {
             if (usr.tags[i].tag.isPublic === false ||
@@ -77,15 +80,81 @@ module.exports = exports = {
       })
     ])
     .then(function () {
-      res.json(200, {user: user, matches: matches});
+      res.json(200, {user: user, match: match});
+    })
+    .catch(function (err) {
+      res.send(500, err);
+    });
+  },
+
+  getByUserId: function (req, res) {
+    var opportunities;
+    var matches;
+    var user;
+    var nonApproved = {};
+
+    Q.all([
+      User
+      .findOne({_id: req.user.id})
+      .select('-createdAt -updatedAt')
+      .exec()
+      .then(function (data) {
+          user = data;
+          return;
+      }),
+
+      Match
+      .find({user: req.user.id})
+      .select('-createdAt -updatedAt')
+      .exec()
+      .then(function (data) {
+          matches = data;
+          return;
+      }),
+
+      Opportunity
+      .find()
+      .select('active approved company jobTitle description category questions createdAt updatedAt tags')
+      .populate([
+        {path: 'category', select: 'name'},
+        {path: 'company', select: 'name'},
+        {path: 'tags.tag', select: 'name type isPublic active'}
+      ])
+      .exec()
+      .then(function (data) {
+          // filter opportunities that are not yet approved
+          for (var i = 0; i < data.length; i += 1) {
+            if (!data[i].approved) {
+              nonApproved[data[i]._id] = true;
+              data.splice(i, 1);
+              i -= 1;
+            }
+            // hide non-public and inactive tags from users
+            for (var j = 0; j < data[i].tags.length; j += 1) {
+              if (data[i].tags[j].tag.isPublic === false ||
+                data[i].tags[j].tag.active === false) {
+                data[i].tags.splice(j, 1);
+                j -= 1;
+              }
+            }
+          }
+          opportunities = data;
+          return;
+      })
+    ])
+    .then(function () {
+      matches = matches.filter(function (match) {
+        return !nonApproved[match.opportunity];
+      });
+      res.json(200, {matches: matches, opportunities: opportunities, user: user});
+    })
+    .catch(function (err) {
+      res.send(500, err);
     });
   },
 
   putByIds: function (req, res) {
-    Match.findOne({
-      opportunity: req.params.id,
-      user: req.user.id
-    }, function (err, match) {
+    Match.findOne({_id: req.params.id}, function (err, match) {
       if (err) {
         res.json(500, err);
         return;

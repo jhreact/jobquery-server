@@ -7,11 +7,12 @@ module.exports = exports = {
 
   getById: function (req, res) {
     User.findById(req.user.id)
+    .where('isAdmin').equals(false)
     .populate([
       {path: 'category', select: '-createdAt -updatedAt'},
       {path: 'tags.tag', select: '-createdAt -updatedAt'}
     ])
-    .select('-isAdmin -internalNotes -password')
+    .select('-isAdmin -internalNotes -password -resetHash')
     .exec()
     .then(function (data) {
       Category.populate(data,

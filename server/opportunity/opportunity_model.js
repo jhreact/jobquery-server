@@ -11,6 +11,7 @@ var opportunitySchema = new mongoose.Schema({
   company:      {type: mongoOID, ref: 'Company', required: true, index: true},
   jobTitle:     {type: String, required: true},
   description:  {type: String, required: true},
+  approved:     {type: Boolean, default: false, required: true},
   tags:
     [{
       tag:    {type: mongoOID, ref: 'Tag', required: true},
@@ -39,7 +40,8 @@ var opportunitySchema = new mongoose.Schema({
   questions:
     [{
       date:     {type: Date, required: true, default: Date.now},
-      question: {type: String, required: true}
+      question: {type: String, required: true},
+      active:   {type: Boolean, required: true, default: true}
     }],
   survey:
     [{
@@ -86,7 +88,10 @@ opportunitySchema.post('save', function (doc) {
   if (this.wasNew) {
     // find all users
     // import here to avoid circular reference when requiring
-    require('../user/user_model.js').find(function (err, users) {
+    require('../user/user_model.js')
+    .find()
+    .select('_id isAdmin')
+    .exec(function (err, users) {
       users.forEach(function (user) {
         // then create a match per user for the new opportunity
         // if the user is not an Admin

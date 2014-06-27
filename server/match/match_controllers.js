@@ -1,3 +1,4 @@
+var map = require('map-stream');
 var Match = require('./match_model.js');
 var Tag = require('../tag/tag_model.js');
 var Category = require('../category/category_model.js');
@@ -143,7 +144,7 @@ module.exports = exports = {
 
       Opportunity
       .find()
-      .select('active category company jobTitle internalNotes')
+      .select('active approved category company jobTitle internalNotes')
       .populate([
         {path: 'company', select: 'name'},
         {path: 'category', select: 'name'}
@@ -155,5 +156,49 @@ module.exports = exports = {
     .then(function () {
       res.json(200, data);
     });
+  },
+
+  download: function (req, res) {
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', 'attachment; filename=export.csv');
+
+    // get all fields for the header row
+    var headerRow = [];
+    Match.schema.eachPath(function (field) {
+      if (field !== '__v' &&
+          field !== '_id' &&
+          field !== 'createdAt' &&
+          field !== 'updatedAt') {
+        headerRow.push(field);
+      }
+    });
+    res.write(headerRow.join(',') + '\n');
+
+    Match
+    .find()
+    .lean()
+    .stream()
+    .pipe(map(function (data, callback) {
+      var row = [];
+      var value;
+      // iterate over header array (to preserve order)
+      headerRow.forEach(function (field) {
+        value = data[field];
+        // attempt to get property using it as a key on the data object
+        if (value) {
+          // if defined, push value to array
+          // "escape" out commas by replacing with an empty space
+          row.push(JSON.stringify(value).replace(/\,/g, ' '));
+        }  else {
+          // if not, push an empty string
+          row.push('');
+        }
+      });
+      // join array using comma, and add a new line character
+      row = row.join(',') + '\n';
+      callback(null, row);
+    }))
+    .pipe(res);
   }
 };

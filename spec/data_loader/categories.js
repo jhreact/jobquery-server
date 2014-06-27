@@ -37,11 +37,17 @@ var categories = [
   },
 
   {
-    name: 'ERROR - SHOULD NOT SHOW UP',
+    name: 'Private User Tags',
     type: 'Tag',
-    rank: 7,
-    active: false
+    rank: 7
   },
+
+  // {
+  //   name: 'ERROR - SHOULD NOT SHOW UP',
+  //   type: 'Tag',
+  //   rank: 7,
+  //   active: false
+  // },
 
   {
     name: 'HR12/HR13',
@@ -67,12 +73,13 @@ var categories = [
     rank: 4
   },
 
-  {
-    name: 'ERROR - SHOULD NOT SHOW UP',
-    type: 'User',
-    rank: 5,
-    active: false
-  },
+  // {
+  //   name: 'ERROR - SHOULD NOT SHOW UP',
+  //   type: 'User',
+  //   rank: 5,
+  //   active: false
+  // },
+
   {
     name: 'Attending Hiring Day',
     type: 'Opportunity',
@@ -83,14 +90,15 @@ var categories = [
     name: 'Not Attending Hiring Day',
     type: 'Opportunity',
     rank: 2
-  },
-
-  {
-    name: 'ERROR - SHOULD NOT SHOW UP',
-    type: 'Opportunity',
-    rank: 3,
-    active: false
   }
+  // ,
+
+  // {
+  //   name: 'ERROR - SHOULD NOT SHOW UP',
+  //   type: 'Opportunity',
+  //   rank: 3,
+  //   active: false
+  // }
 ];
 
 module.exports = exports = categories;

@@ -9,11 +9,13 @@ var mongoOID = mongoose.Schema.Types.ObjectId;
 var userSchema = new mongoose.Schema({
   email:          {type: String, required: true, unique: true, index: true},
   password:       {type: String, required: true, select: false},
+  resetHash:      {type: String},
   name:           {type: String, index: true},
   github:         {type: String},
   linkedin:       {type: String},
   isAdmin:        {type: Boolean, required: true},
   isRegistered:   {type: Boolean, required: true, default: false},
+  attending:      {type: Boolean, default: true},
   searchStage:
     {
       type: String,
@@ -23,8 +25,9 @@ var userSchema = new mongoose.Schema({
     },
   tags:
     [{
-      tag:      {type: mongoOID, ref: 'Tag', required: true},
-      value:    mongoose.Schema.Types.Mixed
+      tag:            {type: mongoOID, ref: 'Tag', required: true},
+      value:          mongoose.Schema.Types.Mixed,
+      privateValue:   {type: mongoose.Schema.Types.Mixed, default: null}
     }],
   messages:
     [{
@@ -53,7 +56,10 @@ userSchema.post('save', function (doc) {
   // find all opportunities
   // if new user is not an admin and is new user
   if (!doc.isAdmin && this.wasNew) {
-    Opportunity.find(function (err, opps) {
+    Opportunity
+    .find()
+    .select('_id')
+    .exec(function (err, opps) {
       opps.forEach(function (opp) {
         // then create a match per opportunity for the given user
         Match.create({

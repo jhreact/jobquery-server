@@ -82,8 +82,8 @@ module.exports = exports = {
     Opportunity.find()
     .populate([
       {path: 'company'},
-      {path: 'tags.tag'},
-      {path: 'survey.user'},
+      // {path: 'tags.tag'},
+      // {path: 'survey.user'},
       {path: 'category'}
     ])
     .exec(function (err, opps) {

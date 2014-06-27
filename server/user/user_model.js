@@ -20,7 +20,7 @@ var userSchema = new mongoose.Schema({
     {
       type: String,
       required: true,
-      enum: ['Early', 'Mid/Late', 'Closing', 'Accepted'],
+      enum: ['Out', 'Early', 'Mid/Late', 'Closing', 'Accepted'],
       default: 'Early'
     },
   tags:

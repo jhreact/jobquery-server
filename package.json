@@ -19,7 +19,8 @@
   },
   "devDependencies": {
     "supertest": "^0.13.0",
-        "faker": "^1.0.0"
+    "faker": "^1.0.0",
+    "map-stream": "^0.1.0"
   },
   "scripts": {
     "test": "jasmine-node spec/ --captureExceptions --autotest --color --watch server/ spec/",

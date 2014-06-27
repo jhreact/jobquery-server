@@ -13,6 +13,9 @@ module.exports = exports = function (router) {
   router.route('/opportunities/:id')
     .get(controller.getByOppId);
 
+  router.route('/download')
+    .get(controller.download);
+
   router.route('/')
     .get(controller.get);
 

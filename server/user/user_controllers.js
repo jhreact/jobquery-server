@@ -123,6 +123,9 @@ module.exports = exports = {
       // generate tags information
       users[0].tags.forEach(function (tag) {
         tagOrder.push(tag.tag._id);
+        if (tag.tag.name) {
+          tag.tag.name = tag.tag.email;
+        }
         res.write(',' + tag.tag.name); // write tags to header row
       });
       res.write('\n');

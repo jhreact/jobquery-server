@@ -62,15 +62,21 @@ module.exports = exports = {
       .find({opportunity: req.params.id})
       .select('-createdAt -updatedAt -answers -opportunity')
       .populate([
-        {path: 'user', select: 'name email tags category'}
+        {path: 'user', select: 'name email tags category searchStage'}
       ])
       .exec()
       .then(function (data) {
         return Tag.populate(data,
           {path: 'user.tags.tag', select: '-createdAt -updatedAt'}
-        ).then(function (matchesWithTags) {
-          matches = matchesWithTags;
-          return;
+        )
+        .then(function (matchesWithTags) {
+          return Category.populate(matchesWithTags,
+            {path: 'user.category', select: 'name'}
+          )
+          .then(function (finalData) {
+            matches = finalData;
+            return;
+          });
         });
       }),
 
@@ -163,26 +169,29 @@ module.exports = exports = {
     res.setHeader('Content-Type', 'text/csv');
     res.setHeader('Content-Disposition', 'attachment; filename=export.csv');
 
-    // get all fields for the header row
-    var headerRow = [];
-    Match.schema.eachPath(function (field) {
-      if (field !== '__v' &&
-          field !== '_id' &&
-          field !== 'createdAt' &&
-          field !== 'updatedAt') {
-        headerRow.push(field);
-      }
-    });
-    res.write(headerRow.join(',') + '\n');
+    // declare fields of interest
+    var fields = ['user', 'opportunity', 'userInterest'];
 
+    // download users (id, name)
+    User
+    .find()
+    .select('name')
+    .lean();
+      // write users as columns (as first row, leaving first cell blank)
+    // download opportunities (id, name)
+      // get ready to append each name to beginning of a row
+
+    // download match data to populate
     Match
     .find()
+    .select(fields.join(' '))
     .lean()
     .stream()
     .pipe(map(function (data, callback) {
       var row = [];
       var value;
       // iterate over header array (to preserve order)
+      // TODO: switch from headerRow to a list of users to iterate over
       headerRow.forEach(function (field) {
         value = data[field];
         // attempt to get property using it as a key on the data object

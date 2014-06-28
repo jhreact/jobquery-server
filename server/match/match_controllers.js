@@ -179,12 +179,17 @@ module.exports = exports = {
       User
       .find()
       .where('isAdmin').equals(false)
-      .select('name')
+      .select('name email')
       .lean()
       .exec(function (err, users) {
         res.write('User Interest\n');
         users.forEach(function (user) {
-          userData[user._id] = user.name;
+          if (user.name) {
+            userData[user._id] = user.name;
+          } else {
+            userData[user._id] = user.email;
+            user.name = user.email;
+          }
           userOrder.push(user._id);
           res.write(',' + JSON.stringify(user.name).replace(/\,/g, ' '));
         });
@@ -248,6 +253,5 @@ module.exports = exports = {
         res.send();
       });
     });
-
   }
 };

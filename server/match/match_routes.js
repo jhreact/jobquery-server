@@ -17,6 +17,7 @@ module.exports = exports = function (router) {
     .get(controller.download);
 
   router.route('/')
-    .get(controller.get);
+    .get(controller.get)
+    .put(controller.put);
 
 };

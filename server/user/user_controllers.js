@@ -91,8 +91,6 @@ module.exports = exports = {
     res.setHeader('Content-Type', 'text/csv');
     res.setHeader('Content-Disposition', 'attachment');
 
-    var userData = {};
-    var tagData = {};
     var tagOrder = [];
 
     var headerRow = [
@@ -124,8 +122,7 @@ module.exports = exports = {
 
       // generate tags information
       users[0].tags.forEach(function (tag) {
-        tagOrder.push(tag._id);
-        tagData[tag._id] = tag.tag.name;
+        tagOrder.push(tag.tag._id);
         res.write(',' + tag.tag.name); // write tags to header row
       });
       res.write('\n');
@@ -134,7 +131,7 @@ module.exports = exports = {
       users.forEach(function (user) {
         user.category = user.category.name;
         user.tags.forEach(function (tag) {
-          user[tag._id] = tag.value;
+          user[tag.tag._id] = tag.value;
         });
         delete user.tags;
       });

@@ -12,8 +12,8 @@ var Match       = require('../../server/match/match_model.js');
 var categoriesData = require('./categories.js');
 var tagsData = require('./tags.js');
 
-// var DB_URL = 'mongodb://jobquery:Team3van@ds061787.mongolab.com:61787/jobquery';
-var DB_URL = 'mongodb://localhost/myApp';
+var DB_URL = 'mongodb://jobquery:Team3van@ds061787.mongolab.com:61787/jobquery';
+//var DB_URL = 'mongodb://localhost/myApp';
 var db = mongoose.connect(DB_URL);
 
 // Remove everything
@@ -120,7 +120,7 @@ var populate = function() {
             userSaves.push(User.create(admin));
             userSaves.push(User.create(testUser));
             // Populate users
-            for(var i = 0; i < 20; i++) {
+            for(var i = 0; i < 50; i++) {
               var user = {
                 email:          faker.Internet.email(),
                 password:       '$2a$10$ZMxTxy3shQcCr09GQVSoF.KHWpdwT2BXInNbtUEEOz7iAcnRRhoQS',
@@ -145,7 +145,7 @@ var populate = function() {
                 var companySaves = [];
 
                 // Create companies
-                for(var j = 0; j < 10; j++) {
+                for(var j = 0; j < 40; j++) {
                   var company = {
                     name:        faker.Company.companyName(),
                     tagline:     faker.Company.catchPhrase(),
@@ -187,7 +187,7 @@ var populate = function() {
                       });
                     };
 
-                    for(var i = 0; i < 20; i++) {
+                    for(var i = 0; i < 40; i++) {
                       var index = Math.floor(Math.random() * companyResults.length);
                       var opportunity = {
                         active:         true,

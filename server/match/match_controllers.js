@@ -60,7 +60,7 @@ module.exports = exports = {
     Q.all([
       Match
       .find({opportunity: req.params.id})
-      .select('-createdAt -updatedAt -answers -opportunity')
+      .select('-createdAt -updatedAt -opportunity')
       .populate([
         {path: 'user', select: 'name email tags category searchStage'}
       ])
@@ -82,7 +82,7 @@ module.exports = exports = {
 
       Opportunity
       .findOne({_id: req.params.id})
-      .select('-createdAt -updatedAt -answers')
+      .select('-createdAt -updatedAt')
       .populate([
         {path: 'company', select: 'name'},
         {path: 'category', select: 'name'},
@@ -167,47 +167,87 @@ module.exports = exports = {
   download: function (req, res) {
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/csv');
-    res.setHeader('Content-Disposition', 'attachment; filename=export.csv');
+    res.setHeader('Content-Disposition', 'attachment');
 
-    // declare fields of interest
-    var fields = ['user', 'opportunity', 'userInterest'];
+    var userData = {};
+    var userOrder = [];
+    var oppOrder = [];
+    var oppData = {};
+    var newData = {};
 
-    // download users (id, name)
-    User
-    .find()
-    .select('name')
-    .lean();
-      // write users as columns (as first row, leaving first cell blank)
-    // download opportunities (id, name)
-      // get ready to append each name to beginning of a row
+    Q.all([
+      User
+      .find()
+      .where('isAdmin').equals(false)
+      .select('name')
+      .lean()
+      .exec(function (err, users) {
+        res.write('User Interest\n');
+        users.forEach(function (user) {
+          userData[user._id] = user.name;
+          userOrder.push(user._id);
+          res.write(',' + JSON.stringify(user.name).replace(/\,/g, ' '));
+        });
+        res.write('\n');
+      }),
 
-    // download match data to populate
-    Match
-    .find()
-    .select(fields.join(' '))
-    .lean()
-    .stream()
-    .pipe(map(function (data, callback) {
-      var row = [];
-      var value;
-      // iterate over header array (to preserve order)
-      // TODO: switch from headerRow to a list of users to iterate over
-      headerRow.forEach(function (field) {
-        value = data[field];
-        // attempt to get property using it as a key on the data object
-        if (value) {
-          // if defined, push value to array
-          // "escape" out commas by replacing with an empty space
-          row.push(JSON.stringify(value).replace(/\,/g, ' '));
-        }  else {
-          // if not, push an empty string
-          row.push('');
-        }
+      Opportunity
+      .find()
+      .select('jobTitle company')
+      .populate({path: 'company', select: 'name'})
+      .lean()
+      .exec(function (err, opps) {
+        opps.forEach(function (opp) {
+          oppOrder.push(opp._id);
+          oppData[opp._id] = [opp.jobTitle, opp.company.name];
+        });
+      })
+
+    ])
+    .then(function () {
+      Match
+      .find()
+      .select('user opportunity userInterest adminOverride')
+      .lean()
+      .exec(function (err, data) {
+        data.forEach(function (item) {
+          newData[item.opportunity] = newData[item.opportunity] || {};
+          newData[item.opportunity][item.user] = [item.userInterest, item.adminOverride];
+        });
+        oppOrder.forEach(function (oppId) {
+          res.write(
+            JSON.stringify(oppData[oppId][0]).replace(/\,/g, ' ') + ' (' +
+            JSON.stringify(oppData[oppId][1]).replace(/\,/g, ' ') + ')'
+          );
+          userOrder.forEach(function (userId) {
+            res.write(',' + newData[oppId][userId][0]);
+          });
+          res.write('\n');
+        });
+      })
+      // provide adminOverride information on the same download
+      .then(function () {
+        res.write('\n\n\nAdmin Override\n');
+        // write user header again
+        userOrder.forEach(function (user) {
+          res.write(',' + JSON.stringify(userData[user]).replace(/\,/g, ' '));
+        });
+        res.write('\n');
+        // the write adminOverride
+        oppOrder.forEach(function (oppId) {
+          res.write(
+            JSON.stringify(oppData[oppId][0]).replace(/\,/g, ' ') + ' (' +
+            JSON.stringify(oppData[oppId][1]).replace(/\,/g, ' ') + ')'
+          );
+          userOrder.forEach(function (userId) {
+            res.write(',' + newData[oppId][userId][1]);
+          });
+          res.write('\n');
+        });
+        // end response
+        res.send();
       });
-      // join array using comma, and add a new line character
-      row = row.join(',') + '\n';
-      callback(null, row);
-    }))
-    .pipe(res);
+    });
+
   }
 };

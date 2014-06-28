@@ -101,6 +101,9 @@ module.exports = exports = {
       .then(function (data) {
           user = data;
           return;
+      })
+      .catch(function (err) {
+        console.log('error in user:', err);
       }),
 
       Match
@@ -110,6 +113,9 @@ module.exports = exports = {
       .then(function (data) {
           matches = data;
           return;
+      })
+      .catch(function (err) {
+        console.log('error in match:', err);
       }),
 
       Opportunity
@@ -141,6 +147,9 @@ module.exports = exports = {
           opportunities = data;
           return;
       })
+      .catch(function (err) {
+        console.log('error in opportunity:', err);
+      }),
     ])
     .then(function () {
       matches = matches.filter(function (match) {
@@ -149,7 +158,8 @@ module.exports = exports = {
       res.json(200, {matches: matches, opportunities: opportunities, user: user});
     })
     .catch(function (err) {
-      res.send(500, err);
+      console.log(err);
+      res.send(500, 'OMGWTFBBQ ' + err );
     });
   },
 

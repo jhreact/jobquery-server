@@ -168,14 +168,14 @@ module.exports = exports = {
     var id = req.body._id;
     var isProcessed = req.body.isProcessed;
     var internalNotes = req.body.internalNotes;
-
+    console.log(req.body);
     Match.findOne({_id: id}, function(err, match){
       if(err){
         res.send(500);
       } else if (!match) {
         res.send(404);
       } else {
-        match.update({isProcessed: isProcessed}, function(err){
+        match.update({isProcessed: isProcessed === undefined ? match.isProcessed : isProcessed, internalNotes: internalNotes}, function(err){
           err ? res.send(500) : res.send({_id: id});
         });
       }

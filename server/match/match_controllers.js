@@ -164,6 +164,13 @@ module.exports = exports = {
     });
   },
 
+  batchProcess: function(req, res){
+    var ids = req.body.ids;
+    Match.update({_id: {$in: ids}}, { $set: { isProcessed: true }}, {multi: true}, function(err, data){
+      err ? res.send(500) : res.send(200);
+    });
+  },
+
   put: function(req, res){
     var id = req.body._id;
     var isProcessed = req.body.isProcessed;

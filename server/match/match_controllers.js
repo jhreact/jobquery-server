@@ -143,7 +143,7 @@ module.exports = exports = {
     Q.all([
       Match
       .find()
-      .select('-createdAt -updatedAt -answers')
+      .select('-createdAt -answers')
       .exec(function (err, matches) {
         data.matches = matches;
       }),

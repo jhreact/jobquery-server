@@ -164,6 +164,25 @@ module.exports = exports = {
     });
   },
 
+  put: function(req, res){
+    var id = req.body._id;
+    var isProcessed = req.body.isProcessed;
+    var internalNotes = req.body.internalNotes;
+
+    Match.findOne({_id: id}, function(err, match){
+      if(err){
+        res.send(500);
+      } else if (!match) {
+        res.send(404);
+      } else {
+        match.update({isProcessed: isProcessed}, function(err){
+          err ? res.send(500) : res.send({_id: id});
+        });
+      }
+    });
+
+  },
+
   download: function (req, res) {
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/csv');

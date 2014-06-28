@@ -60,23 +60,29 @@ module.exports = exports = {
     Q.all([
       Match
       .find({opportunity: req.params.id})
-      .select('-createdAt -updatedAt -answers -opportunity')
+      .select('-createdAt -updatedAt -opportunity')
       .populate([
-        {path: 'user', select: 'name email tags category'}
+        {path: 'user', select: 'name email tags category searchStage'}
       ])
       .exec()
       .then(function (data) {
         return Tag.populate(data,
           {path: 'user.tags.tag', select: '-createdAt -updatedAt'}
-        ).then(function (matchesWithTags) {
-          matches = matchesWithTags;
-          return;
+        )
+        .then(function (matchesWithTags) {
+          return Category.populate(matchesWithTags,
+            {path: 'user.category', select: 'name'}
+          )
+          .then(function (finalData) {
+            matches = finalData;
+            return;
+          });
         });
       }),
 
       Opportunity
       .findOne({_id: req.params.id})
-      .select('-createdAt -updatedAt -answers')
+      .select('-createdAt -updatedAt')
       .populate([
         {path: 'company', select: 'name'},
         {path: 'category', select: 'name'},
@@ -161,44 +167,91 @@ module.exports = exports = {
   download: function (req, res) {
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/csv');
-    res.setHeader('Content-Disposition', 'attachment; filename=export.csv');
+    res.setHeader('Content-Disposition', 'attachment');
 
-    // get all fields for the header row
-    var headerRow = [];
-    Match.schema.eachPath(function (field) {
-      if (field !== '__v' &&
-          field !== '_id' &&
-          field !== 'createdAt' &&
-          field !== 'updatedAt') {
-        headerRow.push(field);
-      }
-    });
-    res.write(headerRow.join(',') + '\n');
+    var userData = {};
+    var userOrder = [];
+    var oppOrder = [];
+    var oppData = {};
+    var newData = {};
 
-    Match
-    .find()
-    .lean()
-    .stream()
-    .pipe(map(function (data, callback) {
-      var row = [];
-      var value;
-      // iterate over header array (to preserve order)
-      headerRow.forEach(function (field) {
-        value = data[field];
-        // attempt to get property using it as a key on the data object
-        if (value) {
-          // if defined, push value to array
-          // "escape" out commas by replacing with an empty space
-          row.push(JSON.stringify(value).replace(/\,/g, ' '));
-        }  else {
-          // if not, push an empty string
-          row.push('');
-        }
+    Q.all([
+      User
+      .find()
+      .where('isAdmin').equals(false)
+      .select('name email')
+      .lean()
+      .exec(function (err, users) {
+        res.write('User Interest\n');
+        users.forEach(function (user) {
+          if (user.name) {
+            userData[user._id] = user.name;
+          } else {
+            userData[user._id] = user.email;
+            user.name = user.email;
+          }
+          userOrder.push(user._id);
+          res.write(',' + JSON.stringify(user.name).replace(/\,/g, ' '));
+        });
+        res.write('\n');
+      }),
+
+      Opportunity
+      .find()
+      .select('jobTitle company')
+      .populate({path: 'company', select: 'name'})
+      .lean()
+      .exec(function (err, opps) {
+        opps.forEach(function (opp) {
+          oppOrder.push(opp._id);
+          oppData[opp._id] = [opp.jobTitle, opp.company.name];
+        });
+      })
+
+    ])
+    .then(function () {
+      Match
+      .find()
+      .select('user opportunity userInterest adminOverride')
+      .lean()
+      .exec(function (err, data) {
+        data.forEach(function (item) {
+          newData[item.opportunity] = newData[item.opportunity] || {};
+          newData[item.opportunity][item.user] = [item.userInterest, item.adminOverride];
+        });
+        oppOrder.forEach(function (oppId) {
+          res.write(
+            JSON.stringify(oppData[oppId][0]).replace(/\,/g, ' ') + ' (' +
+            JSON.stringify(oppData[oppId][1]).replace(/\,/g, ' ') + ')'
+          );
+          userOrder.forEach(function (userId) {
+            res.write(',' + newData[oppId][userId][0]);
+          });
+          res.write('\n');
+        });
+      })
+      // provide adminOverride information on the same download
+      .then(function () {
+        res.write('\n\n\nAdmin Override\n');
+        // write user header again
+        userOrder.forEach(function (user) {
+          res.write(',' + JSON.stringify(userData[user]).replace(/\,/g, ' '));
+        });
+        res.write('\n');
+        // the write adminOverride
+        oppOrder.forEach(function (oppId) {
+          res.write(
+            JSON.stringify(oppData[oppId][0]).replace(/\,/g, ' ') + ' (' +
+            JSON.stringify(oppData[oppId][1]).replace(/\,/g, ' ') + ')'
+          );
+          userOrder.forEach(function (userId) {
+            res.write(',' + newData[oppId][userId][1]);
+          });
+          res.write('\n');
+        });
+        // end response
+        res.send();
       });
-      // join array using comma, and add a new line character
-      row = row.join(',') + '\n';
-      callback(null, row);
-    }))
-    .pipe(res);
+    });
   }
 };

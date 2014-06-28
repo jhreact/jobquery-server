@@ -81,9 +81,6 @@ module.exports = exports = {
     ])
     .then(function () {
       res.json(200, {user: user, match: match});
-    })
-    .catch(function (err) {
-      res.send(500, err);
     });
   },
 
@@ -147,9 +144,6 @@ module.exports = exports = {
         return !nonApproved[match.opportunity];
       });
       res.json(200, {matches: matches, opportunities: opportunities, user: user});
-    })
-    .catch(function (err) {
-      res.send(500, err);
     });
   },
 

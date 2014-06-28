@@ -10,7 +10,7 @@ var matchSchema = new mongoose.Schema({
   isProcessed:    {type: Boolean, required: true, default: false},
   userInterest:   {type: Number, min: 0, max: 4, default: 0},
   adminOverride:  {type: Number, min: 0, max: 4, default: 0},
-  internalNotes:  {type: String},
+  internalNotes:  {type: String, default: null},
   answers:
     [{
       date:       {type: Date, required: true, default: Date.now},

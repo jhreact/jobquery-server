@@ -132,7 +132,9 @@ module.exports = exports = {
         if (!user.name) {
           user.name = '';
         }
-        user.category = user.category.name;
+        if (user.category) {
+          user.category = user.category.name;
+        }
         user.tags.forEach(function (tag) {
           user[tag.tag._id] = tag.value;
         });

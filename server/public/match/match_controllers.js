@@ -125,6 +125,7 @@ module.exports = exports = {
               nonApproved[data[i]._id] = true;
               data.splice(i, 1);
               i -= 1;
+              continue;
             }
             // hide non-public and inactive tags from users
             for (var j = 0; j < data[i].tags.length; j += 1) {

@@ -112,6 +112,8 @@ module.exports = exports = {
       Opportunity
       .find()
       .select('active approved company jobTitle description category questions createdAt updatedAt tags')
+      .where('active').equals(true)
+      .where('approved').equals(true)
       .populate([
         {path: 'category', select: 'name'},
         {path: 'company', select: 'name'},

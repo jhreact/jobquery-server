@@ -19,8 +19,8 @@ var mailOptions = {
 };
 
 var sendInvites = function(req, res){
-  console.log(global.url);
-  var emails = req.body;
+  var category = req.body.category;
+  var emails = req.body.emails;
   var alreadyRegistered = false;
   var emailsAlreadyRegistered = [];
   // check if emails already taken
@@ -35,7 +35,7 @@ var sendInvites = function(req, res){
     if (alreadyRegistered) {
       res.send(200, emailsAlreadyRegistered);
     } else {
-      createUsers(emails, function(email, password){
+      createUsers(emails, category, function(email, password){
         mailOptions.to   = email;
         mailOptions.html = '<div>username: ' + email + '</div>' + '<div> password: ' + password +
         '</div><div><a href="' + global.url + '/login">Login</a></div>';
@@ -63,7 +63,7 @@ var generatePassword = function() {
     return retVal;
 };
 
-var createUsers = function(emails, callback) {
+var createUsers = function(emails, category, callback) {
   Tag.find(function(error, tags) {
     var userTags = [];
     // tags have to be populated on every new user
@@ -77,12 +77,14 @@ var createUsers = function(emails, callback) {
     emails.forEach(function(email) {
       var password = generatePassword();
       bcrypt.hash(password, null, null, function(err, hash){
-        User.create({
+        var userParams = {
           email:     email,
           password:  hash,
           isAdmin:   false,
           tags:      userTags
-        }).then( function(user) {
+        };
+        if(category) userParams.category = category;
+        User.create(userParams).then( function(user) {
           callback(email, password);
          }, function(err){
            console.log(err);

@@ -175,6 +175,7 @@ module.exports = exports = {
     var id = req.body._id;
     var isProcessed = req.body.isProcessed;
     var internalNotes = req.body.internalNotes;
+    var adminOverride = req.body.adminOverride;
     console.log(req.body);
     Match.findOne({_id: id}, function(err, match){
       if(err){
@@ -182,7 +183,11 @@ module.exports = exports = {
       } else if (!match) {
         res.send(404);
       } else {
-        match.update({isProcessed: isProcessed === undefined ? match.isProcessed : isProcessed, internalNotes: internalNotes}, function(err){
+        var updateParams = {};
+        if(isProcessed !== undefined) updateParams.isProcessed = isProcessed;
+        if(internalNotes !== undefined) updateParams.internalNotes = internalNotes;
+        if(adminOverride !== undefined) updateParams.adminOverride = adminOverride;
+        match.update(updateParams, function(err){
           err ? res.send(500) : res.send({_id: id});
         });
       }

@@ -16,7 +16,11 @@ module.exports = exports = function (router) {
   router.route('/download')
     .get(controller.download);
 
+  router.route('/batchProcess')
+    .put(controller.batchProcess);
+
   router.route('/')
-    .get(controller.get);
+    .get(controller.get)
+    .put(controller.put);
 
 };

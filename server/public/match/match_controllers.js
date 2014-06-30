@@ -112,6 +112,8 @@ module.exports = exports = {
       Opportunity
       .find()
       .select('active approved company jobTitle description category questions createdAt updatedAt tags')
+      .where('active').equals(true)
+      .where('approved').equals(true)
       .populate([
         {path: 'category', select: 'name'},
         {path: 'company', select: 'name'},
@@ -125,6 +127,7 @@ module.exports = exports = {
               nonApproved[data[i]._id] = true;
               data.splice(i, 1);
               i -= 1;
+              continue;
             }
             // hide non-public and inactive tags from users
             for (var j = 0; j < data[i].tags.length; j += 1) {

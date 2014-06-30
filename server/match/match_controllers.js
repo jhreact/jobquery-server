@@ -139,10 +139,14 @@ module.exports = exports = {
 
   get: function (req, res) {
     var data = {};
+    var queryParams = {};
+
+    if(req.query.fromDate) queryParams.createdAt = {$gt: req.query.fromDate}
+    if(req.query.isProcessed) queryParams.isProcessed = req.query.isProcessed;
 
     Q.all([
       Match
-      .find()
+      .find(queryParams)
       .select('-createdAt -answers')
       .exec(function (err, matches) {
         data.matches = matches;

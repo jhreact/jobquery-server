@@ -247,6 +247,13 @@ module.exports = exports = {
       .lean()
       .exec(function (err, data) {
         data.forEach(function (item) {
+          // do not show zeroes
+          if (item.userInterest) {
+            item.userInterest = '';
+          }
+          if (item.adminOverride) {
+            item.adminOverride = '';
+          }
           newData[item.opportunity] = newData[item.opportunity] || {};
           newData[item.opportunity][item.user] = [item.userInterest, item.adminOverride];
         });

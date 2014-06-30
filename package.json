@@ -16,12 +16,12 @@
     "jsonwebtoken": "^0.4.0",
     "bcrypt-nodejs": "0.0.3",
     "nodemailer": "^0.6.5",
-    "map-stream": "^0.1.0"
+    "map-stream": "^0.1.0",
+    "newrelic": "^1.7.4"
   },
   "devDependencies": {
     "supertest": "^0.13.0",
-    "faker": "^1.0.0",
-    "newrelic": "^1.7.4"
+    "faker": "^1.0.0"
   },
   "scripts": {
     "test": "jasmine-node spec/ --captureExceptions --autotest --color --watch server/ spec/",

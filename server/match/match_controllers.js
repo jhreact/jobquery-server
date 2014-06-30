@@ -141,7 +141,7 @@ module.exports = exports = {
     var data = {};
     var queryParams = {};
 
-    if(req.query.fromDate) queryParams.createdAt = {$gt: req.query.fromDate}
+    if(req.query.fromDate) queryParams.updatedAt = {$gt: req.query.fromDate}
     if(req.query.isProcessed) queryParams.isProcessed = req.query.isProcessed;
 
     Q.all([

@@ -252,15 +252,17 @@ module.exports = exports = {
       .exec(function (err, data) {
         data.forEach(function (item) {
           // do not show zeroes
-          if (item.userInterest) {
+          if (item.userInterest === 0) {
             item.userInterest = '';
           }
-          if (item.adminOverride) {
+          if (item.adminOverride === 0) {
             item.adminOverride = '';
           }
           newData[item.opportunity] = newData[item.opportunity] || {};
           newData[item.opportunity][item.user] = [item.userInterest, item.adminOverride];
         });
+
+        // write userInterest
         oppOrder.forEach(function (oppId) {
           res.write(
             JSON.stringify(oppData[oppId][0]).replace(/\,/g, ' ') + ' (' +

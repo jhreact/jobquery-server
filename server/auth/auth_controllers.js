@@ -33,7 +33,7 @@ module.exports = exports = {
           user.save(function(err){
             var resetLink = global.url + '/reset/' + hash;
             mailOptions.to = email;
-            mailOptions.html = '<a href="' + resetLink + '">Your Reset Link</a>'
+            mailOptions.html = '<h1>jobQuery Password Reset</h1><p>You\'re receiving this email because we received a request to reset your password, which you can do by following the link below. If this email was sent in error, you can safely ignore it.</p>' + '<p><a href="' + resetLink + '">Your Reset Link</a></p>';
 
             smtpTransport.sendMail(mailOptions, function(err, response){
               if(err){

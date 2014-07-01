@@ -37,8 +37,7 @@ var sendInvites = function(req, res){
     } else {
       createUsers(emails, category, function(email, password){
         mailOptions.to   = email;
-        mailOptions.html = '<div>username: ' + email + '</div>' + '<div> password: ' + password +
-        '</div><div><a href="' + global.url + '/login">Login</a></div>';
+        mailOptions.html = '<h1>Welcome to jobQuery!</h1><p>You\'re received an invite to jobQuery, an exclusive platform connecting Hack Reactor grads and alums to job opportunities managed by our hiring team. </p><p>Below are your temporary login credentials - Please login, change your password and create your profile. Then check out each of the available job opportunities and declare your interest level. Check back regularly - things change often!</p><p>Have questions? Encountered a bug? Have an idea on how we can improve the platform? Email the hiring team at hire@hackreactor.com.</p><p>Happy hunting!</p><p>- The Hack Reactor Hiring Team</p><div>username: ' + email + '</div><div> password: ' + password + '</div><div><a href="' + global.url + '/login">Login</a></div>';
         smtpTransport.sendMail(mailOptions, function(error, response){
           if(error){
             console.log(error);

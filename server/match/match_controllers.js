@@ -139,10 +139,14 @@ module.exports = exports = {
 
   get: function (req, res) {
     var data = {};
+    var queryParams = {};
+
+    if(req.query.fromDate) queryParams.updatedAt = {$gt: req.query.fromDate}
+    if(req.query.isProcessed) queryParams.isProcessed = req.query.isProcessed;
 
     Q.all([
       Match
-      .find()
+      .find(queryParams)
       .select('-createdAt -answers')
       .exec(function (err, matches) {
         data.matches = matches;
@@ -247,9 +251,18 @@ module.exports = exports = {
       .lean()
       .exec(function (err, data) {
         data.forEach(function (item) {
+          // do not show zeroes
+          if (item.userInterest === 0) {
+            item.userInterest = '';
+          }
+          if (item.adminOverride === 0) {
+            item.adminOverride = '';
+          }
           newData[item.opportunity] = newData[item.opportunity] || {};
           newData[item.opportunity][item.user] = [item.userInterest, item.adminOverride];
         });
+
+        // write userInterest
         oppOrder.forEach(function (oppId) {
           res.write(
             JSON.stringify(oppData[oppId][0]).replace(/\,/g, ' ') + ' (' +

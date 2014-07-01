@@ -6,8 +6,8 @@ var express      = require('express');
 var app          = express();
 
 global.url = 'http://jqapp.azurewebsites.net';
-global.smtpUsername = 'jobquerybeta@gmail.com';
-global.smtpPassword = 'l0jxZWuRXZ9j';
+global.smtpUsername = process.env.smtpUsername || 'jobquerybeta@gmail.com';
+global.smtpPassword = process.env.smtpPassword || 'l0jxZWuRXZ9j';
 
 global.fromEmail = 'jobquery-do-not-respond@gmail.com';
 

@@ -24,7 +24,7 @@ module.exports = exports = {
             return;
           }
           // hide non-public and inactive tags from users
-          if (!dataWithCategory) {
+          if (dataWithCategory) {
             for (var i = 0; i < dataWithCategory.tags.length; i += 1) {
               if (dataWithCategory.tags[i].tag.isPublic === false ||
                 dataWithCategory.tags[i].tag.active === false) {

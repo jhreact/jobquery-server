@@ -265,8 +265,8 @@ module.exports = exports = {
         // write userInterest
         oppOrder.forEach(function (oppId) {
           res.write(
-            JSON.stringify(oppData[oppId][0]).replace(/\,/g, ' ') + ' (' +
-            JSON.stringify(oppData[oppId][1]).replace(/\,/g, ' ') + ')'
+            oppData[oppId][0].replace(/\,/g, ' ') + ' (' +
+            oppData[oppId][1].replace(/\,/g, ' ') + ')'
           );
           userOrder.forEach(function (userId) {
             res.write(',' + newData[oppId][userId][0]);
@@ -285,8 +285,8 @@ module.exports = exports = {
         // the write adminOverride
         oppOrder.forEach(function (oppId) {
           res.write(
-            JSON.stringify(oppData[oppId][0]).replace(/\,/g, ' ') + ' (' +
-            JSON.stringify(oppData[oppId][1]).replace(/\,/g, ' ') + ')'
+            oppData[oppId][0].replace(/\,/g, ' ') + ' (' +
+            oppData[oppId][1].replace(/\,/g, ' ') + ')'
           );
           userOrder.forEach(function (userId) {
             res.write(',' + newData[oppId][userId][1]);

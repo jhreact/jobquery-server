@@ -16,7 +16,7 @@ module.exports = exports = {
     Q.all([
       Match
       .findOne({user: req.user.id, opportunity: req.params.id})
-      .select('-createdAt -updatedAt -adminOverride')
+      .select('-createdAt -updatedAt -adminOverride -internalNotes')
       .populate([
         {path: 'opportunity', select: '-createdAt -updatedAt'}
       ])
@@ -102,7 +102,7 @@ module.exports = exports = {
 
       Match
       .find({user: req.user.id})
-      .select('-createdAt -updatedAt -adminOverride')
+      .select('-createdAt -updatedAt -adminOverride -internalNotes')
       .exec()
       .then(function (data) {
           matches = data;

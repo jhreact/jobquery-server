@@ -51,13 +51,11 @@ module.exports = exports = {
         }
 
         // add privateTags that were not sent to user to tags array
-        var privateTags = [];
         user.tags.forEach(function (tag) {
           if (!tag.isPublic) {
-            privateTags.push(tag);
+            req.body.tags.push(tag);
           }
         });
-        req.body['tags'].push(privateTags);
 
         User.schema.eachPath(function (field) {
           if ( (field !== '_id') && (field !== '__v') && (field !== 'isAdmin')) {

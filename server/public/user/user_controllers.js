@@ -44,7 +44,10 @@ module.exports = exports = {
     if(req.body.oldPassword){
       exports.updatePassword(req, res);
     } else {
-      User.findById(req.user.id, function (err, user) {
+      User
+      .findById(req.user.id)
+      .populate('tags.tag')
+      .exec(function (err, user) {
         if (err) {
           res.json(500, err);
           return;
@@ -52,7 +55,7 @@ module.exports = exports = {
 
         // add privateTags that were not sent to user to tags array
         user.tags.forEach(function (tag) {
-          if (!tag.isPublic) {
+          if (!tag.tag.isPublic) {
             req.body.tags.push(tag);
           }
         });

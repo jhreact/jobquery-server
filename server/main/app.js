@@ -5,7 +5,8 @@
 var express      = require('express');
 var app          = express();
 
-global.url = 'http://jqapp.azurewebsites.net';
+// global.url = 'http://jobquerystagingclient.azurewebsites.net';
+global.url = 'https://localhost:8000';
 global.smtpUsername = process.env.smtpUsername || 'jobquerybeta@gmail.com';
 global.smtpPassword = process.env.smtpPassword || 'l0jxZWuRXZ9j';
 

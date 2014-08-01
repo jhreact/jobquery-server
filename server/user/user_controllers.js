@@ -136,7 +136,7 @@ module.exports = exports = {
           user.category = user.category.name;
         }
         user.tags.forEach(function (tag) {
-          user[tag.tag._id] = tag.value;
+          user[tag.tag._id] = tag.privateValue || tag.value;
         });
         delete user.tags;
       });

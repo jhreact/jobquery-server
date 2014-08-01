@@ -44,14 +44,24 @@ module.exports = exports = {
     if(req.body.oldPassword){
       exports.updatePassword(req, res);
     } else {
-      User.findById(req.user.id, function (err, user) {
+      User
+      .findById(req.user.id)
+      .populate('tags.tag')
+      .exec(function (err, user) {
         if (err) {
           res.json(500, err);
           return;
         }
 
+        // add privateTags that were not sent to user to tags array
+        user.tags.forEach(function (tag) {
+          if (!tag.tag.isPublic) {
+            req.body.tags.push(tag);
+          }
+        });
+
         User.schema.eachPath(function (field) {
-          if ( (field !== '_id') && (field !== '__v') ) {
+          if ( (field !== '_id') && (field !== '__v') && (field !== 'isAdmin')) {
             if (req.body[field] !== undefined) {
               // depopulate tags
               if (field === 'tags') {

@@ -25,14 +25,14 @@ var userSchema = new mongoose.Schema({
     },
   tags:
     [{
-      tag:            {type: mongoOID, ref: 'Tag', required: true},
+      tag:            {type: mongoOID, ref: 'Tag'},
       value:          mongoose.Schema.Types.Mixed,
       privateValue:   {type: mongoose.Schema.Types.Mixed, default: null}
     }],
   messages:
     [{
-      date:     {type: Date, required: true, default: Date.now},
-      question: {type: String, required: true},
+      date:     {type: Date, default: Date.now},
+      question: {type: String},
       answer:   {type: String}
     }],
   internalNotes:  {type: String},

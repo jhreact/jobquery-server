@@ -12,6 +12,7 @@ var opportunitySchema = new mongoose.Schema({
   jobTitle:     {type: String, required: true},
   description:  {type: String, required: true},
   approved:     {type: Boolean, default: false, required: true},
+  attending:    {type: Boolean, default: true},
   tags:
     [{
       tag:    {type: mongoOID, ref: 'Tag', required: true},

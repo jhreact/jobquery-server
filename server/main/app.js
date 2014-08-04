@@ -6,7 +6,7 @@ var express      = require('express');
 var app          = express();
 
 
-global.url = process.env.GLOBAL_URL || 'http://locahost:8000';
+global.url = process.env.GLOBAL_URL || 'http://localhost:8000';
 global.smtpUsername = process.env.smtpUsername || 'jobquerybeta@gmail.com';
 global.smtpPassword = process.env.smtpPassword || 'l0jxZWuRXZ9j';
 

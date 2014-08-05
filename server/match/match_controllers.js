@@ -176,26 +176,44 @@ module.exports = exports = {
   },
 
   put: function(req, res){
-    var id = req.body._id;
-    var isProcessed = req.body.isProcessed;
-    var internalNotes = req.body.internalNotes;
-    var adminOverride = req.body.adminOverride;
-    console.log(req.body);
-    Match.findOne({_id: id}, function(err, match){
-      if(err){
-        res.send(500);
-      } else if (!match) {
-        res.send(404);
-      } else {
-        var updateParams = {};
-        if(isProcessed !== undefined) updateParams.isProcessed = isProcessed;
-        if(internalNotes !== undefined) updateParams.internalNotes = internalNotes;
-        if(adminOverride !== undefined) updateParams.adminOverride = adminOverride;
-        match.update(updateParams, function(err){
-          err ? res.send(500) : res.send({_id: id});
-        });
-      }
-    });
+
+    if (req.body.user !== undefined) {
+      var id = req.body._id;
+      var isProcessed = req.body.isProcessed;
+      var internalNotes = req.body.internalNotes;
+      var adminOverride = req.body.adminOverride;
+      Match.findOne({_id: id}, function(err, match){
+        if(err){
+          res.send(500);
+        } else if (!match) {
+          res.send(404);
+        } else {
+          var updateParams = {};
+          if(isProcessed !== undefined) updateParams.isProcessed = isProcessed;
+          if(internalNotes !== undefined) updateParams.internalNotes = internalNotes;
+          if(adminOverride !== undefined) updateParams.adminOverride = adminOverride;
+          match.update(updateParams, function(err){
+            err ? res.send(500) : res.send({_id: id});
+          });
+        }
+      });
+
+    } else {
+      var userId = req.body._id;
+      var adminOverride = req.body.adminOverride;
+      var opportunityId = req.headers.referer.split('/')[5];
+      Match.findOne({ user : userId, opportunity: opportunityId }, function(err, match){
+        if (err){
+          res.send(500);
+        } else {
+          var updateParams = {};
+          if(adminOverride !== undefined) updateParams.adminOverride = adminOverride;
+          match.update(updateParams, function(err){
+            err ? res.send(500) : res.send({_id: match._id});
+          });
+        }
+      });
+    }
 
   },
 

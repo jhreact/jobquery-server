@@ -232,6 +232,9 @@ module.exports = exports = {
       User
       .find()
       .where('isAdmin').equals(false)
+      .where('attending').equals(true)
+      .where('isRegistered').equals(true)
+      .nin('searchStage', ['Out', 'Accepted'])
       .select('name email')
       .lean()
       .exec(function (err, users) {
@@ -251,6 +254,9 @@ module.exports = exports = {
 
       Opportunity
       .find()
+      .where('active').equals(true)
+      .where('approved').equals(true)
+      .where('category.name').ne('Not Attending Hiring Day')
       .select('jobTitle company')
       .populate({path: 'company', select: 'name'})
       .lean()

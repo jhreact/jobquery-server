@@ -91,6 +91,8 @@ module.exports = exports = {
     res.setHeader('Content-Type', 'text/csv');
     res.setHeader('Content-Disposition', 'attachment');
 
+    var filterAccepted = req.query.excludeAccepted;
+
     var tagOrder = [];
 
     var headerRow = [
@@ -143,6 +145,11 @@ module.exports = exports = {
 
       // iterate over userArray
       users.forEach(function (user) {
+        // if flagged, skip accepted or opted out users
+        if ((user.searchStage === 'Accepted' || user.searchStage === 'Out')
+          && (filterAccepted === 'true')) {
+          return true;
+        }
         // write normal fields
         headerRow.forEach(function (field) {
           res.write( (JSON.stringify(user[field] || '')).replace(/\,/g, ' ') + ',');

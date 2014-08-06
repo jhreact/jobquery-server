@@ -256,14 +256,15 @@ module.exports = exports = {
       .find()
       .where('active').equals(true)
       .where('approved').equals(true)
-      .where('category.name').ne('Not Attending Hiring Day')
-      .select('jobTitle company')
-      .populate({path: 'company', select: 'name'})
+      .select('jobTitle company category')
+      .populate('category company')
       .lean()
       .exec(function (err, opps) {
         opps.forEach(function (opp) {
-          oppOrder.push(opp._id);
-          oppData[opp._id] = [opp.jobTitle, opp.company.name];
+          if (opp.category.name !== "Not Attending Hiring Day") {
+            oppOrder.push(opp._id);
+            oppData[opp._id] = [opp.jobTitle, opp.company.name];
+          }
         });
       })
 

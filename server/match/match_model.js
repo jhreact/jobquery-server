@@ -5,16 +5,16 @@ var mongoose = require('mongoose');
 var mongoOID = mongoose.Schema.Types.ObjectId;
 
 var matchSchema = new mongoose.Schema({
-  user:         {type: mongoOID, required: true, ref: 'User'},
-  opportunity:          {type: mongoOID, required: true, ref: 'Opportunity'},
+  user:           {type: mongoOID, required: true, ref: 'User'},
+  opportunity:    {type: mongoOID, required: true, ref: 'Opportunity'},
   isProcessed:    {type: Boolean, required: true, default: false},
   // 0 means no data. 1-4 reflects user interest
   userInterest:   {type: Number, min: 0, max: 4, default: 0},
   adminOverride:  {type: Number, min: 0, max: 4, default: 0},
-  star:    {type: Boolean, required: true, default: false},
-  upVote:    {type: Boolean, required: true, default: false},
-  downVote:    {type: Boolean, required: true, default: false},
-  noGo:    {type: Boolean, required: true, default: false},
+  star:           {type: Boolean, required: true, default: false},
+  upVote:         {type: Boolean, required: true, default: false},
+  downVote:       {type: Boolean, required: true, default: false},
+  noGo:           {type: Boolean, required: true, default: false},
   internalNotes:  {type: String, default: null},
   answers:
     [{

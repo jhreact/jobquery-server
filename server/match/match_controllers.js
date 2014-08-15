@@ -201,13 +201,32 @@ module.exports = exports = {
     } else {
       var userId = req.body._id;
       var adminOverride = req.body.adminOverride;
+      var star = req.body.star;
+      var upVote = req.body.upVote;
+      var downVote = req.body.downVote;
+      var noGo = req.body.noGo;
       var opportunityId = req.headers.referer.split('/')[5];
       Match.findOne({ user : userId, opportunity: opportunityId }, function(err, match){
         if (err){
           res.send(500);
         } else {
           var updateParams = {};
-          if(adminOverride !== undefined) updateParams.adminOverride = adminOverride;
+
+          if(adminOverride !== undefined){
+            updateParams.adminOverride = adminOverride;
+          }
+          if(star !== undefined){
+            updateParams.star = star;
+          }
+          if(upVote !== undefined){
+            updateParams.upVote = upVote;
+          }
+          if(downVote !== undefined){
+            updateParams.downVote = downVote;
+          }
+          if(noGo !== undefined){
+            updateParams.noGo = noGo;
+          }
           match.update(updateParams, function(err){
             err ? res.send(500) : res.send({_id: match._id});
           });

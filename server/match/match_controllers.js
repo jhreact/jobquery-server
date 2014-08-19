@@ -5,6 +5,7 @@ var Category = require('../category/category_model.js');
 var Opportunity = require('../opportunity/opportunity_model.js');
 var User = require('../user/user_model.js');
 var Company = require('../company/company_model.js');
+var Feed = require('../feed/feed_model.js');
 var Q = require('q');
 var mongoose = require('mongoose');
 
@@ -132,7 +133,15 @@ module.exports = exports = {
           res.json(500, err);
           return;
         }
-        res.json(200, {_id: item.id});
+        var feedAct = "updated";
+
+        Feed.create({user: req.body.uid, action: feedAct, target: item.id, targetType: "Match"}, function(err, feeditem) {
+          if (err) {
+            res.json(500, err);
+            return;
+          }
+          res.json(200, {_id: item.id});
+        });
       });
     });
   },

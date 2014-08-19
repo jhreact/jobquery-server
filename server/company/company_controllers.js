@@ -47,7 +47,20 @@ module.exports = exports = {
           res.json(500, err);
           return;
         }
-        Feed.create({user: req.body.uid, action: "updated a company", target: item.id, targetType: "Company"}, function(err, feeditem) {
+        //TODO: Move all of this into a separate function
+        var feedAct = "updated";
+        var feedActObj;
+        var feedActObjType;
+        if (req.body.feedAction) {
+          feedAct = req.body.feedAction;
+        }
+        if (req.body.feedActionObject) {
+          feedActObj = req.body.feedActionObject;
+        }
+        if (req.body.feedActionObjectType) {
+          feedActObjType = req.body.feedActionObjectType;
+        }
+        Feed.create({user: req.body.uid, action: feedAct, actionObject: feedActObj, feedActionObjectType: feedActObjType, target: item.id, targetType: "Company"}, function(err, feeditem) {
           res.json(200, {_id: item.id});
         });
       });
@@ -71,7 +84,7 @@ module.exports = exports = {
         res.json(500, err);
         return;
       }
-      Feed.create({user: req.body.uid, action: "created a new company", target: company.id, targetType: "Company"}, function(err, feeditem) {
+      Feed.create({user: req.body.uid, action: "created", target: company.id, targetType: "Company"}, function(err, feeditem) {
         if (err) {
           res.json(500, err);
           return;

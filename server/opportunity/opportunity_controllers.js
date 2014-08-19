@@ -1,6 +1,7 @@
 "use strict";
 
 var Opportunity = require('./opportunity_model.js');
+var Feed = require('../feed/feed_model.js');
 
 module.exports = exports = {
 
@@ -73,7 +74,25 @@ module.exports = exports = {
           res.json(500, err);
           return;
         }
-        res.json(200, {_id: item.id});
+        var feedAct = "updated";
+        var feedActObj;
+        var feedActObjType;
+        if (req.body.feedAction) {
+          feedAct = req.body.feedAction;
+        }
+        if (req.body.feedActionObject) {
+          feedActObj = req.body.feedActionObject;
+        }
+        if (req.body.feedActionObjectType) {
+          feedActObjType = req.body.feedActionObjectType;
+        }
+        Feed.create({user: req.body.uid, action: feedAct, actionObject: feedActObj, feedActionObjectType: feedActObjType, target: item.id, targetType: "Opportunity"}, function(err, feeditem) {
+          if (err) {
+            res.json(500, err);
+            return;
+          }
+          res.json(200, {_id: item.id});
+        });
       });
     });
   },
@@ -101,7 +120,13 @@ module.exports = exports = {
         res.json(500, err);
         return;
       }
-      res.json(201, {_id: opp.id});
+      Feed.create({user: req.body.uid, action: "created", target: opp.id, targetType: "Opportunity"}, function(err, feeditem) {
+        if (err) {
+          res.json(500, err);
+          return;
+        }
+        res.json(201, {_id: opp.id});
+      });
     });
   }
 

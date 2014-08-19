@@ -47,7 +47,9 @@ module.exports = exports = {
           res.json(500, err);
           return;
         }
-        res.json(200, {_id: item.id});
+        Feed.create({user: req.body.uid, action: "updated a company", target: item.id, targetType: "Company"}, function(err, feeditem) {
+          res.json(200, {_id: item.id});
+        });
       });
     });
   },

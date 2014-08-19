@@ -1,6 +1,7 @@
 "use strict";
 
 var Company = require('./company_model.js');
+var Feed = require('../feed/feed_model.js');
 
 module.exports = exports = {
 
@@ -68,7 +69,13 @@ module.exports = exports = {
         res.json(500, err);
         return;
       }
-      res.json(201, {_id: company.id});
+      Feed.create({user: req.body.uid, action: "created a new company", target: company.id, targetType: "Company"}, function(err, feeditem) {
+        if (err) {
+          res.json(500, err);
+          return;
+        }
+        res.json(201, {_id: company.id});
+      });
     });
   }
 

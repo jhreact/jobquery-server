@@ -1,6 +1,7 @@
 'use strict';
 
 var User = require('../user/user_model.js');
+var Feed = require('../feed/feed_model.js');
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcrypt-nodejs');
 
@@ -33,8 +34,14 @@ module.exports = exports = {
             if (user.isRegistered === false) {
               user.isRegistered = true;
               user.save();
+              Feed.create({user: user._id, action: "registered", target: undefined, targetType: undefined}, function(err, feedItem) {
+                if (err) {
+                  res.json(500, err);
+                  return;
+                }
+                res.json({token : token, _id : user._id, isAdmin : user.isAdmin});
+              });
             }
-            res.json({token : token, _id : user._id, isAdmin : user.isAdmin});
           } else {
             // wrong password
             res.send(401, WRONG_EMAIL_OR_PASSWORD);

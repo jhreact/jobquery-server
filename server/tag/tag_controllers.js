@@ -1,6 +1,7 @@
 "use strict";
 
 var Tag = require('./tag_model.js');
+var Feed = require('../feed/feed_model.js');
 var UNABLE_TO_SAVE      = "Server unable to save tag.";
 var UNABLE_TO_RETRIEVE  = "Server unable to retrieve tag.";
 
@@ -16,7 +17,13 @@ module.exports = exports = {
         res.json(500, UNABLE_TO_SAVE);
         return;
       }
-      res.json(201, {_id: tag.id});
+      Feed.create({user: req.body.uid, action: "created", target: tag.id, targetType: "Tag"}, function(err, feedItem) {
+        if (err) {
+          res.json(500, err);
+          return;
+        }
+        res.json(201, {_id: tag.id});
+      });
     });
   },
 
@@ -73,7 +80,13 @@ module.exports = exports = {
           res.json(500, err);
           return;
         }
-        res.json(200, {_id: item.id});
+        Feed.create({user: req.body.uid, action: "updated", target: item.id, targetType: "Tag"}, function(err, feedItem) {
+          if (err) {
+            res.json(500, err);
+            return;
+          }
+          res.json(200, {_id: item.id});
+        });
       });
     });
   }

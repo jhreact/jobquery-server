@@ -22,4 +22,4 @@ feedSchema.pre('save', function (next) {
   next();
 });
 
-module.exports = exports = mongoose.model('feed', feedSchema);
+module.exports = exports = mongoose.model('Feed', feedSchema);

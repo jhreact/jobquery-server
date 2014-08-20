@@ -1,6 +1,7 @@
 /* jslint node: true */
 
 var User = require('./user_model.js');
+var Feed = require('../feed/feed_model.js');
 
 module.exports = exports = {
 
@@ -56,7 +57,13 @@ module.exports = exports = {
           res.json(500, err);
           return;
         }
-        res.json(200, {_id: item.id});
+        Feed.create({user: req.body.uid, action: "updated", target: item.id, targetType: "User"}, function(err, feedItem) {
+          if (err) {
+            res.json(500, err);
+            return;
+          }
+          res.json(200, {_id: item.id});
+        });
       });
     });
   },
@@ -82,7 +89,13 @@ module.exports = exports = {
         res.json(500, err);
         return;
       }
-      res.json(201, {_id: user.id});
+      Feed.create({user: req.body.uid, action: "updated", target: user.id, targetType: "User"}, function(err, feedItem) {
+        if (err) {
+          res.json(500, err);
+          return;
+        }
+        res.json(201, {_id: user.id});
+      });
     });
   },
 

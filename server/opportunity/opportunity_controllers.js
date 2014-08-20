@@ -120,7 +120,7 @@ module.exports = exports = {
         res.json(500, err);
         return;
       }
-      Feed.create({user: req.body.uid, action: "created", target: opp.id, targetType: "Opportunity"}, function(err, feeditem) {
+      Feed.create({user: req.body.uid, action: "created", target: opp.id, targetType: "Opportunity"}, function(err, feedItem) {
         if (err) {
           res.json(500, err);
           return;

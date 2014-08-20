@@ -6,23 +6,22 @@ module.exports = exports = {
 
   get: function (req, res) {
     feed.find()
-    // .where('active').equals(true)
-    .exec(function (err, categories) {
+    .exec(function (err, feedItems) {
       if (err) {
         res.json(500, err);
         return;
       }
-      res.json(200, categories);
+      res.json(200, feedItems);
     });
   },
 
   post: function (req, res) {
-    feed.create(req.body, function (err, feed) {
+    feed.create(req.body, function (err, newFeedItem) {
       if (err) {
         res.json(500, err);
         return;
       }
-      res.json(201, {_id: feed.id});
+      res.json(201, {_id: newFeedItem.id});
     });
   }
 

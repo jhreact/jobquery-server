@@ -134,8 +134,7 @@ module.exports = exports = {
           return;
         }
         var feedAct = "updated";
-
-        Feed.create({user: req.body.uid, action: feedAct, target: item.id, targetType: "Match"}, function(err, feeditem) {
+        Feed.create({user: req.body.uid, action: feedAct, target: item.id, targetType: "Match"}, function(err, feedItem) {
           if (err) {
             res.json(500, err);
             return;
@@ -180,6 +179,15 @@ module.exports = exports = {
   batchProcess: function(req, res){
     var ids = req.body.ids;
     Match.update({_id: {$in: ids}}, { $set: { isProcessed: true }}, {multi: true}, function(err, data){
+      var feedAct = "processed";
+      for (var i=0; i < ids.length; i++) {
+        Feed.create({user: req.body.uid, action: feedAct, target: ids[i].id, targetType: "Match"}, function(err, feedItem) {
+          if (err) {
+            res.json(500, err);
+            return;
+          }
+        });
+      }
       err ? res.send(500) : res.send(200);
     });
   },
@@ -202,6 +210,13 @@ module.exports = exports = {
           if(internalNotes !== undefined) updateParams.internalNotes = internalNotes;
           if(adminOverride !== undefined) updateParams.adminOverride = adminOverride;
           match.update(updateParams, function(err){
+            var feedAct = "updated";
+            Feed.create({user: req.body.uid, action: feedAct, target: id, targetType: "Match"}, function(err, feedItem) {
+              if (err) {
+                res.json(500, err);
+                return;
+              }
+            });
             err ? res.send(500) : res.send({_id: id});
           });
         }
@@ -237,6 +252,13 @@ module.exports = exports = {
             updateParams.noGo = noGo;
           }
           match.update(updateParams, function(err){
+            var feedAct = "updated";
+            Feed.create({user: req.body.uid, action: feedAct, target: match._id, targetType: "Match"}, function(err, feedItem) {
+              if (err) {
+                res.json(500, err);
+                return;
+              }
+            });
             err ? res.send(500) : res.send({_id: match._id});
           });
         }

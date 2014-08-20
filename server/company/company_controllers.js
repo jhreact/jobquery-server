@@ -60,7 +60,7 @@ module.exports = exports = {
         if (req.body.feedActionObjectType) {
           feedActObjType = req.body.feedActionObjectType;
         }
-        Feed.create({user: req.body.uid, action: feedAct, actionObject: feedActObj, feedActionObjectType: feedActObjType, target: item.id, targetType: "Company"}, function(err, feeditem) {
+        Feed.create({user: req.body.uid, action: feedAct, actionObject: feedActObj, feedActionObjectType: feedActObjType, target: item.id, targetType: "Company"}, function(err, feedItem) {
           res.json(200, {_id: item.id});
         });
       });
@@ -84,7 +84,7 @@ module.exports = exports = {
         res.json(500, err);
         return;
       }
-      Feed.create({user: req.body.uid, action: "created", target: company.id, targetType: "Company"}, function(err, feeditem) {
+      Feed.create({user: req.body.uid, action: "created", target: company.id, targetType: "Company"}, function(err, feedItem) {
         if (err) {
           res.json(500, err);
           return;

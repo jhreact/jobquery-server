@@ -33,6 +33,7 @@ module.exports = exports = function (app, express, routers) {
   app.use('/api/companies', routers.CompanyRouter);
   app.use('/api/categories', routers.CategoryRouter);
   app.use('/api/invite', routers.InviteRouter);
+  app.use('/api/feed', routers.FeedRouter);
   app.use(middle.logError);
   app.use(middle.handleError);
 };

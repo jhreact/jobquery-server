@@ -3,6 +3,7 @@ var Tag = require('../../tag/tag_model.js');
 var Category = require('../../category/category_model.js');
 var Opportunity = require('../../opportunity/opportunity_model.js');
 var User = require('../../user/user_model.js');
+var Feed = require('../../feed/feed_model.js');
 var Company = require('../../company/company_model.js');
 var Q = require('q');
 var mongoose = require('mongoose');
@@ -182,7 +183,21 @@ module.exports = exports = {
           res.json(500, err);
           return;
         }
-        res.json(200, {_id: item.id});
+        var feedAct = "updated";
+        var feedActObj;
+        var feedActObjType;
+        if (req.body.feedAction) {
+          feedAct = req.body.feedAction;
+        }
+        if (req.body.feedActionObject) {
+          feedActObj = req.body.feedActionObject;
+        }
+        if (req.body.feedActionObjectType) {
+          feedActObjType = req.body.feedActionObjectType;
+        }
+        Feed.create({user: req.body.uid, action: feedAct, actionObject: feedActObj, feedActionObjectType: feedActObjType, target: item.id, targetType: "Match"}, function(err, feedItem) {
+          res.json(200, {_id: item.id});
+        });
       });
     });
   }

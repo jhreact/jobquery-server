@@ -1,6 +1,7 @@
 "use strict";
 
 var User = require('../../user/user_model.js');
+var Feed = require('../../feed/feed_model.js');
 var Category = require('../../category/category_model.js');
 var bcrypt = require('bcrypt-nodejs');
 
@@ -84,10 +85,22 @@ module.exports = exports = {
           }
         });
 
+        if (user.searchStage !== req.user.searchStage) {
+          var updatedSearchStage = true;
+        }
         user.save(function (err, item) {
           if (err) {
             res.json(500, err);
             return;
+          }
+          if (updatedSearchStage) {
+            var feedAct = "updatedSearchStage";
+            Feed.create({user: item.id, action: feedAct, target: item.id, targetType: "User"}, function(err, feedItem) {
+              if (err) {
+                res.json(500, err);
+                return;
+              }
+            });
           }
           res.json(200, {_id: item.id});
         });

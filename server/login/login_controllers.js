@@ -39,9 +39,9 @@ module.exports = exports = {
                   res.json(500, err);
                   return;
                 }
-                res.json({token : token, _id : user._id, isAdmin : user.isAdmin});
               });
             }
+            res.json({token : token, _id : user._id, isAdmin : user.isAdmin});
           } else {
             // wrong password
             res.send(401, WRONG_EMAIL_OR_PASSWORD);

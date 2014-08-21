@@ -17,7 +17,17 @@ module.exports = exports = {
         res.json(500, UNABLE_TO_SAVE);
         return;
       }
-      Feed.create({user: req.body.uid, action: "created", target: tag.id, targetType: "Tag"}, function(err, feedItem) {
+
+      var feedAct = req.body.feedAction || "created";
+      var feedSum = req.body.feedSummary || "created a tag";
+      Feed.create({
+        user: req.body.uid,
+        action: feedAct,
+        target: tag.id,
+        targetType: "Tag",
+        targetDisplayName: tag.name,
+        summary: feedSum
+      }, function(err, feedItem) {
         if (err) {
           res.json(500, err);
           return;
@@ -80,7 +90,16 @@ module.exports = exports = {
           res.json(500, err);
           return;
         }
-        Feed.create({user: req.body.uid, action: "updated", target: item.id, targetType: "Tag"}, function(err, feedItem) {
+        var feedAct = req.body.feedAction || "updated";
+        var feedSum = req.body.feedSummary || "updated a tag";
+        Feed.create({
+          user: req.body.uid,
+          action: feedAct,
+          target: item.id,
+          targetType: "Tag",
+          targetDisplayName: item.name,
+          summary: feedSum
+        }, function(err, feedItem) {
           if (err) {
             res.json(500, err);
             return;

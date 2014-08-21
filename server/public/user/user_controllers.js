@@ -94,8 +94,16 @@ module.exports = exports = {
             return;
           }
           if (updatedSearchStage) {
-            var feedAct = "updatedSearchStage";
-            Feed.create({user: item.id, action: feedAct, target: item.id, targetType: "User"}, function(err, feedItem) {
+            var feedAct = req.body.feedAction || "updatedSearchStage";
+            var feedSum = req.body.feedSummary || "updated search stage";
+            Feed.create({
+              user: item.id,
+              action: feedAct,
+              target: item.id,
+              targetType: "User",
+              targetDisplayName: item.searchStage,
+              summary: feedSum
+            }, function(err, feedItem) {
               if (err) {
                 res.json(500, err);
                 return;

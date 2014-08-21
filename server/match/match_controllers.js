@@ -133,8 +133,15 @@ module.exports = exports = {
           res.json(500, err);
           return;
         }
-        var feedAct = "updated";
-        Feed.create({user: req.body.uid, action: feedAct, target: item.id, targetType: "Match"}, function(err, feedItem) {
+        var feedAct = req.body.feedAction || "updated";
+        var feedSum = req.body.feedSummary || "updated a match";
+        Feed.create({
+          user: req.body.uid,
+          action: feedAct,
+          target: item.id,
+          targetType: "Match",
+          summary: feedSum
+        }, function(err, feedItem) {
           if (err) {
             res.json(500, err);
             return;
@@ -179,9 +186,19 @@ module.exports = exports = {
   batchProcess: function(req, res){
     var ids = req.body.ids;
     Match.update({_id: {$in: ids}}, { $set: { isProcessed: true }}, {multi: true}, function(err, data){
-      var feedAct = "processed";
+      console.log("BATCH PROCESSED DATA:");
+      console.log(data);
+      var feedAct = req.body.feedAction || "processed";
+      var feedSum = req.body.feedSummary || "processed a match";
       for (var i=0; i < ids.length; i++) {
-        Feed.create({user: req.body.uid, action: feedAct, target: ids[i].id, targetType: "Match"}, function(err, feedItem) {
+        console.log("Adding feed entry for id: " + ids[i].id);
+        Feed.create({
+          user: req.body.uid,
+          action: feedAct,
+          target: ids[i].id,
+          targetType: "Match",
+          summary: feedSum
+        }, function(err, feedItem) {
           if (err) {
             res.json(500, err);
             return;
@@ -210,8 +227,15 @@ module.exports = exports = {
           if(internalNotes !== undefined) updateParams.internalNotes = internalNotes;
           if(adminOverride !== undefined) updateParams.adminOverride = adminOverride;
           match.update(updateParams, function(err){
-            var feedAct = "updated";
-            Feed.create({user: req.body.uid, action: feedAct, target: id, targetType: "Match"}, function(err, feedItem) {
+            var feedAct = req.body.feedAction || "updated";
+            var feedSum = req.body.feedSummary || "updated a match";
+            Feed.create({
+              user: req.body.uid,
+              action: feedAct,
+              target: id,
+              targetType: "Match",
+              summary: feedSum
+            }, function(err, feedItem) {
               if (err) {
                 res.json(500, err);
                 return;
@@ -252,8 +276,15 @@ module.exports = exports = {
             updateParams.noGo = noGo;
           }
           match.update(updateParams, function(err){
-            var feedAct = "updated";
-            Feed.create({user: req.body.uid, action: feedAct, target: match._id, targetType: "Match"}, function(err, feedItem) {
+            var feedAct = req.body.feedAction || "updated";
+            var feedSum = req.body.feedSummary || "updated a match";
+            Feed.create({
+              user: req.body.uid,
+              action: feedAct,
+              target: match._id,
+              targetType: "Match",
+              summary: feedSum
+            }, function(err, feedItem) {
               if (err) {
                 res.json(500, err);
                 return;

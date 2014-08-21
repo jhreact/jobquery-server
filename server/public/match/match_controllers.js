@@ -183,19 +183,19 @@ module.exports = exports = {
           res.json(500, err);
           return;
         }
-        var feedAct = "updated";
-        var feedActObj;
-        var feedActObjType;
-        if (req.body.feedAction) {
-          feedAct = req.body.feedAction;
-        }
-        if (req.body.feedActionObject) {
-          feedActObj = req.body.feedActionObject;
-        }
-        if (req.body.feedActionObjectType) {
-          feedActObjType = req.body.feedActionObjectType;
-        }
-        Feed.create({user: req.body.uid, action: feedAct, actionObject: feedActObj, feedActionObjectType: feedActObjType, target: item.id, targetType: "Match"}, function(err, feedItem) {
+        var feedAct = req.body.feedAction || "updated";
+        var feedSum = req.body.feedSummary || "updated a match";
+        var feedActObj = req.body.feedActionObject || undefined;
+        var feedActObjType = req.body.feedActionObjectType || undefined;
+        Feed.create({
+          user: req.body.uid,
+          action: feedAct,
+          actionObject: feedActObj,
+          actionObjectType: feedActObjType,
+          target: item.id,
+          targetType: "Match",
+          summary: feedSum
+        }, function(err, feedItem) {
           res.json(200, {_id: item.id});
         });
       });

@@ -48,19 +48,20 @@ module.exports = exports = {
           return;
         }
         //TODO: Move all of this into a separate function
-        var feedAct = "updated";
-        var feedActObj;
-        var feedActObjType;
-        if (req.body.feedAction) {
-          feedAct = req.body.feedAction;
-        }
-        if (req.body.feedActionObject) {
-          feedActObj = req.body.feedActionObject;
-        }
-        if (req.body.feedActionObjectType) {
-          feedActObjType = req.body.feedActionObjectType;
-        }
-        Feed.create({user: req.body.uid, action: feedAct, actionObject: feedActObj, feedActionObjectType: feedActObjType, target: item.id, targetType: "Company"}, function(err, feedItem) {
+        var feedAct = req.body.feedAction || "updated";
+        var feedSum = req.body.feedSummary || "updated a company";
+        var feedActObj = req.body.feedActionObject || undefined;
+        var feedActObjType = req.body.feedActionObjectType || undefined;
+        Feed.create({
+          user: req.body.uid,
+          action: feedAct,
+          actionObject: feedActObj,
+          actionObjectType: feedActObjType,
+          target: item.id,
+          targetType: "Company",
+          targetDisplayName: item.name,
+          summary: feedSum
+        }, function(err, feedItem) {
           res.json(200, {_id: item.id});
         });
       });
@@ -84,7 +85,19 @@ module.exports = exports = {
         res.json(500, err);
         return;
       }
-      Feed.create({user: req.body.uid, action: "created", target: company.id, targetType: "Company"}, function(err, feedItem) {
+      //TODO: Move all of this into a separate function
+      var feedAct = req.body.feedAction || "created";
+      var feedSum = req.body.feedSummary || "created a company";
+      var feedActObj = req.body.feedActionObject || undefined;
+      var feedActObjType = req.body.feedActionObjectType || undefined;
+      Feed.create({
+        user: req.body.uid,
+        action: "created",
+        target: company.id,
+        targetType: "Company",
+        targetDisplayName: company.name,
+        summary: feedSum
+      }, function(err, feedItem) {
         if (err) {
           res.json(500, err);
           return;

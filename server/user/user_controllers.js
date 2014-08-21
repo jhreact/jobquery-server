@@ -57,7 +57,17 @@ module.exports = exports = {
           res.json(500, err);
           return;
         }
-        Feed.create({user: req.body.uid, action: "updated", target: item.id, targetType: "User"}, function(err, feedItem) {
+        var feedAct = req.body.feedAction || "updated";
+        var feedSum = req.body.feedSummary || "updated their profile";
+        var feedActObj = req.body.feedActionObject || undefined;
+        var feedActObjType = req.body.feedActionObjectType || undefined;
+        Feed.create({
+          user: req.body.uid,
+          action: feedAct,
+          target: item.id,
+          targetType: "User",
+          summary: feedSum
+        }, function(err, feedItem) {
           if (err) {
             res.json(500, err);
             return;
@@ -89,7 +99,17 @@ module.exports = exports = {
         res.json(500, err);
         return;
       }
-      Feed.create({user: req.body.uid, action: "updated", target: user.id, targetType: "User"}, function(err, feedItem) {
+      var feedAct = req.body.feedAction || "updated";
+      var feedSum = req.body.feedSummary || "updated their profile";
+      var feedActObj = req.body.feedActionObject || undefined;
+      var feedActObjType = req.body.feedActionObjectType || undefined;
+      Feed.create({
+        user: req.body.uid,
+        action: feedAct,
+        target: user.id,
+        targetType: "User",
+        summary: feedSum
+      }, function(err, feedItem) {
         if (err) {
           res.json(500, err);
           return;

@@ -37,19 +37,18 @@ module.exports = exports = {
           res.json(500, err);
           return;
         }
-        var feedAct = "updated";
-        var feedActObj;
-        var feedActObjType;
-        if (req.body.feedAction) {
-          feedAct = req.body.feedAction;
-        }
-        if (req.body.feedActionObject) {
-          feedActObj = req.body.feedActionObject;
-        }
-        if (req.body.feedActionObjectType) {
-          feedActObjType = req.body.feedActionObjectType;
-        }
-        Feed.create({user: req.body.uid, action: feedAct, actionObject: feedActObj, feedActionObjectType: feedActObjType, target: item.id, targetType: "Category"}, function(err, feeditem) {
+        var feedAct = req.body.feedAction || "updated";
+        var feedSum = req.body.feedSummary || "updated a category";
+        // var feedActObj = req.body.feedActionObject || undefined;
+        // var feedActObjType = req.body.feedActionObjectType || undefined;
+        Feed.create({
+          user: req.body.uid,
+          action: feedAct,
+          target: item.id,
+          targetType: "Category",
+          targetDisplayName: item.name,
+          summary: feedSum
+        }, function(err, feeditem) {
           if (err) {
             res.json(500, err);
             return;
@@ -78,7 +77,16 @@ module.exports = exports = {
         res.json(500, err);
         return;
       }
-      Feed.create({user: req.body.uid, action: "created", target: category.id, targetType: "Category"}, function(err, feeditem) {
+      var feedAct = req.body.feedAction || "created";
+      var feedSum = req.body.feedSummary || "created a category";
+      Feed.create({
+        user: req.body.uid,
+        action: feedAct,
+        target: category.id,
+        targetType: "Category",
+        targetDisplayName: category.name,
+        summary: feedSum
+      }, function(err, feeditem) {
         if (err) {
           res.json(500, err);
           return;

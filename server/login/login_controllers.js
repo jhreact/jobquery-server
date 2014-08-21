@@ -34,7 +34,12 @@ module.exports = exports = {
             if (user.isRegistered === false) {
               user.isRegistered = true;
               user.save();
-              Feed.create({user: user._id, action: "registered", target: undefined, targetType: undefined}, function(err, feedItem) {
+              Feed.create({
+                user: user._id,
+                action: "registered",
+                targetDisplayName: user.name,
+                summary: "logged in for the first time"
+              }, function(err, feedItem) {
                 if (err) {
                   res.json(500, err);
                   return;

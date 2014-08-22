@@ -18,6 +18,15 @@ module.exports = exports = {
     .then(function(data) {
       // console.log("GOT TO THEN CALL");
       // console.log(data);
+      var isInDates = function(dateArr, dateStr) {
+        for (var j=0; j < dateArr.length; j++) {
+          if (dateArr[j][0] === dateStr) {
+            return true;
+          }
+        }
+        return false;
+      };
+
       var activity = {};
       var results = [];
       var day, yyyy, mm, dd;
@@ -25,21 +34,28 @@ module.exports = exports = {
       var feedActor;
       var feedActors = [];
       var feedAction;
+      var feedTarget;
       var feedEvent;
       for (var i=0; i < data.length; i++) {
         yyyy = '' + data[i].updatedAt.getFullYear();
         mm = '' + (data[i].updatedAt.getMonth() + 1 <= 9 ? '0' + (data[i].updatedAt.getMonth() + 1) : data[i].updatedAt.getMonth() + 1);
         dd = '' + (data[i].updatedAt.getDate() <= 9 ? '0' + data[i].updatedAt.getDate() : data[i].updatedAt.getDate() );
         day = yyyy + mm + dd;
-        dates.push([day, data[i].updatedAt.toDateString()]);
+        if (!isInDates(dates, day)) {
+          dates.push([day, data[i].updatedAt.toDateString()]);
+        }
         feedActor = data[i].user.name || data[i].user.email;
-        feedActors.push(feedActor);
+        if (feedActors.indexOf(feedActor) === -1) {
+          feedActors.push(feedActor);
+        }
         feedAction = data[i].summary;
+        feedTarget = data[i].targetDisplayName;
         activity[day] = activity[day] || {};
         activity[day][feedActor] = activity[day][feedActor] || {};
-        activity[day][feedActor][feedAction] = activity[day][feedAction] || [];
+        activity[day][feedActor][feedAction] = activity[day][feedActor][feedAction] || {};
+        // activity[day][feedActor][feedAction][feedTarget] = activity[day][feedActor][feedAction][feedTarget] || [];
         feedEvent = {
-          userid: data[i]._id,
+          userid: data[i].user._id,
           userDisplayName: feedActor,
           target: data[i].target,
           targetType: data[i].targetType,
@@ -48,7 +64,7 @@ module.exports = exports = {
           actionObjectType: data[i].actionObjectType || undefined,
           actionObjectDisplayName: data[i].actionObjectDisplayName || undefined
         }
-        activity[day][feedActor][feedAction].push(feedEvent);
+        activity[day][feedActor][feedAction][feedTarget] = feedEvent;
       }
       dates = dates.sort().reverse();
       for (var i=0; i < dates.length; i++) {

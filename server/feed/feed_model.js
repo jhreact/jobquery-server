@@ -7,8 +7,8 @@ var mongoOID = mongoose.Schema.Types.ObjectId;
 // Example:
 // <User123.id> (user) added (action) <opportunity1.id> (actionObject) to <company1.id> (target)
 var feedSchema = new mongoose.Schema({
-  user:    {type: mongoOID, ref: 'User'},
-  action: {type: String},
+  user:    {type: mongoOID, required: true, ref: 'User'},
+  action: {type: String, required: true},
   actionObject: mongoOID,
   actionObjectType: {type: String},
   actionObjectDisplayName: {type: String},
@@ -24,5 +24,7 @@ feedSchema.pre('save', function (next) {
   this.updatedAt = new Date();
   next();
 });
+
+
 
 module.exports = exports = mongoose.model('Feed', feedSchema);

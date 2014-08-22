@@ -52,6 +52,7 @@ module.exports = exports = {
         var feedSum = req.body.feedSummary || "updated a company";
         var feedActObj = req.body.feedActionObject || undefined;
         var feedActObjType = req.body.feedActionObjectType || undefined;
+        var feedDispName = req.body.targetDisplayName || item.name;
         Feed.create({
           user: req.body.uid,
           action: feedAct,
@@ -59,7 +60,7 @@ module.exports = exports = {
           actionObjectType: feedActObjType,
           target: item.id,
           targetType: "Company",
-          targetDisplayName: item.name,
+          targetDisplayName: feedDispName,
           summary: feedSum
         }, function(err, feedItem) {
           res.json(200, {_id: item.id});
@@ -90,12 +91,13 @@ module.exports = exports = {
       var feedSum = req.body.feedSummary || "created a company";
       var feedActObj = req.body.feedActionObject || undefined;
       var feedActObjType = req.body.feedActionObjectType || undefined;
+      var feedDispName = req.body.targetDisplayName || company.name;
       Feed.create({
         user: req.body.uid,
         action: "created",
         target: company.id,
         targetType: "Company",
-        targetDisplayName: company.name,
+        targetDisplayName: feedDispName,
         summary: feedSum
       }, function(err, feedItem) {
         if (err) {

@@ -78,6 +78,7 @@ module.exports = exports = {
         var feedSum = req.body.feedSummary || "updated an opportunity";
         var feedActObj = req.body.feedActionObject || undefined;
         var feedActObjType = req.body.feedActionObjectType || undefined;
+        var feedDispName = req.body.targetDisplayName || item.company.name + ' - ' + item.jobTitle;
         Feed.create({
           user: req.body.uid,
           action: feedAct,
@@ -85,6 +86,7 @@ module.exports = exports = {
           actionObjectType: feedActObjType,
           target: item.id,
           targetType: "Opportunity",
+          targetDisplayName: feedDispName,
           summary: feedSum
         }, function(err, feeditem) {
           if (err) {
@@ -122,11 +124,13 @@ module.exports = exports = {
       }
       var feedAct = req.body.feedAction || "created";
       var feedSum = req.body.feedSummary || "created an opportunity";
+      var feedDispName = req.body.targetDisplayName || opp.company.name + ' - ' + opp.jobTitle;
       Feed.create({
         user: req.body.uid,
         action: "created",
         target: opp.id,
         targetType: "Opportunity",
+        targetDisplayName: feedDispName,
         summary: feedSum
       }, function(err, feedItem) {
         if (err) {

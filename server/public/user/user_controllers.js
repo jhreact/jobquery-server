@@ -84,9 +84,9 @@ module.exports = exports = {
             }
           }
         });
-
-        if (user.searchStage !== req.user.searchStage) {
-          var updatedSearchStage = true;
+        var updatedSearchStage = false;
+        if (user.searchStage !== 'Early' && user.searchStage !== req.user.searchStage) {
+          updatedSearchStage = true;
         }
         user.save(function (err, item) {
           if (err) {
@@ -96,12 +96,13 @@ module.exports = exports = {
           if (updatedSearchStage) {
             var feedAct = req.body.feedAction || "updatedSearchStage";
             var feedSum = req.body.feedSummary || "updated search stage";
+            var feedDispName = item.searchStage;
             Feed.create({
               user: item.id,
               action: feedAct,
               target: item.id,
               targetType: "User",
-              targetDisplayName: item.searchStage,
+              targetDisplayName: feedDispName,
               summary: feedSum
             }, function(err, feedItem) {
               if (err) {

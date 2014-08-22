@@ -135,11 +135,13 @@ module.exports = exports = {
         }
         var feedAct = req.body.feedAction || "updated";
         var feedSum = req.body.feedSummary || "updated a match";
+        var feedDispName = req.body.targetDisplayName || item.name;
         Feed.create({
           user: req.body.uid,
           action: feedAct,
           target: item.id,
           targetType: "Match",
+          targetDisplayName: feedDispName,
           summary: feedSum
         }, function(err, feedItem) {
           if (err) {
@@ -186,23 +188,29 @@ module.exports = exports = {
   batchProcess: function(req, res){
     var ids = req.body.ids;
     Match.update({_id: {$in: ids}}, { $set: { isProcessed: true }}, {multi: true}, function(err, data){
-      console.log("BATCH PROCESSED DATA:");
-      console.log(data);
+      // console.log("BATCH IDS");
+      // console.log(ids);
       var feedAct = req.body.feedAction || "processed";
       var feedSum = req.body.feedSummary || "processed a match";
+      var feedDispName;
       for (var i=0; i < ids.length; i++) {
-        console.log("Adding feed entry for id: " + ids[i].id);
-        Feed.create({
-          user: req.body.uid,
-          action: feedAct,
-          target: ids[i].id,
-          targetType: "Match",
-          summary: feedSum
-        }, function(err, feedItem) {
-          if (err) {
-            res.json(500, err);
-            return;
-          }
+        Match.findOne({_id : ids[i]}, function(match) {
+          console.log("Adding feed entry for id: " + ids[i]);
+          feedDispName = '';
+          // feedDispName = req.body.targetDisplayName || match.opportunity.company.name + ' - ' + match.opportunity.jobTitle;
+          Feed.create({
+            user: req.body.uid,
+            action: feedAct,
+            target: ids[i],
+            targetType: "Match",
+            targetDisplayName: feedDispName,
+            summary: feedSum
+          }, function(err, feedItem) {
+            if (err) {
+              res.json(500, err);
+              return;
+            }
+          });
         });
       }
       err ? res.send(500) : res.send(200);
@@ -229,11 +237,13 @@ module.exports = exports = {
           match.update(updateParams, function(err){
             var feedAct = req.body.feedAction || "updated";
             var feedSum = req.body.feedSummary || "updated a match";
+            var feedDispName = req.body.targetDisplayName || match.opportunity.company.name + ' - ' + match.opportunity.jobTitle;
             Feed.create({
               user: req.body.uid,
               action: feedAct,
               target: id,
               targetType: "Match",
+              targetDisplayName: feedDispName,
               summary: feedSum
             }, function(err, feedItem) {
               if (err) {
@@ -278,11 +288,13 @@ module.exports = exports = {
           match.update(updateParams, function(err){
             var feedAct = req.body.feedAction || "updated";
             var feedSum = req.body.feedSummary || "updated a match";
+            var feedDispName = req.body.targetDisplayName || match.opportunity.company.name + ' - ' + match.opportunity.jobTitle;
             Feed.create({
               user: req.body.uid,
               action: feedAct,
               target: match._id,
               targetType: "Match",
+              targetDisplayName: feedDispName,
               summary: feedSum
             }, function(err, feedItem) {
               if (err) {

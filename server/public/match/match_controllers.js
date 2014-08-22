@@ -187,6 +187,7 @@ module.exports = exports = {
         var feedSum = req.body.feedSummary || "updated a match";
         var feedActObj = req.body.feedActionObject || undefined;
         var feedActObjType = req.body.feedActionObjectType || undefined;
+        var feedDispName = req.body.targetDisplayName || item.opportunity.company.name + ' - ' + item.opportunity.jobTitle;
         Feed.create({
           user: req.body.uid,
           action: feedAct,
@@ -194,6 +195,7 @@ module.exports = exports = {
           actionObjectType: feedActObjType,
           target: item.id,
           targetType: "Match",
+          targetDisplayName: feedDispName,
           summary: feedSum
         }, function(err, feedItem) {
           res.json(200, {_id: item.id});

@@ -39,6 +39,7 @@ module.exports = exports = {
         }
         var feedAct = req.body.feedAction || "updated";
         var feedSum = req.body.feedSummary || "updated a category";
+        var feedDispName = req.body.targetDisplayName || item.name;
         // var feedActObj = req.body.feedActionObject || undefined;
         // var feedActObjType = req.body.feedActionObjectType || undefined;
         Feed.create({
@@ -46,7 +47,7 @@ module.exports = exports = {
           action: feedAct,
           target: item.id,
           targetType: "Category",
-          targetDisplayName: item.name,
+          targetDisplayName: feedDispName,
           summary: feedSum
         }, function(err, feeditem) {
           if (err) {
@@ -79,12 +80,13 @@ module.exports = exports = {
       }
       var feedAct = req.body.feedAction || "created";
       var feedSum = req.body.feedSummary || "created a category";
+      var feedDispName = req.body.targetDisplayName || category.name;
       Feed.create({
         user: req.body.uid,
         action: feedAct,
         target: category.id,
         targetType: "Category",
-        targetDisplayName: category.name,
+        targetDisplayName: feedDispName,
         summary: feedSum
       }, function(err, feeditem) {
         if (err) {

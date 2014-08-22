@@ -61,11 +61,13 @@ module.exports = exports = {
         var feedSum = req.body.feedSummary || "updated their profile";
         var feedActObj = req.body.feedActionObject || undefined;
         var feedActObjType = req.body.feedActionObjectType || undefined;
+        var feedDispName = req.body.targetDisplayName || item.name;
         Feed.create({
           user: req.body.uid,
           action: feedAct,
           target: item.id,
           targetType: "User",
+          targetDisplayName: feedDispName,
           summary: feedSum
         }, function(err, feedItem) {
           if (err) {
@@ -103,11 +105,13 @@ module.exports = exports = {
       var feedSum = req.body.feedSummary || "updated their profile";
       var feedActObj = req.body.feedActionObject || undefined;
       var feedActObjType = req.body.feedActionObjectType || undefined;
+      var feedDispName = req.body.targetDisplayName || user.name || user.email;
       Feed.create({
         user: req.body.uid,
         action: feedAct,
         target: user.id,
         targetType: "User",
+        targetDisplayName: feedDispName,
         summary: feedSum
       }, function(err, feedItem) {
         if (err) {

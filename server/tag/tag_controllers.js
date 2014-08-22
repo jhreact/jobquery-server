@@ -20,12 +20,13 @@ module.exports = exports = {
 
       var feedAct = req.body.feedAction || "created";
       var feedSum = req.body.feedSummary || "created a tag";
+      var feedDispName = req.body.targetDisplayName || tag.name;
       Feed.create({
         user: req.body.uid,
         action: feedAct,
         target: tag.id,
         targetType: "Tag",
-        targetDisplayName: tag.name,
+        targetDisplayName: feedDispName,
         summary: feedSum
       }, function(err, feedItem) {
         if (err) {
@@ -92,12 +93,13 @@ module.exports = exports = {
         }
         var feedAct = req.body.feedAction || "updated";
         var feedSum = req.body.feedSummary || "updated a tag";
+        var feedDispName = req.body.targetDisplayName || item.name;
         Feed.create({
           user: req.body.uid,
           action: feedAct,
           target: item.id,
           targetType: "Tag",
-          targetDisplayName: item.name,
+          targetDisplayName: feedDispName,
           summary: feedSum
         }, function(err, feedItem) {
           if (err) {

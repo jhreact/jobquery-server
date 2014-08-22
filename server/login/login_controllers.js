@@ -37,6 +37,7 @@ module.exports = exports = {
               Feed.create({
                 user: user._id,
                 action: "registered",
+                target: user._id,
                 targetDisplayName: user.name,
                 summary: "logged in for the first time"
               }, function(err, feedItem) {

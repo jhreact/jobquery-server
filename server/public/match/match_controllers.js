@@ -185,14 +185,15 @@ module.exports = exports = {
         }
         var feedAct = req.body.feedAction || "updated";
         var feedSum = req.body.feedSummary || "updated a match";
-        var feedActObj = req.body.feedActionObject || undefined;
-        var feedActObjType = req.body.feedActionObjectType || undefined;
+        var feedActObj = req.body.feedActionObject || req.body.opportunity._id;
+        var feedActObjType = req.body.feedActionObjectType || 'Opportunity';
         var feedDispName = req.body.targetDisplayName || item.opportunity.company.name + ' - ' + item.opportunity.jobTitle;
         Feed.create({
           user: req.body.uid,
           action: feedAct,
           actionObject: feedActObj,
           actionObjectType: feedActObjType,
+          actionObjectDisplayName: feedDispName,
           target: item.id,
           targetType: "Match",
           targetDisplayName: feedDispName,

@@ -139,6 +139,9 @@ module.exports = exports = {
         Feed.create({
           user: req.body.uid,
           action: feedAct,
+          actionObject: req.body.opportunity._id || item.opportunity._id,
+          actionObjectType: 'Opportunity',
+          actionObjectDisplayName: req.body.opportunity.company.name + ' - ' + req.body.opportunity.jobTitle,
           target: item.id,
           targetType: "Match",
           targetDisplayName: feedDispName,
@@ -193,6 +196,8 @@ module.exports = exports = {
       var feedAct = req.body.feedAction || "processed";
       var feedSum = req.body.feedSummary || "processed a match";
       var feedDispName;
+      console.log("BATCH IDS");
+      console.log(req.body.ids);
       for (var i=0; i < ids.length; i++) {
         Match.findOne({_id : ids[i]}, function(match) {
           console.log("Adding feed entry for id: " + ids[i]);
@@ -241,6 +246,9 @@ module.exports = exports = {
             Feed.create({
               user: req.body.uid,
               action: feedAct,
+              actionObject: match.opportunity._id,
+              actionObjectType: 'Opportunity',
+              actionObjectDisplayName: match.opportunity.company.name + ' - ' + match.opportunity.jobTitle,
               target: id,
               targetType: "Match",
               targetDisplayName: feedDispName,
@@ -292,6 +300,9 @@ module.exports = exports = {
             Feed.create({
               user: req.body.uid,
               action: feedAct,
+              actionObject: match.opportunity._id,
+              actionObjectType: 'Opportunity',
+              actionObjectDisplayName: match.opportunity.company.name + ' - ' + match.opportunity.jobTitle,
               target: match._id,
               targetType: "Match",
               targetDisplayName: feedDispName,

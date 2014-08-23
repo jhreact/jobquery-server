@@ -1,5 +1,6 @@
 "use strict";
 var User = require('../user/user_model.js');
+var Match = require('../match/match_model.js');
 var Feed = require('./feed_model.js');
 
 module.exports = exports = {
@@ -80,13 +81,33 @@ module.exports = exports = {
   },
 
   post: function (req, res) {
-    Feed.create(req.body, function (err, newFeedItem) {
-      if (err) {
-        res.json(500, err);
-        return;
-      }
-      res.json(201, {_id: newFeedItem.id});
-    });
+    var feedObj = req.body;
+    if (req.body.targetType === 'Match' && req.body.target && !req.body.actionObject) {
+      Match.findOne({
+        _id: req.body.target
+      }, function(err, match) {
+        if (err) {
+          res.json(500, err);
+          return;
+        }
+        feedObj.actionObject = match.opportunity._id;
+        Feed.create(req.body, function (err, newFeedItem) {
+          if (err) {
+            res.json(500, err);
+            return;
+          }
+          res.json(201, {_id: newFeedItem.id});
+        });
+      });
+    } else {
+      Feed.create(req.body, function (err, newFeedItem) {
+        if (err) {
+          res.json(500, err);
+          return;
+        }
+        res.json(201, {_id: newFeedItem.id});
+      });
+    }
   }
 
 };

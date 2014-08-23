@@ -11,69 +11,57 @@ module.exports = exports = {
     var twoWeeksAgo = new Date(today - 14 * 86400000);
     var start = req.query.fromDate || twoWeeksAgo;
 
-    Feed.find({updatedAt: {$gte: start}})
-    // Feed.find()
+    Feed.find({updatedAt: {$gte: start}, action : {$ne : 'processed'}})
     .populate({path: 'user', select: 'name email category searchStage', model: 'User'})
     .sort('-updatedAt user targetType')
     .exec()
     .then(function(data) {
-      // console.log("GOT TO THEN CALL");
-      // console.log(data);
-      var isInDates = function(dateArr, dateStr) {
-        for (var j=0; j < dateArr.length; j++) {
-          if (dateArr[j][0] === dateStr) {
-            return true;
-          }
-        }
-        return false;
+      var getYYYYMMDDStr = function(myDate) {
+        var yyyy;
+        var mm;
+        var dd;
+        yyyy = '' + myDate.getFullYear();
+        mm = '' + (myDate.getMonth() + 1 <= 9 ? '0' + (myDate.getMonth() + 1) : myDate.getMonth() + 1);
+        dd = '' + (myDate.getDate() <= 9 ? '0' + myDate.getDate() : myDate.getDate() );
+        return yyyy + mm + dd;
+      };
+      var dateDisplay = function(yyyymmdd) {
+        var y = yyyymmdd.substring(0,4) * 1;
+        var m = yyyymmdd.substring(4,6) * 1;
+        var d = yyyymmdd.substring(6,8) * 1;
+        var newDate = new Date(y, -1 + m, d);
+        return newDate.toDateString();
       };
 
       var activity = {};
       var results = [];
-      var day, yyyy, mm, dd;
-      var dates = [];
-      var feedActor;
-      var feedActors = [];
-      var feedAction;
-      var feedTarget;
-      var feedEvent;
+      var day;
+      var dates;
       for (var i=0; i < data.length; i++) {
-        yyyy = '' + data[i].updatedAt.getFullYear();
-        mm = '' + (data[i].updatedAt.getMonth() + 1 <= 9 ? '0' + (data[i].updatedAt.getMonth() + 1) : data[i].updatedAt.getMonth() + 1);
-        dd = '' + (data[i].updatedAt.getDate() <= 9 ? '0' + data[i].updatedAt.getDate() : data[i].updatedAt.getDate() );
-        day = yyyy + mm + dd;
-        if (!isInDates(dates, day)) {
-          dates.push([day, data[i].updatedAt.toDateString()]);
-        }
-        feedActor = data[i].user.name || data[i].user.email;
-        if (feedActors.indexOf(feedActor) === -1) {
-          feedActors.push(feedActor);
-        }
-        feedAction = data[i].summary;
-        feedTarget = data[i].targetDisplayName;
-        activity[day] = activity[day] || {};
-        activity[day][feedActor] = activity[day][feedActor] || {};
-        activity[day][feedActor][feedAction] = activity[day][feedActor][feedAction] || {};
-        // activity[day][feedActor][feedAction][feedTarget] = activity[day][feedActor][feedAction][feedTarget] || [];
-        feedEvent = {
+        day = getYYYYMMDDStr(data[i].updatedAt);
+        var feedEvent = {
           userid: data[i].user._id,
-          userDisplayName: feedActor,
+          userDisplayName: data[i].user.name || data[i].user.email,
           target: data[i].target,
           targetType: data[i].targetType,
           targetDisplayName: data[i].targetDisplayName,
           actionObject: data[i].actionObject || undefined,
           actionObjectType: data[i].actionObjectType || undefined,
-          actionObjectDisplayName: data[i].actionObjectDisplayName || undefined
+          actionObjectDisplayName: data[i].actionObjectDisplayName || undefined,
+          summary: data[i].summary,
+          updatedAt: data[i].updatedAt
         }
-        activity[day][feedActor][feedAction][feedTarget] = feedEvent;
+
+        activity[day] = activity[day] || [];
+        activity[day].push(feedEvent);
       }
-      dates = dates.sort().reverse();
+      dates = Object.keys(activity).sort().reverse();
       for (var i=0; i < dates.length; i++) {
         results.push({
-          date: dates[i][1],
-          dateid: dates[i][0],
+          date: dateDisplay(dates[i]),
+          dateid: dates[i],
           isCollapsed: false,
-          items : activity[dates[i][0]]
+          items : activity[dates[i]]
         });
       }
       res.json(201, results);
